@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Lernfelder – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Alle Lernfelder LF1 bis LF12a der FISI-Ausbildung als visueller Lernpfad mit Fortschritt, Status und Querverbindungen."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html" aria-current="page">Lernfelder</a
+          ><a href="jahr1.html">Jahr 1</a><a href="jahr2.html">Jahr 2</a
+          ><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a><a href="ap2.html">AP2</a
+          ><a href="labor.html">IT-Labor</a><a href="training.html">Training</a
+          ><a href="firma.html">Deine Firma</a><a href="shorts.html">Lern-Snacks</a
+          ><a href="lernkarten.html">Lernkarten</a><a href="formeln.html">Formeln</a
+          ><a href="glossar.html">Glossar</a><a href="lernstand.html">Erfolge</a
+          ><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Lernfelder LF1–LF12a</h1>
+        <p class="sub">
+          Der offizielle rote Faden deiner Ausbildung – alle Lektionen und Übungsfragen nach
+          Lernfeldern sortiert. Die Lernpfade nach Ausbildungsjahr bleiben bestehen.
+        </p>
+        <p class="hint">
+          Benennung nach Rahmenlehrplan; LF6 wird hier im 1. Jahr geführt (dokumentierte
+          Abweichung).
+        </p>
+      </div>
+
+      <div id="lf-years"></div>
+
+      <section class="section" aria-labelledby="h-extra">
+        <h2 id="h-extra">Zusatzbereiche</h2>
+        <div class="grid c3" id="lf-extra"></div>
+      </section>
+
+      <div class="card split-card">
+        <div>
+          <strong>Fortschritt &amp; Schwächen im Blick?</strong>
+          <p class="sub-note">
+            Die komplette Übersicht (Wissensstand, Trefferquoten-Ampel, offene Wiederholungen und
+            Status je Lernbereich) findest du jetzt gebündelt im Dashboard.
+          </p>
+        </div>
+        <a class="btn ghost" href="dashboard.html#h-matrix">Zur Matrix im Dashboard</a>
+      </div>
+
+      <section class="section card fisi-only">
+        <h2>Querverbindungen zwischen den Lernfeldern</h2>
+        <p class="fs-90">
+          Themen tauchen mehrfach auf – erst als Grundlage, später als Vertiefung:
+        </p>
+        <div id="lf-cross"></div>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const STATUS_CLS = {
+        "noch nicht begonnen": "s0",
+        begonnen: "s1",
+        "in Wiederholung": "s2",
+        prüfungsbereit: "s3",
+        abgeschlossen: "s4",
+      };
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Lernfelder" }]);
+        const aeMode = window.Track && Track.isSpec();
+        const basis = window.trackFields ? trackFields(LF_INDEX.fields) : LF_INDEX.fields; // keine fremden Fachrichtungs-Bereiche
+        let fields = basis.filter((f) => f.type === "lf" && !f.placeholder);
+        let extras = basis.filter((f) => f.type !== "lf");
+        if (!aeMode) {
+          const aeBonus = LF_INDEX.fields.find((f) => f.id === "ae"); // AE-Bonus ist FISI-Zusatzstoff (AP1 enthält AE-Themen)
+          if (aeBonus && !extras.includes(aeBonus)) extras.push(aeBonus);
+        }
+        if (aeMode) {
+          // Fachrichtungs-Modus: Bonus-Bereiche als Hauptpfad, berufsuebergreifendes als Extras
+          const tr = Track.get();
+          const own = tr === "ae" ? ["ae", "aeap"] : Track.info().bonus ? [Track.info().bonus] : [];
+          const commons = LF_INDEX.fields.filter(
+            (f) => Track.fieldsFor[tr].includes(f.id) && /^lf[1-9]$/.test(f.id)
+          );
+          fields = extras
+            .filter((f) => own.includes(f.id))
+            .concat(commons)
+            .concat(
+              LF_INDEX.fields.filter((f) => f.placeholder && Track.fieldsFor[tr].includes(f.id))
+            );
+          extras = extras.filter((f) =>
+            ["komm", "wiso", "allgemein", "zert", "prap1"].includes(f.id)
+          );
+          document.querySelector(".page-head h1").textContent = Track.info().kurz + "-Lernbereiche";
+          document.querySelector(".page-head .sub").textContent =
+            "Die Inhalte deiner Fachrichtung (" +
+            Track.info().label +
+            ") – plus WISO, Berufsschule, Zertifikate und AP1 (berufsübergreifend).";
+        }
+
+        const card = (f) => {
+          if (f.placeholder)
+            return `<div class="card lf-card"><div class="lfnr">${f.nr} · in Vorbereitung</div><h3 class="fs-100">${f.name}</h3><p class="hint">Diese Lernfelder sind bereits vorgesehen – die Inhalte folgen in einer der nächsten Ausbaustufen.</p></div>`;
+          const st = LF.status(f.id),
+            pct = LF.progressPct(f.id),
+            s = LF.stats(f.id);
+          const meta = LF_META[f.id] || {};
+          const diffLabel = f.year === 1 ? "Einstieg" : f.year === 2 ? "Aufbau" : "Vertiefung";
+          return `<div class="card link-card lf-card">
+      <div class="lfnr">${f.nr} · ${f.year ? "Jahr " + f.year : "übergreifend"} · ${diffLabel}</div>
+      <h3 style="margin:4px 0 6px"><a href="lernfeld.html?id=${f.id}">${f.name}</a></h3>
+      <div class="chip-row" style="margin:4px 0"><span class="badge ap">${f.ap}</span><span class="badge">${f.lessons} Lektionen</span><span class="badge">${f.quiz} Fragen</span></div>
+      <p style="font-size:.86rem;color:var(--tx2);margin:6px 0">${(meta.intro || "").split(":")[0]}.</p>
+      <div class="progress" role="img" aria-label="Fortschritt ${pct} Prozent"><span style="width:${pct}%"></span></div>
+      <p style="margin:8px 0 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px">
+        <span class="status-pill ${STATUS_CLS[st]}">${st}</span>
+        <span style="font-size:.8rem;color:var(--tx3)">${s.openWrong ? s.openWrong + " offene Wdh." : "keine offenen Wdh."}</span>
+      </p>
+    </div>`;
+        };
+
+        if (aeMode) {
+          const inhalt = fields.filter((f) => !f.placeholder);
+          const ohneJahr = fields.filter((f) => f.placeholder && !f.year);
+          document.getElementById("lf-years").innerHTML =
+            (inhalt.length
+              ? `<section class="section" aria-label="Bereiche mit Inhalt"><h2>Deine Lernbereiche mit Inhalt</h2><div class="grid c3">${inhalt.map(card).join("")}</div></section>`
+              : "") +
+            [1, 2, 3]
+              .map((y) => {
+                const g = fields.filter((f) => f.placeholder && f.year === y);
+                return g.length
+                  ? `<section class="section" aria-label="Lernfelder Jahr ${y}"><h2>${y}. Ausbildungsjahr (laut Rahmenlehrplan)</h2><div class="grid c3">${g.map(card).join("")}</div></section>`
+                  : "";
+              })
+              .join("") +
+            (ohneJahr.length
+              ? `<section class="section" aria-label="Weitere Lernfelder"><h2>Lernfelder deines Berufs (laut Rahmenlehrplan)</h2><div class="grid c3">${ohneJahr.map(card).join("")}</div></section>`
+              : "");
+        } else {
+          document.getElementById("lf-years").innerHTML = [1, 2, 3]
+            .map(
+              (y) => `
+    <section class="section" aria-label="Lernfelder Jahr ${y}">
+      <h2>${y}. Ausbildungsjahr</h2>
+      <div class="grid c3">${fields
+        .filter((f) => f.year === y)
+        .map(card)
+        .join("")}</div>
+    </section>`
+            )
+            .join("");
+        }
+        document.getElementById("lf-extra").innerHTML = extras.map(card).join("");
+
+        // Querverbindungen
+        const crossPairs = [
+          ["IPv4-Grundlagen & Subnetting", "lf3", "lf9"],
+          ["Datenschutz & Schutzbedarf", "lf4", "lf11a"],
+          ["Datenverwaltung & SQL", "lf5", "lf8"],
+          ["Serviceanfragen & Kundenprojekte", "lf6", "lf12a"],
+          ["DNS & DHCP", "lf9", "lf10a"],
+          ["Firewall & VPN", "lf9", "lf11a"],
+          ["Monitoring", "lf6", "lf10a"],
+          ["Projektplanung & Doku", "lf12a", "prap2"],
+          ["WISO", "wiso", "prap1"],
+        ];
+        document.getElementById("lf-cross").innerHTML = crossPairs
+          .map(([t, a, b]) => {
+            const ma = LF.meta(a),
+              mb = LF.meta(b);
+            return `<span class="crossref">${t}: <a href="lernfeld.html?id=${a}">${ma ? ma.nr : a}</a> → <a href="lernfeld.html?id=${b}">${mb ? mb.nr : b}</a></span>`;
+          })
+          .join("");
+      };
+    </script>
+  </body>
+</html>

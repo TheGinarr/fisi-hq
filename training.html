@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Training – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Alle Übungsformate an einem Ort: Quiz & Challenges, simulierte Kommandozeile, Netz- & Subnetting-Trainer, Übungs-Generatoren, Ernstfall-Simulator und Fehler-Analyse."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html" aria-current="page">Training</a
+          ><a href="firma.html">Deine Firma</a><a href="formeln.html">Formeln</a
+          ><a href="glossar.html">Glossar</a><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Training: alle Übungsformate an einem Ort</h1>
+        <p class="sub">
+          Alle Übungsformate an einem Ort – die Leiste oben wechselt direkt zwischen Quiz, Terminal,
+          Subnetting und Fehler-Analyse.
+        </p>
+      </div>
+      <div class="grid c2" id="train-cards"></div>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Training" }]);
+        const stats = Progress.stats();
+        let answered = 0,
+          correct = 0;
+        Object.values(stats).forEach((s) => {
+          answered += s.total;
+          correct += s.ok;
+        });
+        const term = (Store.get("termDone", []) || []).length,
+          miss = (Store.get("missDone", []) || []).length;
+        const analyse = (Store.get("analyseSolved", []) || []).length;
+        const chalBest = Store.get("netzChallengeBest", 0),
+          wrongQ = (window.QStats ? QStats.faelligeMitQueue() : Progress.wrongQueue()).length;
+        const CARDS = [
+          {
+            href: "quiz.html",
+            t: "Quiz & Challenges",
+            d: "Über 3.000 Fragen nach Lernfeld und Jahr – falsche Antworten kommen automatisch wieder.",
+            st: answered
+              ? answered +
+                " Fragen beantwortet (" +
+                Math.round((correct / answered) * 100) +
+                " % richtig) · " +
+                wrongQ +
+                " fällige Wiederholungen"
+              : "Noch keine Fragen beantwortet – der beste Startpunkt.",
+          },
+          {
+            href: "praxis.html",
+            t: "Praxis: Terminal & Missionen",
+            d: "Simulierte Kommandozeile (Linux, Windows, Cisco) mit Diagnose-Aufgaben und Missionen.",
+            st:
+              term + miss
+                ? term + "/4 Terminal-Aufgaben · " + miss + "/2 Missionen gelöst"
+                : "Noch nichts gelöst – tipp dich rein.",
+          },
+          {
+            href: "netztrainer.html",
+            t: "Netz- & Subnetting-Trainer",
+            d: "Subnetting Schritt für Schritt üben – plus Challenge gegen die Uhr.",
+            st: chalBest
+              ? "Challenge-Bestwert: " + chalBest + "/10"
+              : "Challenge noch nicht gespielt.",
+          },
+          {
+            href: "ernstfall.html",
+            t: "Ernstfall-Simulator: Betrieb unter Druck",
+            d: "Serverausfall und Ransomware unter Zeitdruck meistern – mit Bewertung und Debriefing.",
+            st:
+              Store.get("efBest", {}).restore || Store.get("efBest", {}).ransom
+                ? "Bestwerte: Restore " +
+                  (Store.get("efBest", {}).restore || "–") +
+                  " · Ransomware " +
+                  (Store.get("efBest", {}).ransom || "–")
+                : "Noch kein Einsatz absolviert.",
+          },
+          {
+            href: "uebungstools.html",
+            t: "Übungs-Generatoren: Rechnen bis es sitzt",
+            d: "Endlos Rechenaufgaben mit Auto-Prüfung und Rechenweg: Subnetting, Zahlensysteme, Netzplan u. a.",
+            st: "Jede Aufgabe frisch generiert – ideal fürs tägliche Warmrechnen.",
+          },
+          {
+            href: "analyse.html",
+            t: "Fehler-Analyse: Logs, SQL & Code",
+            d: "15 echte Fälle: Logs, SQL- und Code-Fehler lesen und die Ursache finden.",
+            st: analyse ? analyse + "/15 Fällen gelöst" : "Noch kein Fall gelöst.",
+          },
+          {
+            href: "labor.html",
+            t: "IT-Labor: Zoom-Reise durch den Rechner",
+            d: "10 Ebenen vom Arbeitsplatz bis zum Logikgatter – mit Wissensfragen je Ebene.",
+            st: "Klicken, zoomen, verstehen – ideal für Hardware-Grundlagen.",
+          },
+          {
+            href: "lernkarten.html",
+            t: "Lernkarten (Karteikasten)",
+            d: "Begriffe per Selbstbewertung wiederholen – nach System: Gewusstes kommt in immer größeren Abständen wieder.",
+            st: (function () {
+              try {
+                const p = (window.trackCards ? trackCards(DATA.cards) : DATA.cards).concat(
+                  Store.get("eigeneKarten", []) || []
+                );
+                const n = SR.faellige(p).length;
+                return n ? n + " Karte(n) heute fällig – ran!" : "Für heute alles wiederholt ✓";
+              } catch (e) {
+                return "Kurze Einheiten, perfekt für den Bus.";
+              }
+            })(),
+          },
+          {
+            href: "shorts.html",
+            t: "Lern-Snacks",
+            d: "49 Mini-Frage-Einheiten für zwischendurch – erst raten, dann Erklärung.",
+            st: "2 Minuten Zeit? Reicht für einen Snack.",
+          },
+        ];
+        document.getElementById("train-cards").innerHTML = CARDS.map(
+          (c) => `
+    <div class="card link-card">
+      <h2 class="fs-105 m-0"><a href="${c.href}">${c.t}</a></h2>
+      <p style="font-size:.9rem;color:var(--tx2);margin:6px 0">${c.d}</p>
+      <p style="font-size:.85rem;font-weight:600;color:var(--ac-strong);margin:0">${c.st}</p>
+    </div>`
+        ).join("");
+      };
+    </script>
+  </body>
+</html>

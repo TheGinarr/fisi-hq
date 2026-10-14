@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Übungs-Generatoren – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Unendlich viele Zufallsaufgaben mit Auto-Prüfung und Rechenweg: Subnetting, VLSM, Zahlensysteme, IPv6, Durchsatz, Netzplan und Kalkulation."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/generatoren.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header"></header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Übungs-Generatoren</h1>
+        <p class="sub">
+          Unendlich viele Zufallsaufgaben zu den Rechen-Klassikern der Prüfung – mit Auto-Prüfung,
+          Rechenweg und sofort neuer Aufgabe. Jede Aufgabe wird frisch erzeugt: kein Auswendiglernen
+          von Lösungen möglich.
+        </p>
+      </div>
+
+      <section class="card" id="werkzeuge" aria-labelledby="h-wz">
+        <h2 id="h-wz">Werkzeug: Zahlen- &amp; Einheiten-Umrechner</h2>
+        <p style="font-size: 0.86rem; color: var(--tx3); margin: 0 0 10px">
+          Zum Prüfen eigener Rechnungen – läuft komplett lokal. Zum Üben nimm die Generatoren
+          darunter (erst rechnen, dann prüfen!).
+        </p>
+        <div class="grid c2">
+          <div>
+            <h3 class="fs-100">Binär · Dezimal · Hex · Oktal</h3>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: end">
+              <label
+                >Zahl<br /><input
+                  class="gap-input"
+                  id="uz-in"
+                  style="min-width: 150px"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="z. B. C0 oder 192"
+              /></label>
+              <label
+                >Basis<br /><select class="gap-input" id="uz-basis">
+                  <option value="10">Dezimal</option>
+                  <option value="16">Hex</option>
+                  <option value="2">Binär</option>
+                  <option value="8">Oktal</option>
+                </select></label
+              >
+              <button class="btn small" id="uz-go">Umrechnen</button>
+            </div>
+            <div id="uz-out" class="mt-10" aria-live="polite"></div>
+          </div>
+          <div>
+            <h3 class="fs-100">Bit · Byte · Datenraten</h3>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: end">
+              <label
+                >Wert<br /><input
+                  class="gap-input"
+                  id="ub-in"
+                  style="min-width: 110px"
+                  autocomplete="off"
+                  placeholder="z. B. 100"
+              /></label>
+              <label
+                >Einheit<br /><select class="gap-input" id="ub-einheit">
+                  <option value="mbit">Mbit/s</option>
+                  <option value="gbit">Gbit/s</option>
+                  <option value="kbit">kbit/s</option>
+                  <option value="mb">MB</option>
+                  <option value="gb">GB</option>
+                  <option value="tb">TB</option>
+                </select></label
+              >
+              <button class="btn small" id="ub-go">Umrechnen</button>
+            </div>
+            <div id="ub-out" class="mt-10" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+      <div class="grid c3" id="gen-jump" aria-label="Generator-Auswahl"></div>
+      <div id="gen-sections"></div>
+    </main>
+    <footer id="site-footer" class="site-footer"></footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([
+          { label: "Training", href: "training.html" },
+          { label: "Übungs-Generatoren" },
+        ]);
+        document.getElementById("gen-jump").innerHTML = GENERATOREN.map(
+          (g) =>
+            `<div class="card link-card"><h2 class="fs-100 m-0"><a href="#gen-${g.id}">${g.titel}</a></h2><p style="font-size:.85rem;color:var(--tx2);margin:4px 0 0">${g.kurz}</p></div>`
+        ).join("");
+        document.getElementById("gen-sections").innerHTML = GENERATOREN.map(
+          (g) =>
+            `<section class="section card" id="gen-${g.id}" aria-label="${g.titel}"><h2>${g.titel}</h2><div class="gen-host" data-gen="${g.id}"></div></section>`
+        ).join("");
+        document.querySelectorAll(".gen-host").forEach((h) => renderGenerator(h, h.dataset.gen));
+      };
+    </script>
+    <script>
+      /* Werkzeug: Umrechner (eigenstaendig) */
+      document.addEventListener("DOMContentLoaded", function () {
+        const uzBtn = document.getElementById("uz-go");
+        if (uzBtn)
+          uzBtn.addEventListener("click", () => {
+            const out = document.getElementById("uz-out");
+            const roh = document
+              .getElementById("uz-in")
+              .value.trim()
+              .replace(/^0x/i, "")
+              .replace(/\s/g, "");
+            const basis = +document.getElementById("uz-basis").value;
+            const n = parseInt(roh, basis);
+            if (roh === "" || Number.isNaN(n) || n < 0 || String(n) === "Infinity") {
+              out.innerHTML = '<p class="hint">Ungültige Eingabe für diese Basis.</p>';
+              return;
+            }
+            const bin = n.toString(2),
+              gruppiert = bin
+                .padStart(Math.ceil(bin.length / 4) * 4, "0")
+                .replace(/(.{4})(?=.)/g, "$1 ");
+            out.innerHTML =
+              '<table class="tbl"><tr><th>Dezimal</th><th>Hex</th><th>Binär (4er-Gruppen)</th><th>Oktal</th></tr>' +
+              `<tr><td>${n.toLocaleString("de-DE")}</td><td>${n.toString(16).toUpperCase()}</td><td class="mono">${gruppiert}</td><td>${n.toString(8)}</td></tr></table>`;
+          });
+        const ubBtn = document.getElementById("ub-go");
+        if (ubBtn)
+          ubBtn.addEventListener("click", () => {
+            const out = document.getElementById("ub-out");
+            const w = parseFloat(document.getElementById("ub-in").value.replace(",", "."));
+            const e = document.getElementById("ub-einheit").value;
+            if (Number.isNaN(w) || w < 0) {
+              out.innerHTML = '<p class="hint">Bitte eine Zahl eingeben.</p>';
+              return;
+            }
+            const f = (x) => x.toLocaleString("de-DE", { maximumFractionDigits: 3 });
+            let html = "";
+            if (e === "kbit" || e === "mbit" || e === "gbit") {
+              const bit = w * (e === "kbit" ? 1e3 : e === "mbit" ? 1e6 : 1e9);
+              html =
+                '<table class="tbl"><tr><th>bit/s</th><th>Mbit/s</th><th>Gbit/s</th><th>MB/s (÷8)</th></tr>' +
+                `<tr><td>${f(bit)}</td><td>${f(bit / 1e6)}</td><td>${f(bit / 1e9)}</td><td>${f(bit / 8e6)}</td></tr></table>` +
+                '<p class="f-note" style="font-size:.82rem;color:var(--tx3)">Datenraten sind dezimal; MB/s = Mbit/s ÷ 8.</p>';
+            } else {
+              const byte = w * (e === "mb" ? 1e6 : e === "gb" ? 1e9 : 1e12);
+              html =
+                '<table class="tbl"><tr><th>Byte</th><th>MB / MiB</th><th>GB / GiB</th><th>TB / TiB</th><th>Bit</th></tr>' +
+                `<tr><td>${f(byte)}</td><td>${f(byte / 1e6)} / ${f(byte / 1048576)}</td><td>${f(byte / 1e9)} / ${f(byte / 1073741824)}</td><td>${f(byte / 1e12)} / ${f(byte / 1099511627776)}</td><td>${f(byte * 8)}</td></tr></table>` +
+                '<p class="f-note" style="font-size:.82rem;color:var(--tx3)">Dezimal (Hersteller) vs. binär (Betriebssystem, Mi/Gi/Ti) – Details: Formelsammlung „Tabelle: Dezimal- vs. Binärpräfixe“.</p>';
+            }
+            out.innerHTML = html;
+          });
+      });
+    </script>
+  </body>
+</html>

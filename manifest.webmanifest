@@ -1,0 +1,14 @@
+{
+  "name": "FISI-HQ – Lernplattform Fachinformatik",
+  "short_name": "FISI-HQ",
+  "description": "Interaktive Lernplattform für die FISI-Ausbildung – funktioniert nach dem ersten Besuch auch offline.",
+  "start_url": "index.html",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#ec3013",
+  "lang": "de",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

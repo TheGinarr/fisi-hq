@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Quellen & Lizenzen – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Quellen, Lizenzen und Datenschutzhinweise der Lernplattform FISI-HQ."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="shorts.html">Lern-Snacks</a><a href="lernkarten.html">Lernkarten</a
+          ><a href="formeln.html">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="lernstand.html">Erfolge</a
+          ><a href="quellen.html" aria-current="page">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Quellen &amp; Lizenzen</h1>
+        <p class="sub">
+          Alle Lerninhalte sind eigenständig formuliert. Hier stehen die genutzten externen Quellen
+          mit Lizenz und Einbindungsdatum – und die Transparenzangaben zum KI-Einsatz (unten).
+          Hilfreiche externe Lern- und Werkzeugseiten: <a href="links.html">Linksammlung</a>.
+        </p>
+      </div>
+
+      <section class="card">
+        <h2>Externe Quellen</h2>
+        <p class="small-dim" style="font-size: 0.82rem; color: var(--tx3); margin: 0 0 8px">
+          „Eingebunden“ = Zeitpunkt der Aufnahme in die Plattform; zu diesem Zeitpunkt wurden
+          Erreichbarkeit und Angaben zuletzt geprüft. Externe Seiten können sich seitdem geändert
+          haben.
+        </p>
+        <table class="tbl">
+          <tr>
+            <th>Nr.</th>
+            <th>Quelle</th>
+            <th>Lizenz / Status</th>
+            <th>Eingebunden</th>
+          </tr>
+          <tr>
+            <td>[Q1]</td>
+            <td>
+              <a href="https://de.wikipedia.org" rel="noopener">Wikipedia</a> /
+              <a href="https://commons.wikimedia.org" rel="noopener">Wikimedia Commons</a>
+            </td>
+            <td>
+              Texte CC BY-SA 4.0 (nur Recherchegrundlage, keine Textübernahme); Bilder je Datei
+              einzeln lizenziert – Urheber und Lizenz werden direkt am Bild angezeigt
+            </td>
+            <td>08/2026</td>
+          </tr>
+          <tr>
+            <td>[Q2]</td>
+            <td><a href="https://www.bsi.bund.de" rel="noopener">BSI – IT-Grundschutz</a></td>
+            <td>Öffentliche Informationen; eigenständig zusammengefasst</td>
+            <td>08/2026</td>
+          </tr>
+          <tr>
+            <td>[Q3]–[Q5]</td>
+            <td>
+              <a href="https://www.rfc-editor.org" rel="noopener">RFC-Dokumente der IETF</a>
+              (u.&nbsp;a. RFC&nbsp;1122, RFC&nbsp;1918, RFC&nbsp;1035)
+            </td>
+            <td>Frei zugänglich und zitierbar</td>
+            <td>08/2026</td>
+          </tr>
+          <tr>
+            <td>[Q6]</td>
+            <td>IEEE 802.1Q (VLAN)</td>
+            <td>Standard nur referenziert, keine Inhalte übernommen</td>
+            <td>08/2026</td>
+          </tr>
+          <tr>
+            <td>[Q7]</td>
+            <td>
+              <a href="https://csrc.nist.gov/pubs/sp/800/145/final" rel="noopener"
+                >NIST SP 800-145</a
+              >
+            </td>
+            <td>US-Regierungsdokument, Public Domain</td>
+            <td>08/2026</td>
+          </tr>
+          <tr>
+            <td>[Q8]</td>
+            <td>
+              <a href="https://github.com/IBM/plex" rel="noopener">IBM Plex Schriftfamilie</a>
+            </td>
+            <td>SIL Open Font License 1.1</td>
+            <td>08/2026</td>
+          </tr>
+          <tr>
+            <td>[Q9]</td>
+            <td>
+              <a href="https://www.gesetze-im-internet.de" rel="noopener"
+                >Gesetze im Internet (BMJ)</a
+              >
+            </td>
+            <td>Amtliche Werke, gemeinfrei (§ 5 UrhG)</td>
+            <td>08/2026</td>
+          </tr>
+          <tr>
+            <td>[Q10]</td>
+            <td>
+              <a href="https://www.youtube.com" rel="noopener">YouTube</a> (Google Ireland Ltd.)
+            </td>
+            <td>
+              Videos werden nicht übernommen, sondern erst nach Klick über youtube-nocookie.com
+              eingebettet (Zwei-Klick); alle Rechte verbleiben bei den jeweiligen Kanälen, Nennung
+              im Videotitel
+            </td>
+            <td>08/2026</td>
+          </tr>
+          <tr>
+            <td>[Q11]</td>
+            <td>
+              <a href="https://fachinformatikerpruefungsvorbereitung.de" rel="noopener"
+                >Fachinformatiker Prüfungsvorbereitung</a
+              >
+              (Open-Source-Projekt)
+            </td>
+            <td>
+              MIT-Lizenz (<a
+                href="https://github.com/Fachinformatiker-Prufungsvorbereitung/Fachinformatiker-Pruefungsvorbereitung"
+                rel="noopener"
+                >GitHub</a
+              >); diente als Themen-Checkliste und wird in Lektionen als „Weiterlesen“-Quelle
+              verlinkt – Texte wurden eigenständig formuliert, nicht übernommen. Ein Teil der
+              kuratierten Video-Verweise ([Q10]) und Commons-Bildauswahlen ([Q1]) wurde von dort
+              übernommen; Videos und Bilder werden weiterhin nur per Zwei-Klick direkt von der
+              Originalquelle (YouTube-Kanal bzw. Wikimedia Commons mit Live-Lizenznachweis) geladen
+            </td>
+            <td>08/2026</td>
+          </tr>
+          <tr>
+            <td>[Q12]</td>
+            <td>
+              <a href="https://netzikon.net" rel="noopener">netzikon.net</a> (Netzwerk-Lexikon)
+            </td>
+            <td>
+              Diente als Begriffs-Checkliste für die Vollständigkeit von Glossar und Lektionen; alle
+              Definitionen wurden eigenständig formuliert, keine Texte übernommen
+            </td>
+            <td>09/2026</td>
+          </tr>
+          <tr>
+            <td>[Q13]</td>
+            <td><a href="https://fi-lab.de" rel="noopener">FI-Lab</a> (Lernplattform)</td>
+            <td>
+              Diente als Themen-Checkliste (AP1-Prüfungskatalog-Struktur) und als gestalterische
+              Inspiration für Grafikstil und Übungstools; Inhalte, Grafiken und Code sind
+              vollständig eigenständig erstellt
+            </td>
+            <td>09/2026</td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="section card">
+        <h2>Hilfreiche externe Seiten</h2>
+        <p>
+          Handverlesene Websites zum Lernen, Nachschlagen und Zeichnen (draw.io, Structorizer,
+          PlantUML …) findest du gesammelt auf der eigenen Seite
+          <a href="links.html">Linksammlung</a> – jeweils mit Einbindungsdatum.
+        </p>
+      </section>
+
+      <section class="section card" id="ki-transparenz">
+        <h2>KI-Transparenz</h2>
+        <p>
+          Die Lerntexte, Übungsaufgaben, Quizfragen, Musterprüfungen und Simulationen dieser
+          Plattform wurden <strong>mit Unterstützung künstlicher Intelligenz erstellt</strong> und
+          anschließend redaktionell strukturiert. Diese Kennzeichnung erfolgt gemäß
+          <strong>Art. 50 der EU-KI-Verordnung</strong> (Verordnung (EU) 2024/1689), der die
+          Offenlegung KI-generierter Texte verlangt, die zur Information der Öffentlichkeit
+          veröffentlicht werden.
+        </p>
+        <p>
+          <strong>Inhaltsstand aller Lerninhalte: August 2026</strong> (Rahmenlehrpläne,
+          Gesetzeslagen und Prüfungsstrukturen wie zu diesem Zeitpunkt gültig). Was die
+          KI-Erstellung konkret bedeutet: Fachliche Aussagen wurden nach bestem Wissen anhand
+          öffentlicher Quellen (siehe Tabelle oben) erarbeitet, Rechenwege wurden programmatisch
+          nachgeprüft. Trotzdem können KI-erstellte Inhalte Fehler enthalten.
+          <strong>Alle Angaben ohne Gewähr</strong> – diese Plattform ersetzt keine amtlichen
+          Dokumente (Prüfungsordnungen, Rahmenlehrpläne, Gesetzestexte im Original) und keine
+          Rechtsberatung. Verbindlich sind immer die Veröffentlichungen der zuständigen IHK und der
+          KMK.
+        </p>
+        <p>
+          Wenn dir ein Fehler auffällt, melde ihn bitte über die im
+          <a href="impressum.html">Impressum</a> genannten Kontaktdaten – fehlerhafte Inhalte werden
+          korrigiert. Nicht KI-erstellt sind: die eingebetteten Videos (Rechte bei den jeweiligen
+          Kanälen, [Q10]) und die Fotos von Wikimedia Commons ([Q1]).
+        </p>
+      </section>
+
+      <section class="section card">
+        <h2>Bilder &amp; Grafiken</h2>
+        <p>
+          <strong>Diagramme, Illustrationen und Simulatoren</strong> (Lernfeld-Grafiken,
+          Themen-Diagramme, IT-Labor, Labor-Stationen wie Firewall-, Netzplan- und IP-Simulator,
+          Icons) sind eigene Werke dieser Plattform und benötigen keine Fremdlizenz. Texte,
+          Aufgaben, Merkhilfen und die eingestreuten IT-Sprüche sind eigenständig formuliert bzw.
+          gemeinfreie Folklore.
+        </p>
+        <p>
+          <strong>Videos</strong> werden erst nach einem bewussten Klick über youtube-nocookie.com
+          eingebettet (Zwei-Klick-Lösung). Inhalte und Rechte liegen bei den jeweiligen Kanälen; die
+          Plattform übernimmt keine Videos, sondern bettet sie nur ein.
+        </p>
+        <p>
+          <strong>Fotos von Wikimedia Commons</strong> werden erst nach einem bewussten Klick von
+          wikimedia.org geladen. Es werden ausschließlich Dateien mit freien Lizenzen verwendet
+          (CC0, Public Domain, CC BY, CC BY-SA); Titel, Urheber, Lizenz (verlinkt) und die
+          Original-Dateiseite werden bei jedem Bild direkt in der Bildunterschrift angezeigt.
+        </p>
+      </section>
+
+      <section class="section card">
+        <h2>Lizenzvermerk MIT (Quelle Q11)</h2>
+        <p>
+          Für die aus [Q11] übernommene Auswahl von Video-Verweisen und Commons-Bildern gilt die
+          MIT-Lizenz des Projekts:
+        </p>
+        <pre class="lizenz-text" style="white-space: pre-wrap; font-size: 0.8rem">
+Copyright (c) 2023 The Fachinformatiker-Prüfungsvorbereitung Authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</pre
+        >
+        <h2>Schrift</h2>
+        <p>
+          Diese Website verwendet <strong>IBM Plex Sans</strong> und <strong>IBM Plex Mono</strong>,
+          lizenziert unter der
+          <a href="https://openfontlicense.org" rel="noopener">SIL Open Font License 1.1</a>. Die
+          Schriften werden lokal ausgeliefert; es werden keine externen Schriftdienste eingebunden.
+        </p>
+      </section>
+
+      <section class="section card">
+        <h2>Datenschutz</h2>
+        <p>
+          Diese Website verwendet
+          <strong>keine Tracker, keine Cookies und keine Analysedienste</strong>. Einstellungen
+          (Hell-/Dunkelmodus, Akzentfarbe, Textgröße, FISI/AE-Modus), Lernfortschritt, Noten und
+          Notizen werden ausschließlich lokal im Browser gespeichert und nicht übertragen; die
+          Offline-Funktion (Service Worker) hält lediglich eine lokale Kopie der Seiten auf dem
+          Endgerät vor. Externe Inhalte (Fotos von Wikimedia Commons, Videos über
+          youtube-nocookie.com) werden nur nach ausdrücklichem Klick geladen; erst dabei wird eine
+          Verbindung zum jeweiligen Anbieter aufgebaut. Es gibt keine Benutzerkonten und keine
+          Anmeldung; Fortschrittsanzeigen ohne eigene Aktivität sind Beispieldaten.
+        </p>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Quellen & Lizenzen" }]);
+      };
+    </script>
+  </body>
+</html>

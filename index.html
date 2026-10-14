@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>FISI-HQ – Lernplattform für Fachinformatiker Systemintegration</title>
+    <meta
+      name="description"
+      content="Interaktive Lernplattform für die FISI-Ausbildung: Lernpfade für alle 3 Ausbildungsjahre, Lernfelder LF1–LF12a, AP1- und AP2-Vorbereitung, IT-Labor, Subnetting-Trainer und mehr."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <meta name="theme-color" content="#2563eb" />
+    <meta
+      property="og:title"
+      content="FISI-HQ – Lernplattform für Fachinformatiker Systemintegration"
+    />
+    <meta
+      property="og:description"
+      content="Kostenlos lernen für AP1 & AP2: Lernfelder LF1–LF12a, über 3.000 Übungsfragen, interaktives IT-Labor, Subnetting-Trainer."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/app.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html" aria-current="page">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="shorts.html">Lern-Snacks</a><a href="lernkarten.html">Lernkarten</a
+          ><a href="formeln.html">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="lernstand.html">Erfolge</a><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <section class="hero">
+        <div>
+          <span class="kicker">Mission: Systemstart</span>
+          <h1 class="fisi-only">Deine Kommandozentrale für die FISI&#8209;Ausbildung</h1>
+          <h1 class="spec-only">
+            Deine Kommandozentrale für die <span id="spec-hero-kurz">FIAE</span>&#8209;Ausbildung
+          </h1>
+          <p class="lead fisi-only">
+            Vom ersten Bit bis zur bestandenen Abschlussprüfung: Lernpfade für alle drei
+            Ausbildungsjahre, Lernfelder LF1–LF12a, gezielte AP1- und AP2-Vorbereitung, ein
+            interaktives IT-Labor und Missionen, die Lernen zur Sache machen.
+          </p>
+          <p class="lead spec-only" id="spec-hero-lead">
+            Deine Fachrichtungs-Lernbereiche mit Übungen, Labor-Stationen, AP1-Vorbereitung und
+            gezieltem Prüfungstraining.
+          </p>
+          <div class="q-actions">
+            <a class="btn" id="cta-continue" href="dashboard.html">Weiterlernen</a>
+            <a class="btn ghost fisi-only" href="labor.html">IT-Labor entdecken</a>
+            <a class="btn ghost spec-only" id="spec-hero-btn" href="lernfeld.html?id=ae"
+              >Bonus entdecken</a
+            >
+          </div>
+          <p style="font-size: 0.82rem; color: var(--tx3); margin-top: 14px">
+            Beispieldaten &amp; lokaler Fortschritt – alles bleibt in deinem Browser.
+          </p>
+        </div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 300 220" role="img" aria-label="Illustration eines Chips">
+            <rect
+              x="70"
+              y="50"
+              width="160"
+              height="120"
+              rx="12"
+              fill="var(--ac-soft)"
+              stroke="var(--ac)"
+              stroke-width="2"
+            />
+            <rect x="105" y="80" width="90" height="60" rx="6" fill="var(--ac)" opacity=".85" />
+            <text
+              class="fisi-only"
+              x="150"
+              y="116"
+              text-anchor="middle"
+              fill="var(--ac-tx)"
+              font-family="IBM Plex Mono,monospace"
+              font-size="13"
+            >
+              FISI-HQ
+            </text>
+            <text
+              class="spec-only"
+              id="spec-chip"
+              x="150"
+              y="116"
+              text-anchor="middle"
+              fill="var(--ac-tx)"
+              font-family="IBM Plex Mono,monospace"
+              font-size="13"
+            >
+              FIAE-HQ
+            </text>
+            <g stroke="var(--ac)" stroke-width="2" opacity=".7">
+              <line x1="70" y1="70" x2="35" y2="70" />
+              <line x1="70" y1="100" x2="35" y2="100" />
+              <line x1="70" y1="130" x2="35" y2="130" />
+              <line x1="70" y1="160" x2="35" y2="160" />
+              <line x1="230" y1="70" x2="265" y2="70" />
+              <line x1="230" y1="100" x2="265" y2="100" />
+              <line x1="230" y1="130" x2="265" y2="130" />
+              <line x1="230" y1="160" x2="265" y2="160" />
+            </g>
+            <circle cx="35" cy="70" r="4" fill="var(--ac)" />
+            <circle cx="35" cy="100" r="4" fill="var(--ac)" />
+            <circle cx="35" cy="130" r="4" fill="var(--ac)" />
+            <circle cx="35" cy="160" r="4" fill="var(--ac)" />
+            <circle cx="265" cy="70" r="4" fill="var(--ac)" />
+            <circle cx="265" cy="100" r="4" fill="var(--ac)" />
+            <circle cx="265" cy="130" r="4" fill="var(--ac)" />
+            <circle cx="265" cy="160" r="4" fill="var(--ac)" />
+          </svg>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="h-next">
+        <h2 id="h-next">Heute dran</h2>
+        <div class="grid c2">
+          <div class="card">
+            <h3>Lernaufgabe des Tages</h3>
+            <p style="font-size: 0.88rem; color: var(--tx2); margin: 6px 0" id="daily-teaser">
+              Wird geladen…
+            </p>
+            <a class="btn small" href="quiz.html?mode=daily" id="daily-btn">Heute starten</a>
+            <a class="btn small ghost" href="quiz.html?mode=repeat" id="start-wdh" hidden
+              >Wiederholen (<span id="start-wdh-n">0</span>)</a
+            >
+          </div>
+          <div class="card fisi-only">
+            <h3>Empfohlene nächste Lektion</h3>
+            <div id="next-lesson"><p class="empty">Lade…</p></div>
+          </div>
+          <div class="card spec-only">
+            <h3>Weiter in deinem Fachpfad</h3>
+            <p class="text-dim" id="spec-next-txt">
+              Dein Fachrichtungs-Bonus mit Übungen und Prüfungstraining.
+            </p>
+            <p>
+              <a class="btn small" id="spec-next-bonus" href="lernfeld.html?id=ae">Bonus öffnen</a>
+              <a class="btn small ghost" id="spec-next-ap" href="lernfeld.html?id=aeap"
+                >Prüfungstraining</a
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>Dein Fortschritt</h3>
+            <div class="grid c3" style="gap: 10px">
+              <div class="stat">
+                <span class="v" id="st-xp">0</span><span class="l">Fragen richtig</span>
+              </div>
+              <div class="stat">
+                <span class="v" id="st-level">0</span><span class="l">Lektionen fertig</span>
+              </div>
+              <div class="stat">
+                <span class="v" id="st-streak">0</span><span class="l">Tage Serie</span>
+              </div>
+            </div>
+            <p class="mt-12"><a href="dashboard.html">Zum vollständigen Dashboard →</a></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="h-wege">
+        <h2 id="h-wege">Was willst du tun?</h2>
+        <div class="grid c3">
+          <div class="card link-card">
+            <span class="badge">1</span>
+            <h3><a href="lernfelder.html">Lernen</a></h3>
+            <p class="fisi-only">
+              Alle Lernfelder LF1–LF12a mit Lektionen, Bildern und Videos – Stoff verstehen.
+            </p>
+            <p class="spec-only">Deine Lernbereiche mit Lektionen und Übungen – Stoff verstehen.</p>
+          </div>
+          <div class="card link-card">
+            <span class="badge">2</span>
+            <h3><a href="training.html">Üben</a></h3>
+            <p>Quiz, IT-Labor, Lernkarten und Rechen-Generatoren – Wissen festigen.</p>
+          </div>
+          <div class="card link-card">
+            <span class="badge">3</span>
+            <h3><a href="ap1.html">Prüfung</a></h3>
+            <p>AP1, AP2 und komplette Musterprüfungsbögen mit Timer – bereit werden.</p>
+            <p class="m-0"><a href="mp.html">Direkt zu den Musterprüfungen →</a></p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        if (Track.isSpec()) {
+          const SPEC = {
+            ae: {
+              lead: "Programmierung, Datenbanken, Software-Engineering und Testen: AE-Lernbereiche mit Übungen, SQL-Baukasten, AP1-Vorbereitung und Prüfungstraining für die FIAE-Abschlussprüfung.",
+              bonus: "lernfeld.html?id=ae",
+              bonusLabel: "AE-Bonus",
+              ap: "ap2ae.html",
+              apLabel: "FIAE-AP2-Musterprüfung",
+              apTxt:
+                "Simulierte FIAE-AP2: Algorithmik, OOP/UML, SQL, Testen und Projekt – als Musterprüfung unter Zeitdruck, Blitz-Simulation und Schwächen-Training.",
+              lfTxt:
+                "AE-Bonus, Prüfungstraining, WISO, Berufsschule und Zertifikate – deine Bereiche mit Programmierung, Datenbanken, UML und Testen.",
+            },
+            dp: {
+              lead: "Datenqualität, ETL, Kennzahlen, BPMN und datenschutzkonforme Auswertungen: FIDP-Lernbereich mit Übungen, SQL-Baukasten, AP1-Vorbereitung und Prüfungstraining.",
+              bonus: "lernfeld.html?id=fidp",
+              bonusLabel: "FIDP-Bonus",
+              ap: "lernfeld.html?id=fidp",
+              apLabel: "FIDP-Prüfungstraining",
+              apTxt:
+                "Datenqualität bewerten, Kennzahlen interpretieren, BPMN lesen, Datenschutz bei Analysen – Aufgabentraining im FIDP-Stil.",
+              lfTxt:
+                "FIDP-Bonus, WISO, Berufsschule und Zertifikate – Daten, Prozesse und Kennzahlen mit Fortschritt je Bereich.",
+            },
+            dv: {
+              lead: "OT-Netze, Industrieprotokolle, Zonenkonzepte und Echtzeit: FIDV-Lernbereich mit Übungen, Firewall-Station, AP1-Vorbereitung und Prüfungstraining.",
+              bonus: "lernfeld.html?id=fidv",
+              bonusLabel: "FIDV-Bonus",
+              ap: "lernfeld.html?id=fidv",
+              apLabel: "FIDV-Prüfungstraining",
+              apTxt:
+                "Zonenkonzepte entwerfen, Protokolle wählen, Störungen entlang der Automatisierungskette eingrenzen – Aufgabentraining im FIDV-Stil.",
+              lfTxt:
+                "FIDV-Bonus, WISO, Berufsschule und Zertifikate – Vernetzung, OT und Sicherheit mit Fortschritt je Bereich.",
+            },
+            itsm: {
+              lead: "Beratung, Angebote, Verträge und Kalkulation: ITSM-Lernbereich mit Übungen, AP1-Vorbereitung und Prüfungstraining.",
+              bonus: "lernfeld.html?id=itsm",
+              bonusLabel: "ITSM-Bonus",
+              ap: "lernfeld.html?id=itsm",
+              apLabel: "ITSM-Prüfungstraining",
+              apTxt:
+                "Angebotsvergleich, Vertragsarten, Kalkulation und Kundensituationen – Aufgabentraining im ITSM-Stil.",
+              lfTxt:
+                "ITSM-Bonus, WISO, Berufsschule – Vertrieb, Verträge und Kalkulation mit Fortschritt je Bereich.",
+            },
+            kdm: {
+              lead: "Prozesse, Business Cases, Reporting und Verträge: KDM-Lernbereich mit Übungen, AP1-Vorbereitung und Prüfungstraining.",
+              bonus: "lernfeld.html?id=kdm",
+              bonusLabel: "KDM-Bonus",
+              ap: "lernfeld.html?id=kdm",
+              apLabel: "KDM-Prüfungstraining",
+              apTxt:
+                "Digitalisierungs-Business-Case, Berichtskritik und Vertragsbewertung – Aufgabentraining im KDM-Stil.",
+              lfTxt:
+                "KDM-Bonus, WISO, Berufsschule – Digitalisierung wirtschaftlich steuern, mit Fortschritt je Bereich.",
+            },
+            itse: {
+              lead: "Elektrotechnik, DGUV V3 und physische Infrastruktur: ITSE-Lernbereich mit Übungen, AP1-Vorbereitung und Prüfungstraining.",
+              bonus: "lernfeld.html?id=itse",
+              bonusLabel: "ITSE-Bonus",
+              ap: "lernfeld.html?id=itse",
+              apLabel: "ITSE-Prüfungstraining",
+              apTxt:
+                "Elektro-Rechnungen, Prüfabläufe und Infrastruktur-Fehlersuche – Aufgabentraining im ITSE-Stil.",
+              lfTxt:
+                "ITSE-Bonus, WISO, Berufsschule, Zertifikate – Elektro und Infrastruktur mit Fortschritt je Bereich.",
+            },
+            kbm: {
+              lead: "DIN-5008-Korrespondenz, Organisation, Rechnungen und Tabellenkalkulation: KBM-Lernbereich mit Übungen und Prüfungstraining (Teil 1 ist die PC-Prüfung, nicht die IT-AP1).",
+              bonus: "lernfeld.html?id=kbm",
+              bonusLabel: "KBM-Bonus",
+              ap: "lernfeld.html?id=kbm",
+              apLabel: "KBM-Prüfungstraining",
+              apTxt:
+                "Geschäftsbriefe, Rechnungsprüfung, Skonto und Tabellenfunktionen – Aufgabentraining im KBM-Stil.",
+              lfTxt:
+                "KBM-Bonus, WISO, Berufsschule – Büromanagement komplett, mit Fortschritt je Bereich.",
+            },
+            gam: {
+              lead: "Groß- und Außenhandelsmanagement: Die 13 offiziellen Lernfelder deines Berufs sind angelegt (Inhalte folgen) – WISO und Berufsschule kannst du sofort nutzen.",
+              bonus: "lernfelder.html",
+              bonusLabel: "Deine Lernbereiche",
+              ap: "lernfelder.html",
+              apLabel: "Lernbereiche",
+              apTxt:
+                "Die berufsspezifischen Inhalte für GH/AH folgen – WISO deckt bereits viele Prüfungsthemen ab.",
+              lfTxt:
+                "Lernfelder LF1–13 (GH/AH), WISO, Berufsschule – deine Struktur steht, Inhalte wachsen.",
+            },
+            ik: {
+              lead: "Industriekaufleute (Neuordnung 2024): Die 13 offiziellen Lernfelder deines Berufs sind angelegt (Inhalte folgen) – WISO und Berufsschule kannst du sofort nutzen.",
+              bonus: "lernfelder.html",
+              bonusLabel: "Deine Lernbereiche",
+              ap: "lernfelder.html",
+              apLabel: "Lernbereiche",
+              apTxt:
+                "Die berufsspezifischen Inhalte folgen – WISO deckt bereits viele Prüfungsthemen ab.",
+              lfTxt:
+                "Lernfelder LF1–13 (2024), WISO, Berufsschule – deine Struktur steht, Inhalte wachsen.",
+            },
+          }[Track.get()];
+          if (TRACKS[Track.get()].ap1 === false) {
+            const c = document.querySelector(
+              '[aria-labelledby="h-ap"] .link-card:not(.spec-only):not(.fisi-only)'
+            );
+            if (c) c.style.display = "none";
+          }
+          const set = (id, fn) => {
+            const el = document.getElementById(id);
+            if (el && SPEC) fn(el);
+          };
+          set("spec-hero-kurz", (el) => (el.textContent = Track.info().kurz));
+          set("spec-hero-lead", (el) => (el.textContent = SPEC.lead));
+          set("spec-hero-btn", (el) => {
+            el.href = SPEC.bonus;
+            el.textContent = SPEC.bonusLabel + " entdecken";
+          });
+          set("spec-chip", (el) => (el.textContent = Track.info().hq));
+          set("spec-next-bonus", (el) => {
+            el.href = SPEC.bonus;
+            el.textContent = SPEC.bonusLabel + " öffnen";
+          });
+          set("spec-next-ap", (el) => {
+            el.href = SPEC.ap;
+            el.textContent = "Prüfungstraining";
+          });
+          set("spec-ap-link", (el) => {
+            el.href = SPEC.ap;
+            el.textContent = SPEC.apLabel;
+          });
+          set("spec-ap-txt", (el) => (el.textContent = SPEC.apTxt));
+          set(
+            "spec-lf-txt",
+            (el) =>
+              (el.innerHTML =
+                "<strong>" +
+                SPEC.lfTxt.split(" – ")[0] +
+                "</strong> – " +
+                SPEC.lfTxt.split(" – ").slice(1).join(" – "))
+          );
+        }
+        breadcrumbs && document.querySelector(".breadcrumbs") && breadcrumbs([]);
+
+        const _st = Progress.stats();
+        let _ok = 0;
+        Object.values(_st).forEach((x) => (_ok += x.ok));
+        document.getElementById("st-xp").textContent = _ok;
+        document.getElementById("st-level").textContent = Progress.doneLessons().length;
+        document.getElementById("st-streak").textContent = Gami.streak();
+        const next = DATA.lessons.find((l) => !Progress.isDone(l.id));
+        // Lernaufgabe des Tages: gleiche Aufgabe fuer alle (deterministisch aus dem Datum)
+        (function () {
+          const t = document.getElementById("daily-teaser");
+          if (!t || !window.DailyTask) return;
+          const lf = DailyTask.lf();
+          t.textContent =
+            DailyTask.date() +
+            " · 5 Fragen" +
+            (lf ? " · Lernfeld des Tages: " + lf.nr + " – " + lf.name : "") +
+            " · identisch für alle Lernenden.";
+          if (DailyTask.done()) {
+            const btn = document.getElementById("daily-btn");
+            btn.textContent = "Heute erledigt ✓";
+            btn.classList.add("ghost");
+          }
+          if (window.QStats && QStats.plan) {
+            const p = QStats.plan();
+            if (p.heute > 0) {
+              document.getElementById("start-wdh").hidden = false;
+              document.getElementById("start-wdh-n").textContent = p.heute;
+            }
+          }
+        })();
+
+        const host = document.getElementById("next-lesson");
+        if (next) {
+          host.innerHTML = `<p><span class="badge">Jahr ${next.year}</span> <strong>${next.title}</strong><br><span style="color:var(--tx3);font-size:.85rem">ca. ${next.minutes} Min · ${next.tags.join(", ")}</span></p><a class="btn small" href="lektion.html?id=${next.id}">Lektion starten</a>`;
+          document.getElementById("cta-continue").href = "lektion.html?id=" + next.id;
+        } else {
+          host.innerHTML = `<p>Alle Lektionen abgeschlossen – Zeit für die <a href="ap2.html">AP2-Generalprobe</a>!</p>`;
+        }
+      };
+    </script>
+  </body>
+</html>

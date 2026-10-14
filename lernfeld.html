@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Lernfeld – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Lernfeld-Ansicht mit Einführung, Vertiefung, Handlungssituation, Lernzielen, importierten Lektionen, Quiz und Visualisierung."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/diagramme.js"></script>
+    <script defer src="assets/js/commons-bilder.js"></script>
+    <script defer src="assets/js/videos.js"></script>
+    <script defer src="assets/js/labor-stationen.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="shorts.html">Lern-Snacks</a><a href="lernkarten.html">Lernkarten</a
+          ><a href="formeln.html">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="lernstand.html">Erfolge</a><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div id="lf-host"><p class="empty">Lernfeld wird geladen…</p></div>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      /* ---- Eigene SVG-Visualisierungen (je Lernfeld eine, eigene Werke) ---- */
+      function VP(x, y, w, h, label, acc) {
+        return (
+          `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="${acc ? "var(--ac-soft)" : "var(--bg3)"}" stroke="${acc ? "var(--ac)" : "var(--line)"}" stroke-width="${acc ? 2 : 1.5}"/>` +
+          (label
+            ? `<text x="${x + w / 2}" y="${y + h / 2 + 4}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="var(--tx)">${label}</text>`
+            : "")
+        );
+      }
+      function VA(x1, y1, x2, y2, dash) {
+        return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--ac)" stroke-width="2" ${dash ? 'stroke-dasharray="6 4"' : ""} marker-end="url(#arr)"/>`;
+      }
+      function VT(x, y, s, mid) {
+        return `<text x="${x}" y="${y}" ${mid ? 'text-anchor="middle"' : ""} font-family="IBM Plex Sans,sans-serif" font-size="11" fill="var(--tx3)">${s}</text>`;
+      }
+      const DEFS = `<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ac)"/></marker></defs>`;
+      function svgWrap(inner, label) {
+        return `<svg viewBox="0 0 760 300" role="img" aria-label="${label}">${DEFS}${inner}</svg>`;
+      }
+      const VIZ = {
+        orga: () =>
+          svgWrap(
+            VP(300, 20, 160, 40, "Geschäftsführung", 1) +
+              VP(80, 110, 160, 40, "Vertrieb") +
+              VP(300, 110, 160, 40, "IT-Abteilung", 1) +
+              VP(520, 110, 160, 40, "Verwaltung") +
+              VP(300, 200, 160, 40, "Du: Azubi FISI") +
+              VA(380, 60, 160, 110) +
+              VA(380, 60, 380, 110) +
+              VA(380, 60, 600, 110) +
+              VA(380, 150, 380, 200) +
+              VT(
+                380,
+                275,
+                "Aufbauorganisation: Wer berichtet an wen? Dein Platz im Organigramm.",
+                1
+              ),
+            "Organigramm eines Betriebs mit IT-Abteilung und Azubi-Position"
+          ),
+        arbeitsplatz: () =>
+          svgWrap(
+            VP(60, 60, 150, 110, "Monitor") +
+              VP(250, 60, 120, 150, "PC", 1) +
+              VT(310, 90, "CPU · RAM", 1) +
+              VT(310, 110, "SSD · NIC", 1) +
+              VP(60, 200, 150, 36, "Tastatur/Maus") +
+              VP(430, 60, 120, 60, "Netzwerkdose") +
+              VP(600, 60, 120, 60, "Switch") +
+              VP(430, 170, 290, 60, "Steckdose 230 V ~ Netzteil 12/5/3,3 V") +
+              VA(370, 120, 430, 90) +
+              VA(550, 90, 600, 90) +
+              VA(310, 210, 490, 200, 1) +
+              VT(
+                380,
+                275,
+                "Arbeitsplatz nach Kundenwunsch: Komponenten, Netz- und Stromanbindung.",
+                1
+              ),
+            "Aufbau eines IT-Arbeitsplatzes mit Netzwerk- und Stromanbindung"
+          ),
+        clientnetz: () =>
+          svgWrap(
+            VP(40, 40, 110, 50, "Client A") +
+              VP(40, 120, 110, 50, "Client B") +
+              VP(40, 200, 110, 50, "Drucker") +
+              VP(230, 110, 120, 60, "Switch", 1) +
+              VP(430, 110, 120, 60, "Router", 1) +
+              VP(620, 110, 110, 60, "Internet") +
+              VA(150, 65, 230, 125) +
+              VA(150, 145, 230, 140) +
+              VA(150, 225, 230, 155) +
+              VT(290, 100, "Schicht 2: MAC", 1) +
+              VA(350, 140, 430, 140) +
+              VT(490, 100, "Schicht 3: IP", 1) +
+              VA(550, 140, 620, 140) +
+              VT(
+                380,
+                275,
+                "Clients ins Netz einbinden: Switch verteilt lokal, Router verbindet Netze.",
+                1
+              ),
+            "Netzwerkdiagramm: Clients, Switch, Router, Internet"
+          ),
+        schutzbedarf: () =>
+          svgWrap(
+            VP(60, 50, 200, 180, "") +
+              VT(160, 80, "Schutzziele", 1) +
+              VT(160, 110, "Vertraulichkeit", 1) +
+              VT(160, 140, "Integrität", 1) +
+              VT(160, 170, "Verfügbarkeit", 1) +
+              VP(320, 50, 180, 50, "normal") +
+              VP(320, 120, 180, 50, "hoch", 1) +
+              VP(320, 190, 180, 50, "sehr hoch") +
+              VT(410, 40, "Schutzbedarf", 1) +
+              VP(560, 50, 170, 60, "TOM wählen", 1) +
+              VP(560, 130, 170, 60, "USV · Backup") +
+              VP(560, 210, 170, 60, "Zugriffskontrolle") +
+              VA(260, 140, 320, 145) +
+              VA(500, 145, 560, 80) +
+              VT(
+                380,
+                285,
+                "Schutzbedarfsanalyse: Schutzziele bewerten, Bedarf einstufen, Maßnahmen ableiten.",
+                1
+              ),
+            "Ablauf einer Schutzbedarfsanalyse von Schutzzielen zu Maßnahmen"
+          ),
+        datenfluss: () =>
+          svgWrap(
+            VP(50, 110, 130, 60, "Eingabe") +
+              VP(240, 110, 150, 60, "Verarbeitung", 1) +
+              VT(315, 100, "Programm / SQL", 1) +
+              VP(450, 110, 130, 60, "Ausgabe") +
+              VP(240, 220, 150, 50, "Speicherung") +
+              VA(180, 140, 240, 140) +
+              VA(390, 140, 450, 140) +
+              VA(315, 170, 315, 220) +
+              VP(630, 110, 100, 60, "DB") +
+              VA(580, 140, 630, 140, 1) +
+              VT(
+                380,
+                285,
+                "Software verarbeitet Daten: EVA-Prinzip mit Speicherung und Datenbank.",
+                1
+              ),
+            "EVA-Prinzip mit Datenbankanbindung"
+          ),
+        ticket: () =>
+          svgWrap(
+            VP(40, 110, 120, 60, "Anfrage") +
+              VP(210, 110, 120, 60, "Priorisieren", 1) +
+              VP(380, 110, 120, 60, "Bearbeiten") +
+              VP(550, 110, 120, 60, "Lösen + Doku", 1) +
+              VA(160, 140, 210, 140) +
+              VA(330, 140, 380, 140) +
+              VA(500, 140, 550, 140) +
+              VP(380, 210, 120, 50, "Eskalation") +
+              VA(440, 170, 440, 210, 1) +
+              VT(440, 200, "") +
+              VT(
+                380,
+                285,
+                "Ticket-Lebenszyklus: annehmen → priorisieren → lösen → dokumentieren (ggf. eskalieren).",
+                1
+              ),
+            "Ablaufdiagramm eines Support-Tickets"
+          ),
+        cps: () =>
+          svgWrap(
+            VP(60, 110, 130, 60, "Sensor") +
+              VP(260, 110, 150, 60, "Steuerung", 1) +
+              VP(480, 110, 130, 60, "Aktor") +
+              VA(190, 140, 260, 140) +
+              VA(410, 140, 480, 140) +
+              VP(260, 30, 150, 50, "IT-Netz / Cloud") +
+              VA(335, 80, 335, 110, 1) +
+              VT(335, 25, "") +
+              VP(260, 210, 150, 50, "eigenes OT-VLAN", 1) +
+              VT(
+                380,
+                285,
+                "Cyber-physisches System: Sensor misst, Steuerung entscheidet, Aktor handelt – IT/OT sauber getrennt.",
+                1
+              ),
+            "Regelkreis eines cyber-physischen Systems mit Netztrennung"
+          ),
+        datenfluss2: () =>
+          svgWrap(
+            VP(40, 110, 140, 60, "Warenwirtschaft") +
+              VP(240, 110, 130, 60, "Schnittstelle", 1) +
+              VT(305, 100, "REST / CSV", 1) +
+              VP(430, 110, 120, 60, "Webshop") +
+              VP(430, 210, 120, 50, "Buchhaltung") +
+              VA(180, 140, 240, 140) +
+              VA(370, 140, 430, 140) +
+              VA(305, 170, 430, 230, 1) +
+              VP(620, 110, 110, 60, "Prüfen: Duplikate? Fehler?", 0) +
+              VA(550, 140, 620, 140, 1) +
+              VT(
+                380,
+                285,
+                "Daten systemübergreifend bereitstellen – mit Fehler- und Duplikatbehandlung.",
+                1
+              ),
+            "Datenfluss zwischen Warenwirtschaft, Webshop und Buchhaltung"
+          ),
+        netzplan: () =>
+          svgWrap(
+            VP(40, 40, 140, 50, "VLAN 10 Büro") +
+              VP(40, 120, 140, 50, "VLAN 20 Server") +
+              VP(40, 200, 140, 50, "VLAN 30 Gäste") +
+              VP(250, 110, 130, 70, "L3-Switch", 1) +
+              VP(440, 110, 120, 70, "Firewall", 1) +
+              VP(620, 110, 110, 70, "Internet + VPN") +
+              VA(180, 65, 250, 130) +
+              VA(180, 145, 250, 145) +
+              VA(180, 225, 250, 160) +
+              VA(380, 145, 440, 145) +
+              VA(560, 145, 620, 145) +
+              VT(500, 100, "Default Deny", 1) +
+              VT(
+                380,
+                285,
+                "Netz- und Dienstplanung: VLANs am L3-Switch, Firewall regelt, VPN koppelt Standorte.",
+                1
+              ),
+            "Netzplan mit VLANs, Layer-3-Switch, Firewall und VPN"
+          ),
+        serverdienste: () =>
+          svgWrap(
+            VP(60, 40, 160, 50, "AD / DNS / DHCP", 1) +
+              VP(60, 120, 160, 50, "Datei / Druck") +
+              VP(60, 200, 160, 50, "Web / DB") +
+              VP(320, 110, 150, 70, "Hypervisor", 1) +
+              VT(395, 100, "VMs + Container", 1) +
+              VA(220, 65, 320, 125) +
+              VA(220, 145, 320, 145) +
+              VA(220, 225, 320, 165) +
+              VP(560, 40, 170, 60, "PowerShell / Bash") +
+              VP(560, 130, 170, 60, "IaC (deklarativ)", 1) +
+              VP(560, 220, 170, 50, "Patch + Deploy") +
+              VA(470, 145, 560, 70, 1) +
+              VA(470, 145, 560, 160, 1) +
+              VA(470, 145, 560, 245, 1) +
+              VT(
+                380,
+                290,
+                "Serverdienste virtualisiert bereitstellen und per Skript/IaC automatisieren.",
+                1
+              ),
+            "Serverdienste auf Hypervisor mit Automatisierungswerkzeugen"
+          ),
+        monitoring: () =>
+          svgWrap(
+            VP(40, 110, 130, 60, "Systeme") +
+              VP(240, 50, 150, 60, "Monitoring", 1) +
+              VT(315, 40, "Metriken · Alarme", 1) +
+              VP(240, 170, 150, 60, "Logging") +
+              VT(315, 255, "Ereignis-Historie", 1) +
+              VA(170, 130, 240, 80) +
+              VA(170, 150, 240, 200) +
+              VP(460, 50, 130, 60, "Alarm → Incident", 1) +
+              VA(390, 80, 460, 80) +
+              VP(460, 170, 130, 60, "Analyse / Forensik") +
+              VA(390, 200, 460, 200) +
+              VP(650, 110, 90, 60, "RTO/RPO") +
+              VA(590, 80, 650, 125, 1) +
+              VT(
+                380,
+                290,
+                "Betrieb sichern: Monitoring alarmiert live, Logs erklären warum – Notfallkonzept mit RTO/RPO.",
+                1
+              ),
+            "Zusammenspiel von Monitoring, Logging und Incident-Prozess"
+          ),
+        projekt: () =>
+          svgWrap(
+            VP(40, 110, 130, 60, "Initiierung") +
+              VT(105, 100, "Projektantrag", 1) +
+              VP(220, 110, 130, 60, "Planung", 1) +
+              VT(285, 100, "PSP · Gantt · Kosten", 1) +
+              VP(400, 110, 130, 60, "Durchführung") +
+              VP(580, 110, 150, 60, "Abschluss", 1) +
+              VT(655, 100, "Soll-Ist · Doku", 1) +
+              VA(170, 140, 220, 140) +
+              VA(350, 140, 400, 140) +
+              VA(530, 140, 580, 140) +
+              VP(220, 220, 310, 50, "Qualitätssicherung: Tests + Abnahme") +
+              VA(285, 170, 300, 220, 1) +
+              VA(465, 170, 450, 220, 1) +
+              VT(
+                380,
+                295,
+                "Projektphasen der betrieblichen Projektarbeit – exakt das AP2-Muster.",
+                1
+              ),
+            "Projektphasen von der Initiierung bis zum Abschluss"
+          ),
+        wiso: () =>
+          svgWrap(
+            VP(60, 50, 180, 60, "Arbeitsrecht") +
+              VP(60, 150, 180, 60, "Sozialversicherung") +
+              VP(290, 50, 180, 60, "Verträge & AGB", 1) +
+              VP(290, 150, 180, 60, "Mitbestimmung") +
+              VP(520, 50, 180, 60, "Wirtschaftskreislauf") +
+              VP(520, 150, 180, 60, "Politisches System") +
+              VT(
+                380,
+                260,
+                "WISO: sichere Punkte in AP1 und AP2 – regelmäßig in kleinen Dosen üben.",
+                1
+              ),
+            "Themenlandkarte Wirtschafts- und Sozialkunde"
+          ),
+        doku: () =>
+          svgWrap(
+            VP(60, 110, 160, 60, "Notizen") +
+              VP(300, 110, 160, 60, "Protokoll", 1) +
+              VT(380, 100, "Ergebnis / Verlauf", 1) +
+              VP(540, 110, 160, 60, "Übergabe an Kunden") +
+              VA(220, 140, 300, 140) +
+              VA(460, 140, 540, 140) +
+              VT(
+                380,
+                240,
+                "Saubere Dokumentation: von der Notiz zum kundentauglichen Protokoll.",
+                1
+              ),
+            "Weg von Notizen zum Übergabeprotokoll"
+          ),
+        zert: () =>
+          svgWrap(
+            VP(60, 110, 180, 60, "Ausbildung LF1–LF12a", 1) +
+              VP(320, 50, 160, 60, "CCNA") +
+              VP(320, 170, 160, 60, "CompTIA") +
+              VP(560, 110, 160, 60, "Berufspraxis", 1) +
+              VA(240, 140, 320, 80) +
+              VA(240, 140, 320, 200) +
+              VA(480, 80, 560, 130) +
+              VA(480, 200, 560, 150) +
+              VT(380, 270, "Zertifikate docken an LF9-/LF10a-Wissen an – Bonus nach der AP2.", 1),
+            "Zertifikatswege nach der Ausbildung"
+          ),
+        pruefung: () =>
+          svgWrap(
+            VP(60, 110, 150, 60, "Üben (Pool)", 1) +
+              VP(280, 110, 150, 60, "Musterprüfung + Timer") +
+              VP(500, 110, 150, 60, "Echtzeit-Training", 1) +
+              VA(210, 140, 280, 140) +
+              VA(430, 140, 500, 140) +
+              VP(280, 210, 150, 50, "Wiederholung") +
+              VA(355, 170, 355, 210, 1) +
+              VT(
+                380,
+                290,
+                "Prüfungsvorbereitung in drei Stufen – Fehler landen automatisch in der Wiederholung.",
+                1
+              ),
+            "Drei Stufen der Prüfungsvorbereitung"
+          ),
+      };
+
+      function renderBlocks(blocks) {
+        return blocks
+          .map((b) => {
+            if (b.type === "heading") return `<h4>${esc(b.value)}</h4>`;
+            if (b.type === "text") return `<p>${esc(b.value)}</p>`;
+            if (b.type === "list")
+              return `<ul>${(b.value || []).map((v) => `<li>${esc(v)}</li>`).join("")}</ul>`;
+            if (b.type === "note")
+              return `<div class="note"><strong>Merke:</strong> ${esc(b.value)}</div>`;
+            if (b.type === "code") return `<pre><code>${esc(b.value)}</code></pre>`;
+            if (b.type === "links")
+              return `<p class="lf-links fs-90">Weiterlesen: ${(b.value || []).map((l) => `<a href="${l[1]}" target="_blank" rel="noopener">${esc(l[0])}</a>`).join(" · ")}</p>`;
+            if (b.type === "solution")
+              return `<details class="solution"><summary>Musterlösung anzeigen</summary><pre style="background:transparent;color:inherit;padding:6px 0">${esc(b.value)}</pre></details>`;
+            return "";
+          })
+          .join("");
+      }
+
+      window.pageInit = function () {
+        const fid = qs("id") || "lf1";
+        const m = LF.meta(fid),
+          meta = window.LF_META ? LF_META[fid] : null;
+        const host = document.getElementById("lf-host");
+        if (!m) {
+          breadcrumbs([{ label: "Lernfelder", href: "lernfelder.html" }, { label: "Unbekannt" }]);
+          host.innerHTML = `<div class="card"><h1>Lernfeld nicht gefunden</h1><p>Dieses Lernfeld existiert nicht. <a href="lernfelder.html">Zur Lernfeld-Übersicht</a>.</p></div>`;
+          return;
+        }
+        document.title = m.nr + " – " + m.name + " – FISI-HQ";
+        breadcrumbs([{ label: "Lernfelder", href: "lernfelder.html" }, { label: m.nr }]);
+        const st = LF.status(fid),
+          s = LF.stats(fid),
+          pct = LF.progressPct(fid);
+        const stClsMap = {
+          "noch nicht begonnen": "s0",
+          begonnen: "s1",
+          "in Wiederholung": "s2",
+          prüfungsbereit: "s3",
+          abgeschlossen: "s4",
+        };
+        const relatedLessons = DATA.lessons.filter((l) => (l.lf || []).includes(fid));
+        const relatedCards = DATA.cards.filter((c) => (c.lf || []).includes(fid));
+        const relatedMissions = DATA.missions.filter((x) => (x.lf || []).includes(fid));
+        const relatedShorts = DATA.shorts.filter((x) => (x.lf || []).includes(fid));
+        const relatedZoom = DATA.zoom.filter((z) => (z.lf || []).includes(fid));
+        const schoolNote = m.schoolTitles.length
+          ? `Schulinterne Bezeichnung im Datenbestand: „${m.schoolTitles.join("“, „")}“`
+          : "";
+
+        host.innerHTML = `
+    <div class="page-head">
+      <div class="chip-row" style="margin:0 0 8px">
+        <span class="badge">${m.nr}</span>
+        <span class="badge">${m.year ? m.year + ". Ausbildungsjahr" : "jahresübergreifend"}</span>
+        <span class="badge ap">Prüfungsrelevant: ${m.ap}</span>
+        <span class="badge">${m.lessons} Lektionen</span><span class="badge">${m.quiz} Fragen</span>
+        <span class="status-pill ${stClsMap[st]}">${st}</span>
+      </div>
+      <h1>${m.nr}: ${m.name}</h1>
+      ${schoolNote ? `<p style="font-size:.83rem;color:var(--tx3)">${schoolNote}</p>` : ""}
+    </div>
+
+    <div class="card mb-16">
+      ${
+        meta
+          ? `
+      <div class="callout simple"><span class="ct">Einfach erklärt</span><p>${meta.intro}</p></div>
+      <div class="callout deep"><span class="ct">Technische Vertiefung</span><p>${meta.deep}</p></div>
+      <div class="callout"><span class="ct">Typische berufliche Handlungssituation</span><p>${meta.situation}</p></div>
+      <div class="grid c2 mt-14">
+        <div><h2 class="fs-105">Lernziele &amp; Kompetenzen</h2><ul>${meta.goals.map((g) => `<li>${g}</li>`).join("")}</ul></div>
+        <div><h2 class="fs-105">Häufige Fehler</h2><ul>${meta.mistakes.map((g) => `<li>${g}</li>`).join("")}</ul>
+        ${meta.terms.length ? `<h2 class="fs-105">Fachbegriffe</h2><p>${meta.terms.map((t) => `<a href="glossar.html?q=${encodeURIComponent(t)}">${t}</a>`).join(" · ")}</p>` : ""}</div>
+      </div>
+      <p><strong>Praxisbeispiel:</strong> ${meta.praxis}</p>
+      <div class="callout deep" style="border-color:var(--err);background:rgba(210,59,59,.06)"><span class="ct">Prüfungshinweis</span>${meta.apNote}</div>
+      <p>${meta.cross
+        .map((c) => {
+          const cm = LF.meta(c.lf);
+          return `<a class="crossref" href="lernfeld.html?id=${c.lf}">${c.label}${cm ? " (" + cm.nr + ")" : ""}</a>`;
+        })
+        .join("")}</p>
+      ${meta.links.length ? `<p class="hint">Weiterführend: ${meta.links.map((l) => `<a href="${l[1]}" rel="noopener">${l[0]}</a>`).join(" · ")}</p>` : ""}
+      `
+          : ""
+      }
+    </div>
+
+    <div class="card mb-16">
+      <h2>Visualisierung</h2>
+      <figure class="viz-figure">
+        ${meta && VIZ[meta.viz] ? VIZ[meta.viz]() : VIZ.pruefung()}
+        <figcaption>Eigene Darstellung (FISI-HQ, SVG) – funktioniert im hellen und dunklen Modus und mit beiden Akzentfarben. [Interne Quelle: eigene Grafik]</figcaption>
+      </figure>
+      ${window.LF_EXTRA_VIZ && LF_EXTRA_VIZ[fid] ? LF_EXTRA_VIZ[fid].map(renderTopicViz).join("") : ""}
+      <div id="wiki-slots-lf" class="grid c2 mt-10"></div>
+    </div>
+
+    <div class="card mb-16">
+      <h2>Dein Fortschritt in ${m.nr}</h2>
+      <div class="progress" role="img" aria-label="Fortschritt ${pct} Prozent"><span style="width:${pct}%"></span></div>
+      <p style="font-size:.9rem;margin-top:8px">${LF.read(fid).length}/${m.lessons} Lektionen gelesen · ${s.answered} Antworten (${s.answered ? s.pct + " % richtig" : "–"}) · ${s.openWrong} offene Wiederholung(en)</p>
+      <p style="font-size:.85rem;color:var(--tx3);margin:6px 0" id="lf-selfsum"></p>
+      <div class="q-actions">
+        <button class="btn" id="lf-quiz-btn">${m.nr}-Quiz starten (10 Fragen)</button>
+        <button class="btn ghost" id="lf-blitz-btn">Blitz-Runde: 5 Fragen in 60 s</button>
+        <button class="btn ghost" id="lf-pairs-btn" hidden>Begriffe zuordnen</button>
+        ${s.openWrong ? `<a class="btn ghost" href="quiz.html?mode=repeat">Wiederholungen zuerst</a>` : ""}
+        <span class="q-progress" id="lf-next-step"></span>
+      </div>
+      <div id="lf-quiz-host" class="mt-14"></div>
+      <div id="lf-blitz-host" class="mt-14"></div>
+      <div id="lf-pairs-host" class="mt-14"></div>
+    </div>
+
+    <div class="card" id="lf-station-wrap" class="mb-16" hidden>
+      <h2>Labor-Station zu diesem Lernfeld</h2>
+      <div id="lf-station-host"></div>
+    </div>
+
+    ${
+      relatedLessons.length ||
+      relatedCards.length ||
+      relatedMissions.length ||
+      relatedShorts.length ||
+      relatedZoom.length
+        ? `
+    <div class="card mb-16">
+      <h2>Passende Inhalte der Plattform</h2>
+      ${relatedLessons.length ? `<p><strong>Kern-Lektionen:</strong> ${relatedLessons.map((l) => `<a href="lektion.html?id=${l.id}">${l.title}</a>`).join(" · ")}</p>` : ""}
+      ${relatedZoom.length ? `<p><strong>Passende Laborübung:</strong> ${relatedZoom.map((z) => `<a href="labor.html">Zoom-Ebene ${z.id}: ${z.name}</a>`).join(" · ")}</p>` : ""}
+      ${relatedMissions.length ? `<p><strong>Missionen:</strong> ${relatedMissions.map((x) => `<a href="${x.link}">${x.title}</a>`).join(" · ")}</p>` : ""}
+      ${relatedShorts.length ? `<p><strong>Lern-Snacks:</strong> ${relatedShorts.map((x) => `<a href="shorts.html">${x.topic}</a>`).join(" · ")}</p>` : ""}
+      ${relatedCards.length ? `<p><strong>Lernkarten:</strong> <a href="lernkarten.html">${relatedCards.length} passende Karte(n)</a></p>` : ""}
+    </div>`
+        : ""
+    }
+
+    <div class="card">
+      ${
+        (window.merkFuer ? merkFuer({ lf: fid }) : []).length
+          ? `<h2>Merkhilfen zu diesem Lernfeld</h2>${merkFuer({ lf: fid })
+              .map((m) => `<div class="callout merk"><span class="ct">${m.t}</span>${m.txt}</div>`)
+              .join("")}`
+          : ""
+      }
+      <h2>Lektionen</h2>
+      <p class="hint">Aufklappen markiert die Lektion als gelesen.</p>
+      <div id="lf-topics"><p class="empty">Inhalte werden geladen…</p></div>
+    </div>`;
+
+        // Echte Fotos (Wikimedia, Zwei-Klick)
+        if (window.WIKI_SLOTS && WIKI_SLOTS[fid]) {
+          const wrap = document.getElementById("wiki-slots-lf");
+          WIKI_SLOTS[fid].forEach((t) => {
+            const d = document.createElement("div");
+            wrap.appendChild(d);
+            renderWikiSlot(d, t);
+          });
+        }
+
+        // Hilfreiche Videos (Zwei-Klick ueber youtube-nocookie, wie die Wikimedia-Bilder)
+        if (window.renderVideoSlot) {
+          const wrap = document.getElementById("wiki-slots-lf");
+          ((window.VIDEO_SLOTS && VIDEO_SLOTS.lf[fid]) || []).forEach((v) => {
+            const d = document.createElement("div");
+            wrap.appendChild(d);
+            renderVideoSlot(d, v);
+          });
+          const sl = document.createElement("p");
+          sl.style.cssText = "font-size:.85rem;margin:6px 0 0";
+          sl.innerHTML =
+            '<a href="' +
+            videoSearchLink(m.nr + " " + m.name) +
+            '" target="_blank" rel="noopener">Weitere Videos zu diesem Lernfeld auf YouTube suchen</a>';
+          wrap.appendChild(sl);
+        }
+
+        // Nächster Schritt
+        const nextStepEl = document.getElementById("lf-next-step");
+        if (s.openWrong) nextStepEl.textContent = "Empfehlung: erst Wiederholungen abbauen.";
+        else nextStepEl.textContent = "Empfehlung: nächste ungelesene Lektion unten öffnen.";
+
+        // Import-Inhalte laden (mit Fehlerbehandlung)
+        LF.load(fid)
+          .then((content) => {
+            const read = LF.read(fid);
+            document.getElementById("lf-topics").innerHTML = content.topics
+              .map(
+                (t) => `
+      <h3 class="mt-16" id="t-${t.id}">${esc(t.title)} <span class="badge">${t.lessons.length} Lektionen</span></h3>
+      ${t.lessons
+        .map(
+          (l) => `
+        <details class="lf-lesson" id="${l.id}" data-lesson="${l.id}">
+          <summary>${read.includes(l.id) ? "✓ " : ""}${esc(l.title)} <span class="badge" style="margin-left:auto">${l.quiz.length} Fragen</span></summary>
+          <div class="lf-lesson-body hat-tts">
+            ${window.Vorlesen ? '<button type="button" class="tts-btn tts-ecke" aria-pressed="false" aria-label="Lektion mit der Browser-Stimme vorlesen lassen" title="Lektion vorlesen (nochmal klicken = Stopp)">▶</button>' : ""}
+            <div class="content-block">${renderBlocks(l.content)}</div>
+            <div class="lf-wiki-lesson" data-t="${esc(l.title)}" data-topic="${esc(t.title)}"></div>
+            <div class="lf-video-lesson" data-id="${l.id}" data-t="${esc(l.title)}" data-topic="${esc(t.title)}"></div>
+            <div class="selfcheck" data-sid="${l.id}" role="group" aria-label="Selbsteinschätzung">
+              <span>Selbstcheck:</span>
+              <button type="button" data-v="1">Sicher</button><button type="button" data-v="2">Unsicher</button><button type="button" data-v="3">Nochmal</button>
+            </div>
+            <details class="lf-note-wrap" style="margin:8px 0"><summary style="cursor:pointer;font-size:.85rem;color:var(--tx2)">Meine Notizen zu dieser Lektion</summary><textarea class="lf-note" data-nid="${l.id}" rows="3" style="width:100%;margin-top:6px;background:var(--bg2);color:var(--tx);border:1px solid var(--line-strong);border-radius:3px;padding:8px;font-family:var(--font);font-size:.9rem" placeholder="Eigene Merksätze …"></textarea></details>
+            ${l.quiz.length ? `<button class="btn small" data-lquiz="${l.id}">Fragen zu dieser Lektion üben (${Math.min(5, l.quiz.length)})</button><div class="lquiz-host mt-10"></div>` : ""}
+          </div>
+        </details>`
+        )
+        .join("")}`
+              )
+              .join("");
+            // Themen-Klickpunkte oben ("Direkt zu"): ein Klick springt zum Thema
+            if (window.buildJumpNav) {
+              const old = document.getElementById("jump-nav");
+              if (old) old.remove();
+              buildJumpNav(content.topics.map((t) => ({ id: "t-" + t.id, label: t.title })));
+            }
+
+            const allQ = LF.questions(fid, content);
+            // Lektion als gelesen markieren + Lektions-Quiz
+            document.querySelectorAll("details.lf-lesson").forEach((d) => {
+              d.addEventListener("toggle", () => {
+                if (d.open) {
+                  LF.markRead(fid, d.dataset.lesson);
+                  Store.set("lastLfLesson", d.dataset.lesson);
+                }
+              });
+            });
+            // Bild-Kachel je Lektion (Zwei-Klick, Suchbegriff aus dem Titel abgeleitet)
+            if (window.initVizCommons) initVizCommons();
+            if (window.renderWikiSlot && window.lessonSearchTerm) {
+              document.querySelectorAll(".lf-wiki-lesson").forEach((el) => {
+                const title = el.dataset.t;
+                const term = lessonSearchTerm(title, el.dataset.topic, fid);
+                if (!term) {
+                  el.remove();
+                  return;
+                } // kein passendes Bild bekannt -> weglassen
+                renderWikiSlot(el, {
+                  label: "Passendes Bild: " + title,
+                  search: term,
+                  alt: "Foto zum Thema " + title,
+                });
+              });
+            }
+            // Videos je Import-Lektion: bis zu 2 Treffer, sonst garantiert das Lernfeld-Video
+            if (window.videosFuer && window.renderVideoSlot) {
+              document.querySelectorAll(".lf-video-lesson").forEach((el) => {
+                // Kuratierte Videos je Lektion haben Vorrang vor dem Keyword-Matching
+                let vs = (window.VIDEO_SLOTS.lessons[el.dataset.id] || []).slice(0, 2);
+                if (!vs.length) vs = videosFuer(el.dataset.t, el.dataset.topic);
+                if (!vs.length && window.VIDEO_SLOTS.lf[fid]) vs = [VIDEO_SLOTS.lf[fid][0]];
+                if (!vs.length) {
+                  el.remove();
+                  return;
+                }
+                vs.forEach((v) => {
+                  const d = document.createElement("div");
+                  el.appendChild(d);
+                  renderVideoSlot(d, v);
+                });
+              });
+            }
+            // Notizen je Import-Lektion (lazy laden beim Aufklappen, speichern mit Verzoegerung)
+            document.querySelectorAll(".lf-note").forEach((ta) => {
+              ta.value = Store.get("note_" + ta.dataset.nid, "");
+              let t = null;
+              ta.addEventListener("input", () => {
+                clearTimeout(t);
+                t = setTimeout(
+                  () => Store.set("note_" + ta.dataset.nid, ta.value.slice(0, 4000)),
+                  500
+                );
+              });
+            });
+            document.querySelectorAll("[data-lquiz]").forEach((b) =>
+              b.addEventListener("click", () => {
+                const pool = shuffle(allQ.filter((q) => q.lesson === b.dataset.lquiz)).slice(0, 5);
+                runQuiz(pool, b.nextElementSibling);
+              })
+            );
+            // Selbstcheck je Lektion (persistiert, Zusammenfassung oben)
+            const RATE_TXT = { 1: "sicher", 2: "unsicher", 3: "nochmal" };
+            function selfSum() {
+              const c = { 1: 0, 2: 0, 3: 0 };
+              content.topics.forEach((t) =>
+                t.lessons.forEach((l) => {
+                  const v = Store.get("rate_" + l.id, 0);
+                  if (c[v] !== undefined) c[v]++;
+                })
+              );
+              document.getElementById("lf-selfsum").textContent =
+                "Selbstcheck: " +
+                c[1] +
+                " sicher · " +
+                c[2] +
+                " unsicher · " +
+                c[3] +
+                " nochmal · " +
+                (m.lessons - c[1] - c[2] - c[3]) +
+                " offen";
+            }
+            document.querySelectorAll(".selfcheck").forEach((sc) => {
+              const sid = sc.dataset.sid;
+              const paint = () => {
+                const v = Store.get("rate_" + sid, 0);
+                sc.querySelectorAll("button").forEach((b) =>
+                  b.setAttribute("aria-pressed", +b.dataset.v === v)
+                );
+              };
+              sc.querySelectorAll("button").forEach((b) =>
+                b.addEventListener("click", () => {
+                  Store.set("rate_" + sid, +b.dataset.v);
+                  paint();
+                  selfSum();
+                })
+              );
+              paint();
+            });
+            selfSum();
+
+            // Labor-Station: eigener Simulator oder Verweis-Kachel je Lernfeld
+            if (
+              window.mountStation &&
+              mountStation(fid, document.getElementById("lf-station-host"))
+            )
+              document.getElementById("lf-station-wrap").hidden = false;
+
+            // Blitz-Runde: 5 Fragen aus diesem Lernfeld gegen 60 Sekunden
+            document.getElementById("lf-blitz-btn").addEventListener("click", function () {
+              this.disabled = true;
+              const host = document.getElementById("lf-blitz-host");
+              const pool = shuffle(allQ).slice(0, 5);
+              let bi = 0,
+                bok = 0,
+                left = 60;
+              host.innerHTML =
+                '<p class="fw-600">Blitz-Runde · <span id="blitz-t" class="mono">60 s</span> · <span id="blitz-p">0/5</span></p><div id="blitz-q"></div>';
+              const tEl = host.querySelector("#blitz-t");
+              const iv = setInterval(() => {
+                left--;
+                tEl.textContent = left + " s";
+                if (left <= 0) done();
+              }, 1000);
+              const done = () => {
+                clearInterval(iv);
+                const best = Math.max(Store.get("lfBlitz_" + fid, 0), bok);
+                Store.set("lfBlitz_" + fid, best);
+                host.innerHTML =
+                  '<div class="callout"><span class="ct">Blitz-Runde beendet</span>' +
+                  bok +
+                  " von " +
+                  bi +
+                  " beantworteten Fragen richtig" +
+                  (left <= 0 ? " – die Zeit war um." : ".") +
+                  " Bestwert: " +
+                  best +
+                  "/5.</div>";
+                document.getElementById("lf-blitz-btn").disabled = false;
+                if (bok >= 4) Gami.addXp(15, "Blitz-Runde " + m.nr + ": " + bok + "/5");
+              };
+              const next = () => {
+                if (bi >= 5 || left <= 0) return done();
+                host.querySelector("#blitz-p").textContent = bi + "/5";
+                renderQuestion(pool[bi], host.querySelector("#blitz-q"), {
+                  onAnswered(ok) {
+                    if (ok) bok++;
+                    bi++;
+                    setTimeout(next, 700);
+                  },
+                });
+              };
+              next();
+            });
+
+            // Begriffe zuordnen: automatisch aus den Lernkarten dieses Lernfelds
+            (function () {
+              const cards = DATA.cards.filter((c) => (c.lf || []).includes(fid));
+              if (cards.length < 4) return;
+              const btn = document.getElementById("lf-pairs-btn");
+              btn.hidden = false;
+              btn.addEventListener("click", () => {
+                const pick = shuffle(cards.slice()).slice(0, 4);
+                const cut = (x, n) => (x.length > n ? x.slice(0, n - 1) + "…" : x);
+                renderQuestion(
+                  {
+                    id: "pairs_" + fid,
+                    topic: m.nr + " – Begriffe",
+                    rel: "med",
+                    type: "match",
+                    q: "Ordne jedem Begriff die passende Erklärung zu.",
+                    pairs: pick.map((c) => ({ l: cut(c.f, 60), r: cut(c.b, 80) })),
+                    explain: "Die vollständigen Erklärungen findest du auf den Lernkarten.",
+                    xp: 10,
+                  },
+                  document.getElementById("lf-pairs-host"),
+                  {}
+                );
+              });
+            })();
+
+            // LF-Quiz: Import + Basisfragen gemischt
+            document.getElementById("lf-quiz-btn").addEventListener("click", function () {
+              this.disabled = true;
+              const pool = shuffle(allQ.concat(LF.baseQuestions(fid))).slice(0, 10);
+              runQuiz(pool, document.getElementById("lf-quiz-host"), {
+                onDone: () => {
+                  this.disabled = false;
+                },
+              });
+              document.getElementById("lf-quiz-host").scrollIntoView({ behavior: "smooth" });
+            });
+            // Anker öffnen
+            if (location.hash) {
+              const el = document.getElementById(location.hash.slice(1));
+              if (el && el.tagName === "DETAILS") {
+                el.open = true;
+                el.scrollIntoView();
+              }
+            }
+          })
+          .catch((err) => {
+            document.getElementById("lf-topics").innerHTML =
+              `<div class="q-feedback bad" role="alert"><strong>Inhalte konnten nicht geladen werden.</strong> ${esc(err.message)}<br>Prüfe, ob der Ordner <code>assets/data/</code> vollständig ist, oder erzeuge die Datenmodule neu mit <code>python3 scripts/import_content.py</code>.</div>`;
+            document.getElementById("lf-quiz-btn").addEventListener("click", function () {
+              const pool = shuffle(LF.baseQuestions(fid)).slice(0, 10);
+              if (!pool.length) {
+                toast("Keine Fragen verfügbar.");
+                return;
+              }
+              runQuiz(pool, document.getElementById("lf-quiz-host"));
+            });
+          });
+      };
+    </script>
+  </body>
+</html>

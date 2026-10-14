@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Lernstand & Datensicherung – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Dein Lernstand auf einen Blick – plus Datensicherung: Fortschritt exportieren und auf anderen Geräten wieder einspielen."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="shorts.html">Lern-Snacks</a><a href="lernkarten.html">Lernkarten</a
+          ><a href="formeln.html">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="lernstand.html" aria-current="page">Erfolge</a
+          ><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Lernstand &amp; Datensicherung</h1>
+        <p class="sub">
+          Dein Weg vom ersten Bit zur bestandenen AP2 – alles lokal in deinem Browser gespeichert.
+        </p>
+      </div>
+
+      <section class="grid c3">
+        <div class="card">
+          <h2 class="fs-105">Lernstand</h2>
+          <div class="stat">
+            <span class="v" id="e-level">0</span
+            ><span class="l">Lektionen fertig · <span id="e-xp">0</span> Fragen richtig</span>
+          </div>
+          <div class="progress mt-10"><span id="e-lvlbar" style="width: 0%"></span></div>
+          <p class="small-dim">Noch <span id="e-next">0</span> Kern-Lektionen offen.</p>
+        </div>
+        <div class="card">
+          <h2 class="fs-105">Lernserie</h2>
+          <div class="stat">
+            <span class="v" id="e-streak">0</span><span class="l">Tage in Folge gelernt</span>
+          </div>
+          <p class="small-dim">
+            Tagesziel: mindestens eine Übung oder Lektion. Die Serie hält, wenn du täglich lernst.
+          </p>
+        </div>
+        <div class="card">
+          <h2 class="fs-105">Wochenziel</h2>
+          <div class="stat">
+            <span class="v" id="e-week">0</span
+            ><span class="l">Aktivitätspunkte diese Woche (Richtwert 300)</span>
+          </div>
+          <div class="progress mt-10"><span id="e-weekbar" style="width: 0%"></span></div>
+        </div>
+      </section>
+
+      <section class="section card" aria-labelledby="h-backup">
+        <h2 id="h-backup">Fortschritt sichern &amp; übertragen</h2>
+        <p class="fs-90">
+          Dein Fortschritt liegt nur in diesem Browser. Exportiere ihn als Datei (Backup oder Umzug
+          auf einen anderen Rechner) und spiele ihn dort wieder ein.
+        </p>
+        <div class="q-actions">
+          <button class="btn" id="backup-export">Fortschritt exportieren (JSON)</button>
+          <label class="btn ghost" style="cursor: pointer"
+            >Fortschritt importieren<input
+              type="file"
+              id="backup-import"
+              accept="application/json,.json"
+              style="display: none"
+          /></label>
+          <span class="q-progress" id="backup-state"></span>
+        </div>
+        <div class="mt-16" id="autobackup-ui">
+          <h3 class="fs-100">Automatische Sicherung</h3>
+          <p class="fs-90" style="color: var(--tx3); margin: 4px 0 8px">
+            Wähle einmal eine Datei (z.&nbsp;B. in deinem OneDrive-/Cloud-Ordner) – dein Fortschritt
+            wird dort bei jeder Änderung automatisch gespeichert. Liegt in der Datei ein neuerer
+            Stand (anderes Gerät), bietet die Seite ihn beim Start zum Übernehmen an.
+          </p>
+          <div class="q-actions">
+            <button class="btn small" id="ab-btn" hidden></button>
+            <span class="q-progress" id="ab-status" aria-live="polite"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section card" aria-labelledby="h-notizen">
+        <h2 id="h-notizen">Alle meine Notizen</h2>
+        <p style="font-size: 0.9rem; color: var(--tx3)">
+          Deine Lektions-Notizen an einem Ort – jede verlinkt zur Lektion. Sie stecken auch im
+          Export oben.
+        </p>
+        <div id="notizen-host">
+          <p class="empty">Noch keine Notizen – du kannst in jeder Lektion welche anlegen.</p>
+        </div>
+      </section>
+
+      <section class="section card">
+        <h2>Skilltree Systemintegration</h2>
+        <p style="font-size: 0.9rem; color: var(--tx3)">
+          Jede abgeschlossene Lektion schaltet den nächsten Knoten frei – von den Grundlagen bis zur
+          Projektarbeit.
+        </p>
+        <div
+          id="e-skilltree"
+          style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"
+        ></div>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Lernstand & Daten" }]);
+        // Notizen-Zentrale: alle note_-Eintraege einsammeln und zur Quelle verlinken
+        (function () {
+          const host = document.getElementById("notizen-host");
+          if (!host || typeof localStorage === "undefined") return;
+          const eintraege = [];
+          for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (!k || !k.startsWith("fisi.note_")) continue;
+            let txt = "";
+            try {
+              txt = JSON.parse(localStorage.getItem(k)) || "";
+            } catch (e) {}
+            if (!String(txt).trim()) continue;
+            const id = k.slice(10);
+            const kern = ((window.DATA && DATA.lessons) || []).find((l) => l.id === id);
+            const imp = ((window.LF_INDEX && LF_INDEX.lessonsIdx) || []).find((l) => l.id === id);
+            const titel = kern ? kern.title : imp ? imp.t : id;
+            const href = kern
+              ? "lektion.html?id=" + id
+              : imp
+                ? "lernfeld.html?id=" + imp.lf + "#" + id
+                : "#";
+            eintraege.push({ titel, href, txt: String(txt) });
+          }
+          if (!eintraege.length) return;
+          eintraege.sort((a, b) => a.titel.localeCompare(b.titel, "de"));
+          host.innerHTML = eintraege
+            .map(
+              (n) =>
+                '<div class="callout" style="margin:8px 0"><span class="ct"><a href="' +
+                n.href +
+                '">' +
+                escHtml(n.titel) +
+                "</a></span>" +
+                escHtml(n.txt).replace(/\n/g, "<br>") +
+                "</div>"
+            )
+            .join("");
+        })();
+        const _st = Progress.stats();
+        let _ok = 0;
+        Object.values(_st).forEach((x) => (_ok += x.ok));
+        const _done = Progress.doneLessons().length;
+        document.getElementById("e-level").textContent = _done;
+        document.getElementById("e-xp").textContent = _ok;
+        document.getElementById("e-lvlbar").style.width =
+          Math.round((_done / DATA.lessons.length) * 100) + "%";
+        document.getElementById("e-next").textContent = Math.max(0, DATA.lessons.length - _done);
+        document.getElementById("e-streak").textContent = Gami.streak();
+        const w = Gami.weekXp();
+        document.getElementById("e-week").textContent = w;
+        document.getElementById("e-weekbar").style.width =
+          Math.min(100, Math.round((w / 300) * 100)) + "%";
+
+        // Export / Import
+        document.getElementById("backup-export").addEventListener("click", () => {
+          const data = JSON.stringify(
+            { app: "FISI-HQ", exported: new Date().toISOString(), store: Store.dump() },
+            null,
+            2
+          );
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(new Blob([data], { type: "application/json" }));
+          a.download = "fisi-hq-fortschritt-" + new Date().toISOString().slice(0, 10) + ".json";
+          a.click();
+          URL.revokeObjectURL(a.href);
+          document.getElementById("backup-state").textContent = "Export erstellt ✓";
+        });
+        document.getElementById("backup-import").addEventListener("change", (e) => {
+          const f = e.target.files[0];
+          if (!f) return;
+          const r = new FileReader();
+          r.onload = () => {
+            try {
+              const j = JSON.parse(r.result);
+              if (!j || j.app !== "FISI-HQ" || typeof j.store !== "object")
+                throw new Error("keine FISI-HQ-Exportdatei");
+              Store.load(j.store);
+              document.getElementById("backup-state").textContent =
+                "Import erfolgreich – Seite lädt neu…";
+              setTimeout(() => location.reload(), 900);
+            } catch (err) {
+              document.getElementById("backup-state").textContent =
+                "Import fehlgeschlagen: " + err.message;
+            }
+          };
+          r.readAsText(f);
+        });
+
+        // Automatische Sicherung (File System Access API; Status kommt aus app.js)
+        (function () {
+          const btn = document.getElementById("ab-btn"),
+            st = document.getElementById("ab-status");
+          if (!btn || !window.AutoBackup) return;
+          function render() {
+            const s = AutoBackup.status();
+            if (!AutoBackup.unterstuetzt) {
+              btn.hidden = true;
+              st.textContent =
+                "Vom Browser nicht unterstützt – nutze den manuellen Export oben (die automatische Sicherung können Chrome und Edge).";
+              return;
+            }
+            btn.hidden = false;
+            if (s === "aktiv") {
+              btn.textContent = "Automatische Sicherung beenden";
+              st.textContent = "Aktiv ✓ – schreibt bei jeder Änderung in deine Datei.";
+            } else if (s === "bestaetigen") {
+              btn.textContent = "Sicherungsdatei erneut bestätigen";
+              st.textContent = "Der Browser braucht nach dem Neustart einmal deine Bestätigung.";
+            } else if (s === "fehler") {
+              btn.textContent = "Automatische Sicherung neu einrichten";
+              st.textContent = "Schreiben fehlgeschlagen – bitte Datei neu wählen.";
+            } else {
+              btn.textContent = "Automatische Sicherung einrichten";
+              st.textContent = "Nicht eingerichtet.";
+            }
+          }
+          btn.addEventListener("click", () => {
+            const s = AutoBackup.status();
+            if (s === "aktiv") AutoBackup.beenden();
+            else if (s === "bestaetigen") AutoBackup.bestaetigen();
+            else AutoBackup.einrichten();
+          });
+          document.addEventListener("autobackup", render);
+          render();
+        })();
+
+        document.getElementById("e-skilltree").innerHTML = DATA.lessons
+          .map((l, i) => {
+            const done = Progress.isDone(l.id);
+            const unlocked = i === 0 || Progress.isDone(DATA.lessons[i - 1].id) || done;
+            return (
+              (i ? '<span aria-hidden="true" style="color:var(--tx3)">→</span>' : "") +
+              `<a href="lektion.html?id=${l.id}" class="chip" style="${done ? "background:var(--ac);color:var(--ac-tx);border-color:var(--ac);" : ""}${!unlocked ? "opacity:.45;" : ""}" title="Jahr ${l.year}">${done ? "✓ " : ""}${l.title.split(":")[0].split(" &")[0]}</a>`
+            );
+          })
+          .join("");
+      };
+    </script>
+  </body>
+</html>

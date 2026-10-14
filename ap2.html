@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>AP2-Vorbereitung – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Vorbereitung auf Teil 2 der Abschlussprüfung: vier AP2- und sieben WiSo-eigene Musterprüfungsbögen im Prüfungsaufbau, Szenariotraining und Checklisten für Projektarbeit, Präsentation und Fachgespräch."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/videos.js"></script>
+    <script defer src="assets/js/labor-stationen.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html" aria-current="page">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="shorts.html">Lern-Snacks</a><a href="lernkarten.html">Lernkarten</a
+          ><a href="formeln.html">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="lernstand.html">Erfolge</a><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>AP2-Vorbereitung</h1>
+        <p class="sub">
+          Teil 2 der Abschlussprüfung – Musterprüfungen, Szenariotraining und Checklisten für
+          Projekt &amp; Fachgespräch.
+        </p>
+      </div>
+      <div class="card split-card-accent">
+        <div>
+          <strong>Schnellstart: komplette Musterprüfungen</strong>
+          <p class="sub-note">
+            Vier FISI-AP2-Bögen (je 90 min) und sieben WiSo-Bögen (je 60 min, Auto-Auswertung) im
+            Aufbau der realen Prüfung (eigene Aufgaben, kein amtliches Original) – mit Timer und
+            Musterlösungen.
+          </p>
+        </div>
+        <div class="q-actions btn-stack">
+          <a class="btn" href="mp.html?id=ap2si">Bogen A</a
+          ><a class="btn ghost" href="mp.html?id=ap2sib">Bogen B</a
+          ><a class="btn ghost" href="mp.html?id=ap2ga1">GA1</a
+          ><a class="btn ghost" href="mp.html?id=ap2ga2">GA2</a
+          ><a class="btn ghost" href="mp.html#wiso-boegen">WiSo-Bögen</a
+          ><a class="btn ghost" href="lernfeld.html?id=prap2">Aufgabentraining</a>
+        </div>
+      </div>
+
+      <section class="grid c3" aria-label="Themenfelder">
+        <div class="card">
+          <h3>Systemintegration &amp; Netzwerkanalyse</h3>
+          <p class="fs-90">VLSM, VLAN-Design, Routing, Serverdienste im Zusammenspiel.</p>
+          <a href="netztrainer.html#planung">Netzplanung üben →</a>
+        </div>
+        <div class="card">
+          <h3>IT-Sicherheit &amp; Fehlerdiagnose</h3>
+          <p class="fs-90">
+            Firewall-Konzepte, Incidents, strukturierte Fehlersuche unter Zeitdruck.
+          </p>
+          <a href="quiz.html?tab=fehlersuche">Fehlersuche-Szenarien →</a>
+        </div>
+        <div class="card">
+          <h3>Projektmanagement &amp; WISO</h3>
+          <p class="fs-90">Projektphasen, Gantt, kritischer Pfad, Kosten, rechtliche Grundlagen.</p>
+          <a href="lektion.html?id=l304">Lektion Projektmanagement →</a>
+        </div>
+      </section>
+
+      <section class="section card" id="muster">
+        <h2>AP2-Musterprüfung (Prüfungssimulation)</h2>
+        <p>
+          <strong>10 anspruchsvolle Aufgaben in 25 Minuten</strong> – Konzeptfragen,
+          VLSM-Rechnungen, Incident-Entscheidungen und Projektmanagement. Mit ausführlicher
+          Musterlösung zu jeder Aufgabe und Auswertung nach Stärken und Schwächen.
+        </p>
+        <div class="q-actions">
+          <button class="btn" id="start-ap2">Simulation starten (25:00)</button
+          ><span class="q-progress" id="last-result"></span>
+        </div>
+        <div class="q-actions mt-10">
+          <button class="btn ghost" id="blitz-exam-btn">
+            Blitz-Simulation: 10 Zufallsfragen · 10 Minuten
+          </button>
+          <button class="btn ghost" id="weak-exam-btn">
+            Schwächen-Training: deine 10 schwächsten Themen
+          </button>
+        </div>
+        <div id="mini-exam-host" class="mt-14"></div>
+        <div class="card mt-16">
+          <h2>Labor-Station: Netzplan berechnen (FAZ/FEZ/GP)</h2>
+          <div id="ap-station-host"></div>
+        </div>
+        <div id="exam-host" class="mt-16"></div>
+      </section>
+
+      <section class="section grid c2">
+        <div class="card">
+          <h2>Checkliste: Betriebliche Projektarbeit</h2>
+          <ul class="list-roomy">
+            <li>
+              Projektantrag: reales Problem, eigenständige Entscheidungen möglich, 35 Std.
+              realistisch geplant
+            </li>
+            <li>Ist-Analyse und Soll-Konzept sauber getrennt</li>
+            <li>Mindestens eine begründete Auswahlentscheidung (z. B. Nutzwertanalyse)</li>
+            <li>Kostenplan: Personal-, Sach- und ggf. Gemeinkosten, Amortisation</li>
+            <li>Zeitplan (Gantt) mit Meilensteinen – und Soll-Ist-Vergleich am Ende</li>
+            <li>Qualitätssicherung: Testkonzept + Abnahmeprotokoll</li>
+            <li>Doku: Entscheidungsweg nachvollziehbar, Anhang schlank, Quellen sauber</li>
+            <li>Datenschutz &amp; Sicherheit im Projekt explizit betrachtet</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Checkliste: Präsentation &amp; Fachgespräch</h2>
+          <ul class="list-roomy">
+            <li>15 Minuten Präsentation: roter Faden entlang der Projektphasen</li>
+            <li>Wenig Text pro Folie, aussagekräftige Diagramme statt Bleiwüste</li>
+            <li>Soll-Ist-Vergleich und ehrliches Fazit („Was würde ich anders machen?")</li>
+            <li>Technik-Backup: PDF-Export + offline verfügbare Kopie</li>
+            <li>Fachgespräch: Entscheidungen verteidigen können – jedes „Warum?" vorbereiten</li>
+            <li>Übungslauf vor Publikum mit Zeitmessung (mind. 2×)</li>
+            <li>Fachbegriffe aus der Doku sicher erklären können (Glossar nutzen!)</li>
+          </ul>
+          <p>
+            <a class="btn ghost small" href="lernkarten.html"
+              >Fachbegriffe mit Lernkarten festigen</a
+            >
+          </p>
+        </div>
+      </section>
+
+      <section class="section card" id="themenfinder" aria-labelledby="h-tf">
+        <h2 id="h-tf">Themenfinder: Projektthema nach Bereich</h2>
+        <p style="font-size: 0.88rem; color: var(--tx3); margin: 4px 0 10px">
+          Wähle den Bereich, der dich (und deinen Betrieb) am ehesten trifft – du bekommst erprobte
+          Themenzuschnitte mit Entscheidungskern und Stolperfalle. Vertiefung: Lektion
+          <a href="lernfeld.html?id=prap2#prap2-thema-1">Themenfinder &amp; Praktikumsarbeit</a>.
+        </p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: end">
+          <label
+            >Bereich<br /><select class="gap-input" id="tf-bereich">
+              <option value="netz">Netzwerk</option>
+              <option value="server">Server &amp; Virtualisierung</option>
+              <option value="storage">Storage &amp; Backup</option>
+              <option value="sec">Security</option>
+              <option value="mon">Monitoring &amp; Automatisierung</option>
+              <option value="cloud">Cloud &amp; Dienste</option>
+              <option value="service">Service &amp; Organisation</option>
+            </select></label
+          >
+          <button class="btn small" id="tf-go">Themen zeigen</button>
+        </div>
+        <div id="tf-out" class="mt-10" aria-live="polite"></div>
+      </section>
+
+      <section class="section" id="ap2-video"></section>
+
+      <section class="section card" aria-labelledby="h-ptag2">
+        <h2 id="h-ptag2">Checkliste: der Prüfungstag</h2>
+        <div class="grid c2">
+          <div>
+            <h3 class="fs-100">Vorher</h3>
+            <ul class="list-compact">
+              <li>Einladung + Personalausweis bereitlegen</li>
+              <li>
+                Zugelassenen, <strong>nicht programmierbaren</strong> Taschenrechner einpacken (+
+                Ersatz-Stifte, Lineal, Uhr)
+              </li>
+              <li>Anfahrt am Vortag klären, Puffer einplanen</li>
+              <li>
+                Am Vortag nur noch Formelsammlung + Merkhilfen wiederholen – keine neuen Themen
+              </li>
+              <li>Früh schlafen, normal frühstücken, Wasser mitnehmen</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="fs-100">Während der Prüfung</h3>
+            <ul class="list-compact">
+              <li>Erst alles überfliegen, dann mit den leichten Aufgaben starten</li>
+              <li>
+                Faustregel Zeit: <strong>1 Punkt ≈ 1 Minute</strong> – bei Hängern markieren und
+                weitergehen
+              </li>
+              <li>
+                Rechenweg immer hinschreiben – Teilpunkte gibt es auch bei falschem Endergebnis
+              </li>
+              <li>Einheiten und Fragestellung doppelt prüfen („in kWh?“, „netto?“, „pro Jahr?“)</li>
+              <li>Letzte 10 Minuten: nichts Offenes stehen lassen – raten ist besser als leer</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script>
+      /* Werkzeug: Themenfinder (eigenstaendig, kein pageInit-Eingriff) */
+      document.addEventListener("DOMContentLoaded", function () {
+        const THEMEN = {
+          netz: [
+            {
+              t: "Netzwerk-Segmentierung mit VLANs",
+              e: "Segmentierungskonzept (Abteilungen/Gäste/Server), Auswahl der Switch-Hardware, Migrationsplan",
+              s: "Reine Umkonfiguration ohne Konzeptvergleich – die Entscheidung muss bei dir liegen",
+            },
+            {
+              t: "WLAN-Neuausleuchtung mit Controller-Lösung",
+              e: "Ausleuchtungsplanung, Controller vs. Standalone-APs, Anbindung an 802.1X",
+              s: "Nur APs tauschen ohne Messung/Planung",
+            },
+            {
+              t: "Einführung von 802.1X/NAC",
+              e: "RADIUS-Server-Auswahl, Rollout-Strategie, Quarantäne-/Gäste-Konzept",
+              s: "Zu großer Scope – auf eine Pilotgruppe abgrenzen",
+            },
+          ],
+          server: [
+            {
+              t: "Hypervisor-Migration",
+              e: "Produktvergleich (Lizenzkosten, Funktionen, Support), Migrationsplan mit Rollback",
+              s: "„Umziehen“ ohne Auswahlentscheidung – Alternativen rechnen!",
+            },
+            {
+              t: "Serverkonsolidierung in Virtualisierungsumgebung",
+              e: "Host-Dimensionierung, Wirtschaftlichkeit alt vs. neu (Strom, Wartung, Lizenzen)",
+              s: "Dimensionierung ohne Messwerte aus dem Ist",
+            },
+            {
+              t: "Container-Plattform für interne Web-Dienste",
+              e: "VM vs. Container, Orchestrierung ja/nein, Registry-/Update-Konzept",
+              s: "Nur für vorhandene Linux-Dienste sinnvoll begründbar",
+            },
+          ],
+          storage: [
+            {
+              t: "Backup-Konzept nach 3-2-1",
+              e: "RPO/RTO aus Geschäftsbedarf herleiten, Software-/Medienvergleich, Restore-Tests, Backup-Fenster-Rechnung",
+              s: "3-2-1 aufsagen reicht nicht – rechnen und testen",
+            },
+            {
+              t: "Ablösung Alt-NAS durch zentrale Storage-Lösung",
+              e: "RAID-Level-Entscheidung, iSCSI vs. SMB/NFS, Kapazitäts- und Wachstumsplanung",
+              s: "Kapazität ohne Wachstumsprognose planen",
+            },
+          ],
+          sec: [
+            {
+              t: "Firewall-Ablösung mit Regelwerk-Redesign",
+              e: "Produktvergleich, DMZ-Konzept, Regelwerk nach Minimalprinzip neu strukturieren",
+              s: "1:1-Regelübernahme ohne Konzept",
+            },
+            {
+              t: "Standort-VPN neu konzipieren",
+              e: "IPsec vs. SSL-VPN, Appliance-/Anbieter-Vergleich, Zertifikats-Konzept",
+              s: "Nur Tunnel einrichten – die Auswahl ist das Projekt",
+            },
+            {
+              t: "Zentrales Patch-Management einführen",
+              e: "Tool-Vergleich, Test-Ring-Konzept (Pilot → Breite), Compliance-Reporting",
+              s: "Scope: Clients ODER Server, nicht alles",
+            },
+          ],
+          mon: [
+            {
+              t: "Monitoring-System einführen",
+              e: "Kriterienkatalog + Nutzwertanalyse über 3 Kandidaten, Alarmierungskonzept, Pilotbetrieb",
+              s: "Der Klassiker – funktioniert fast überall, Konzept sauber abgrenzen",
+            },
+            {
+              t: "Automatisierte Client-Betankung (OS-Deployment)",
+              e: "Lösungsvergleich, Pilotgruppe, Zeitersparnis-Rechnung je Client",
+              s: "Ohne Zeitmessung ist der Nutzen nicht belegbar",
+            },
+          ],
+          cloud: [
+            {
+              t: "Migration Mail-/Dateiserver zu M365 oder Alternative",
+              e: "On-Prem vs. Cloud: TCO-Vergleich, DSGVO/AVV-Bewertung, Migrationsphasen",
+              s: "DSGVO-Teil nicht als Fußnote behandeln – der bringt Punkte",
+            },
+            {
+              t: "MDM-Lösung für Mobilgeräte",
+              e: "Anbietervergleich, Richtlinienkonzept (Trennung privat/dienstlich), Rollout",
+              s: "Betriebsrat/Datenschutz früh einbinden",
+            },
+          ],
+          service: [
+            {
+              t: "Ticketsystem einführen",
+              e: "Anforderungsanalyse, Tool-Vergleich, SLA- und Prozessdefinition (ITIL-Bezug)",
+              s: "Prozesse zuerst – das Tool ist die halbe Miete",
+            },
+            {
+              t: "IT-Dokumentation/Wiki mit Migrationskonzept",
+              e: "Strukturkonzept, Tool-Wahl, Pilotbereich, Pflegeprozess",
+              s: "Ohne Pflegeprozess stirbt jedes Wiki – gehört ins Konzept",
+            },
+          ],
+        };
+        const btn = document.getElementById("tf-go");
+        if (!btn) return;
+        function zeige() {
+          const b = document.getElementById("tf-bereich").value;
+          document.getElementById("tf-out").innerHTML =
+            (THEMEN[b] || [])
+              .map(
+                (x) => `
+      <div class="card mt-10" style="padding:12px 14px">
+        <h3 class="fs-100 m-0">${x.t}</h3>
+        <p style="font-size:.86rem;margin:6px 0 4px"><strong>Entscheidungskern:</strong> ${x.e}</p>
+        <p style="font-size:.84rem;color:var(--tx3);margin:0"><strong>Stolperfalle:</strong> ${x.s}</p>
+      </div>`
+              )
+              .join("") +
+            '<p style="font-size:.84rem;color:var(--tx3);margin-top:10px">Nächste Schritte: Thema gegen die 7-Punkte-Checkliste prüfen (<a href="lernfeld.html?id=prap2#prap2-thema-1">Lektion</a>) → <a href="lernfeld.html?id=prap2#prap2-antrag-1">Projektantrag formulieren</a>.</p>';
+        }
+        btn.addEventListener("click", zeige);
+      });
+    </script>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        if (window.STATIONEN) STATIONEN.netzplan(document.getElementById("ap-station-host"));
+
+        /* Blitz-Simulation: 10 Zufallsfragen mit eigenem Countdown */
+        document.getElementById("blitz-exam-btn").addEventListener("click", function () {
+          this.disabled = true;
+          const host = document.getElementById("mini-exam-host");
+          const pool = shuffle(DATA.ap2exam.slice()).slice(0, 10);
+          let bi = 0,
+            bok = 0,
+            left = 600;
+          host.innerHTML =
+            '<p class="fw-600">Blitz-Simulation · <span id="be-t" class="mono">10:00</span> · <span id="be-p">0/10</span></p><div id="be-q"></div>';
+          const tEl = host.querySelector("#be-t");
+          const iv = setInterval(() => {
+            left--;
+            tEl.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0");
+            if (left <= 0) done();
+          }, 1000);
+          const done = () => {
+            clearInterval(iv);
+            const pct = bi ? Math.round((bok / bi) * 100) : 0;
+            host.innerHTML =
+              '<div class="callout"><span class="ct">Blitz-Simulation beendet</span>' +
+              bok +
+              " von " +
+              bi +
+              " richtig (" +
+              pct +
+              " %)" +
+              (left <= 0 ? " – Zeit abgelaufen." : ".") +
+              (pct >= 50
+                ? " Nach IHK-Schlüssel: bestanden."
+                : " Unter 50 % – nimm dir die Erklärungen der vollen Musterprüfung vor.") +
+              "</div>";
+            document.getElementById("blitz-exam-btn").disabled = false;
+            if (pct >= 70) Gami.addXp(20, "Blitz-Simulation AP2: " + pct + " %");
+          };
+          const next = () => {
+            if (bi >= 10 || left <= 0) return done();
+            host.querySelector("#be-p").textContent = bi + "/10";
+            renderQuestion(pool[bi], host.querySelector("#be-q"), {
+              onAnswered(ok) {
+                if (ok) bok++;
+                bi++;
+                setTimeout(next, 700);
+              },
+            });
+          };
+          next();
+        });
+
+        /* Schwaechen-Training: Fragen aus den Themen mit der schlechtesten eigenen Quote zuerst */
+        document.getElementById("weak-exam-btn").addEventListener("click", function () {
+          this.disabled = true;
+          const st = Progress.stats();
+          const rate = (t) => {
+            const x = st[t];
+            return x && x.total ? x.ok / x.total : 0.01;
+          }; // Unbekanntes zuerst üben
+          const pool = DATA.ap2exam
+            .slice()
+            .sort((a, b) => rate(a.topic) - rate(b.topic))
+            .slice(0, 10);
+          const host = document.getElementById("mini-exam-host");
+          host.innerHTML =
+            '<p class="fw-600">Schwächen-Training: sortiert nach deiner Trefferquote je Thema (schwächste zuerst).</p><div id="weak-q"></div>';
+          runQuiz(shuffle(pool.slice(0, 10)), host.querySelector("#weak-q"), {
+            onDone(r) {
+              document.getElementById("weak-exam-btn").disabled = false;
+              if (r.pct >= 70) Gami.addXp(20, "Schwächen-Training AP2: " + r.pct + " %");
+            },
+          });
+        });
+
+        if (window.renderVideoSlot && window.VIDEO_SLOTS && document.getElementById("ap2-video"))
+          renderVideoSlot(document.getElementById("ap2-video"), VIDEO_SLOTS.lessons.l304);
+
+        breadcrumbs([{ label: "AP2-Vorbereitung" }]);
+        const last = Store.get("ap2Result", null);
+        if (last)
+          document.getElementById("last-result").textContent =
+            "Letztes Ergebnis: " + last.pct + " %";
+        document.getElementById("start-ap2").addEventListener("click", function () {
+          this.disabled = true;
+          runQuiz(shuffle(DATA.ap2exam), document.getElementById("exam-host"), {
+            timed: 25 * 60,
+            onDone(r) {
+              Store.set("ap2Result", { pct: r.pct, date: new Date().toISOString().slice(0, 10) });
+              Store.set("ap2Done", true);
+              Gami.addXp(r.pct >= 50 ? 120 : 40, "AP2-Simulation");
+              Gami.checkBadges();
+              document.getElementById("start-ap2").disabled = false;
+              document.getElementById("last-result").textContent =
+                "Letztes Ergebnis: " + r.pct + " %";
+            },
+          });
+          document.getElementById("exam-host").scrollIntoView({ behavior: "smooth" });
+        });
+      };
+    </script>
+  </body>
+</html>

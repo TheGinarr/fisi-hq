@@ -1,0 +1,1234 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Formelsammlung – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Alle prüfungsrelevanten Formeln der FISI-Ausbildung auf einer Seite: Subnetting, Verfügbarkeit, USV, RAID, Netzplan, Abschreibung, Kalkulation – druckbar."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+    <style>
+      .f-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+        gap: 14px;
+      }
+      .f-card h2 {
+        font-size: 1rem;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 6px;
+      }
+      .f-row {
+        margin: 8px 0;
+      }
+      .f-row .fname {
+        font-size: 0.85rem;
+        color: var(--tx2);
+      }
+      .f-row code {
+        display: block;
+        margin-top: 2px;
+        padding: 6px 9px;
+        font-size: 0.86rem;
+      }
+      .f-note {
+        font-size: 0.8rem;
+        color: var(--tx3);
+        margin: 2px 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="formeln.html" aria-current="page">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Formelsammlung für die Prüfung</h1>
+        <p class="sub">
+          Alle Rechenformeln der schriftlichen Prüfungen an einem Ort – mit Merkhilfe und Beispiel.
+          Über die Druckfunktion des Browsers (Strg+P) bekommst du eine saubere Papierversion zum
+          Lernen.
+        </p>
+        <div class="q-actions">
+          <button class="btn small ghost" onclick="window.print()">Drucken / als PDF sichern</button
+          ><a class="btn small ghost" href="uebungstools.html"
+            >Formeln anwenden: Übungs-Generatoren</a
+          >
+        </div>
+      </div>
+      <div class="f-grid">
+        <div class="card f-card">
+          <h2 id="f-uebertragung-bitzeit">Übertragung: Bitzeit &amp; Datenfluss</h2>
+          <div class="f-row">
+            <div class="fname">Bitzeit (Dauer eines einzelnen Bits)</div>
+            <code>t_Bit = 1 / Übertragungsrate</code>
+            <p class="f-note">Beispiel 100 Mbit/s: t_Bit = 1 / 100.000.000 s = 10 ns.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Übertragungszeit</div>
+            <code>t = Datenmenge / Datenrate</code>
+            <p class="f-note">
+              Vorher Einheiten angleichen: 1 Byte = 8 Bit; GB → Mbit: · 8 · 1000.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Datenfluss / effektiver Durchsatz</div>
+            <code>Durchsatz = Nutzdatenmenge / Gesamtzeit</code>
+            <p class="f-note">
+              Bei Effizienz-Angabe: effektive Rate = Bruttorate · Effizienz (z. B. Ethernet ≈ 94,9 %
+              bei 1500 B Nutzlast).
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Interframe Gap (IFG) – die 96er-Formel</div>
+            <code>t_IFG = 96 · t_Bit = 96 / Übertragungsrate</code>
+            <p class="f-note">
+              Sendepause zwischen zwei Ethernet-Frames: immer 96 Bitzeiten. Fertige Werte für alle
+              Raten: Karte „Tabelle: Bitzeit &amp; IFG je Rate“.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Ethernet-Overhead je Frame</div>
+            <code>Gesamt = Nutzdaten + 38 B (Header/FCS) + 8 B Präambel + 12 B IFG</code>
+            <p class="f-note">
+              Daher 1538 B Gesamtaufwand bei 1500 B Nutzlast → Effizienz 1460/1538 ≈ 94,9 %
+              (TCP-Nutzdaten).
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Antwortzeit (RTT)</div>
+            <code>Gesamtzeit = Übertragungszeit + Latenz (Hin- und Rückweg beachten)</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Bandbreiten-Verzögerungs-Produkt</div>
+            <code>BDP = Bandbreite × RTT</code>
+            <p class="f-note">
+              So viele Daten sind „unterwegs“ – TCP-Fenster kleiner als BDP bremst den Durchsatz.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Kanalkapazität (theoretische Grenzen)</div>
+            <code>Nyquist: C = 2 × B × ld(M) · Shannon: C = B × ld(1 + S/N)</code>
+            <p class="f-note">
+              B = Bandbreite in Hz, M = Symbolstufen, S/N = Signal-Rausch-Verhältnis. Obergrenzen,
+              keine Praxiswerte.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Beispiel komplett</div>
+            <code>2 GB über 50 Mbit/s: (2 · 8 · 1000) Mbit ÷ 50 Mbit/s = 320 s ≈ 5,3 min</code>
+          </div>
+          <p class="f-note">
+            Prüfungsweg: alles in Bit und Sekunden umrechnen, dann teilen. Endlos üben:
+            Übungs-Generator „Durchsatz“.
+          </p>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-si-praefixe">Tabelle: SI-Präfixe (Zeit, Bit, Hertz …)</h2>
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Präfix</th>
+                <th>Faktor</th>
+                <th>Zeit</th>
+                <th>Datenrate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>T (Tera)</td>
+                <td>10¹²</td>
+                <td>–</td>
+                <td>1 Tbit/s</td>
+              </tr>
+              <tr>
+                <td>G (Giga)</td>
+                <td>10⁹</td>
+                <td>–</td>
+                <td>1 Gbit/s = 10⁹ bit/s</td>
+              </tr>
+              <tr>
+                <td>M (Mega)</td>
+                <td>10⁶</td>
+                <td>–</td>
+                <td>1 Mbit/s = 10⁶ bit/s</td>
+              </tr>
+              <tr>
+                <td>k (Kilo)</td>
+                <td>10³</td>
+                <td>–</td>
+                <td>1 kbit/s = 1.000 bit/s</td>
+              </tr>
+              <tr>
+                <td>– (Basis)</td>
+                <td>10⁰ = 1</td>
+                <td>1 s</td>
+                <td>1 bit/s</td>
+              </tr>
+              <tr>
+                <td>m (Milli)</td>
+                <td>10⁻³</td>
+                <td>1 ms = 0,001 s</td>
+                <td>–</td>
+              </tr>
+              <tr>
+                <td>µ (Mikro)</td>
+                <td>10⁻⁶</td>
+                <td>1 µs = 0,000001 s</td>
+                <td>–</td>
+              </tr>
+              <tr>
+                <td>n (Nano)</td>
+                <td>10⁻⁹</td>
+                <td>1 ns = 10⁻⁹ s</td>
+                <td>–</td>
+              </tr>
+              <tr>
+                <td>p (Piko)</td>
+                <td>10⁻¹²</td>
+                <td>1 ps = 10⁻¹² s</td>
+                <td>–</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="f-note">
+            Je Stufe Faktor 1.000. Umrechnen = Komma um 3 Stellen schieben: 0,96 µs = 960 ns.
+            Datenraten sind IMMER dezimal (1 Mbit/s = 1.000.000 bit/s, nie 1.024er-Schritte).
+          </p>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-bitzeit-tabelle">Tabelle: Bitzeit &amp; IFG je Rate</h2>
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Rate</th>
+                <th>Bitzeit = 1/Rate</th>
+                <th>IFG = 96 Bitzeiten</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>10 Mbit/s</td>
+                <td>100 ns</td>
+                <td>9,6 µs</td>
+              </tr>
+              <tr>
+                <td>100 Mbit/s</td>
+                <td>10 ns</td>
+                <td>0,96 µs (960 ns)</td>
+              </tr>
+              <tr>
+                <td>1 Gbit/s</td>
+                <td>1 ns</td>
+                <td>96 ns</td>
+              </tr>
+              <tr>
+                <td>10 Gbit/s</td>
+                <td>0,1 ns (100 ps)</td>
+                <td>9,6 ns</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="f-note">
+            Merkanker: 10 Mbit/s ↔ 100 ns – Rate ×10 heißt Bitzeit ÷10. Damit ist jede
+            IFG-/Übertragungszeit-Aufgabe nur noch Kommaschieben. Formeln dazu: Karte „Übertragung:
+            Bitzeit &amp; Datenfluss“.
+          </p>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-bit-byte">Tabelle: Bit ↔ Byte ↔ Mbit</h2>
+          <div class="f-row">
+            <div class="fname">Grundregel</div>
+            <code>1 Byte = 8 Bit · MB → Mbit: × 8 · Mbit → MB: ÷ 8</code>
+          </div>
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Leitungsrate</th>
+                <th>= MB/s (÷8)</th>
+                <th>Praxis</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>16 Mbit/s</td>
+                <td>2 MB/s</td>
+                <td>DSL-Klassiker</td>
+              </tr>
+              <tr>
+                <td>100 Mbit/s</td>
+                <td>12,5 MB/s</td>
+                <td>Fast Ethernet</td>
+              </tr>
+              <tr>
+                <td>1 Gbit/s</td>
+                <td>125 MB/s</td>
+                <td>Gigabit-LAN</td>
+              </tr>
+              <tr>
+                <td>10 Gbit/s</td>
+                <td>1.250 MB/s</td>
+                <td>Server/Backbone</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="f-note">
+            Kleines b = Bit (Leitungen), großes B = Byte (Dateien). Download-Anzeige im Browser ist
+            MB/s – deshalb wirkt die Leitung „langsamer“ als beworben.
+          </p>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-binaerpraefixe">Tabelle: Dezimal- vs. Binärpräfixe</h2>
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Dezimal (Hersteller)</th>
+                <th>Binär (Betriebssystem)</th>
+                <th>Unterschied</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1 kB = 10³ = 1.000 B</td>
+                <td>1 KiB = 2¹⁰ = 1.024 B</td>
+                <td>2,4 %</td>
+              </tr>
+              <tr>
+                <td>1 MB = 10⁶ B</td>
+                <td>1 MiB = 2²⁰ = 1.048.576 B</td>
+                <td>4,9 %</td>
+              </tr>
+              <tr>
+                <td>1 GB = 10⁹ B</td>
+                <td>1 GiB = 2³⁰ B</td>
+                <td>7,4 %</td>
+              </tr>
+              <tr>
+                <td>1 TB = 10¹² B</td>
+                <td>1 TiB = 2⁴⁰ B</td>
+                <td>10 %</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="f-note">
+            Darum zeigt Windows bei einer „1-TB-Platte“ nur ≈ 931 GiB an – kein Defekt, nur zwei
+            Zählweisen. Umrechnung: TB ÷ 1,0995 ≈ TiB.
+          </p>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-hex-tabelle">Tabelle: Hex ↔ Dezimal ↔ Binär</h2>
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Dez</th>
+                <th>Hex</th>
+                <th>Binär</th>
+                <th>Dez</th>
+                <th>Hex</th>
+                <th>Binär</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0000</td>
+                <td>8</td>
+                <td>8</td>
+                <td>1000</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>0001</td>
+                <td>9</td>
+                <td>9</td>
+                <td>1001</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>2</td>
+                <td>0010</td>
+                <td>10</td>
+                <td>A</td>
+                <td>1010</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>3</td>
+                <td>0011</td>
+                <td>11</td>
+                <td>B</td>
+                <td>1011</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>4</td>
+                <td>0100</td>
+                <td>12</td>
+                <td>C</td>
+                <td>1100</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>5</td>
+                <td>0101</td>
+                <td>13</td>
+                <td>D</td>
+                <td>1101</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>6</td>
+                <td>0110</td>
+                <td>14</td>
+                <td>E</td>
+                <td>1110</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>7</td>
+                <td>0111</td>
+                <td>15</td>
+                <td>F</td>
+                <td>1111</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="f-row">
+            <div class="fname">Stellenwerte &amp; Regeln</div>
+            <code>Hex: 4096 · 256 · 16 · 1 — 1 Hex-Ziffer = 4 Bit, 1 Byte = 2 Hex-Ziffern</code>
+          </div>
+          <p class="f-note">
+            Beispiel: C0 = 12·16 + 0 = 192 · A8 = 10·16 + 8 = 168 → 192.168 = C0.A8. Rückweg: Byte
+            in zwei Nibbles teilen, jedes einzeln nachschlagen. Endlos üben: Generator
+            „Zahlensysteme“.
+          </p>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-pegel-und-daempfung">Pegel &amp; Dämpfung (dB)</h2>
+          <div class="f-row">
+            <div class="fname">Leistungsdämpfung</div>
+            <code>a = 10 × log(P1 ÷ P2) dB</code>
+            <p class="f-note">
+              Bei Spannungen: a = 20 × log(U1 ÷ U2). Merke: 3 dB ≈ Halbierung der Leistung, 10 dB =
+              Faktor 10.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">LWL-Dämpfungsbudget</div>
+            <code>Budget = Sendeleistung − Empfängerempfindlichkeit [dB]</code>
+            <p class="f-note">
+              Beide Pegel in dBm; die Differenz darf die Strecke maximal „verbrauchen“.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Streckendämpfung LWL</div>
+            <code>a,Strecke = Länge × dB/km + Spleiße × 0,1 dB + Stecker × 0,5 dB</code>
+            <p class="f-note">
+              Typwerte: Singlemode ≈ 0,4 dB/km (1310 nm), Multimode ≈ 3 dB/km (850 nm). Reserve 3 dB
+              einplanen!
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Prüffrage</div>
+            <code>Strecke funktioniert, wenn a,Strecke + Reserve ≤ Budget</code>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-zuschlagskalkulation">Zuschlagskalkulation (Industrie)</h2>
+          <div class="f-row">
+            <div class="fname">Schema</div>
+            <code>Materialeinzelkosten + Material-GK% = Materialkosten</code
+            ><code>Fertigungseinzelkosten + Fertigungs-GK% = Fertigungskosten</code
+            ><code>MK + FK = Herstellkosten (HK)</code
+            ><code>HK + Verwaltungs-GK% + Vertriebs-GK% = Selbstkosten</code
+            ><code
+              >SK + Gewinn% = Barverkaufspreis → + Skonto/Rabatt (im Hundert) = Listenpreis</code
+            >
+          </div>
+          <div class="f-row">
+            <div class="fname">Im-Hundert-Rechnung (Skonto/Rabatt aufschlagen)</div>
+            <code>Zielwert = Ausgangswert × 100 ÷ (100 − Satz%)</code>
+            <p class="f-note">
+              Skonto und Rabatt werden VOM VERKAUFSPREIS gewährt – deshalb nicht einfach
+              draufschlagen, sondern im Hundert rechnen.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Maschinenstundensatz</div>
+            <code>MSS = (AfA + kalk. Zinsen + Raum + Energie + Instandhaltung) ÷ Laufstunden</code>
+            <p class="f-note">Kalk. Zinsen = ½ × Anschaffungswert × Zinssatz.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Divisionskalkulation</div>
+            <code>Selbstkosten je Stück = Gesamtkosten ÷ Stückzahl</code>
+            <p class="f-note">
+              Nur bei Einproduktfertigung. Mehrere ähnliche Produkte: Äquivalenzziffern (Stückzahlen
+              × Ziffer gewichten).
+            </p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-subnetting-ipv4">Subnetting (IPv4)</h2>
+          <div class="f-row">
+            <div class="fname">Anzahl Subnetze bei n geliehenen Bits</div>
+            <code>Subnetze = 2ⁿ</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Nutzbare Hosts je Subnetz (h Hostbits)</div>
+            <code>Hosts = 2ʰ − 2</code>
+            <p class="f-note">−2 für Netz- und Broadcast-Adresse. /31 und /32 sind Sonderfälle.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Blockgröße (Sprung im betroffenen Oktett)</div>
+            <code>Blockgröße = 256 − Maskenwert</code>
+            <p class="f-note">Beispiel /26: 256 − 192 = 64 → Netze bei 0, 64, 128, 192.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Broadcast</div>
+            <code>Broadcast = nächste Netzadresse − 1</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">IPv6-Adressraum</div>
+            <code>Anzahl /64-Netze je Präfix = 2^(64 − Präfixlänge)</code>
+            <p class="f-note">
+              Ein /48 enthält 2¹⁶ = 65.536 /64-Netze; Adressen je Präfix: 2^(128 − Präfixlänge).
+            </p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-verfuegbarkeit-und-sla">Verfügbarkeit &amp; SLA</h2>
+          <div class="f-row">
+            <div class="fname">Verfügbarkeit aus Kennzahlen</div>
+            <code>V = MTBF / (MTBF + MTTR)</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Erlaubte Ausfallzeit pro Jahr</div>
+            <code>Ausfall = 8.760 h × (1 − V)</code>
+            <p class="f-note">99,9 % → 8,76 h · 99,99 % → 52,6 min · 99,999 % → 5,3 min.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Gesamtverfügbarkeit in Reihe</div>
+            <code>V,gesamt = V₁ × V₂ × …</code>
+            <p class="f-note">Parallel (redundant): V = 1 − (1−V₁)(1−V₂).</p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-elektro-und-usv">Elektro &amp; USV</h2>
+          <div class="f-row">
+            <div class="fname">Leistung</div>
+            <code>P = U × I</code>
+            <p class="f-note">Ohmsches Gesetz: U = R × I.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">USV-Scheinleistung</div>
+            <code>S [VA] = P [W] ÷ cos φ</code>
+            <p class="f-note">500 W bei cos φ 0,8 → 625 VA. Plus 20–30 % Reserve einplanen.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Netzteil-Wirkungsgrad</div>
+            <code>η = P,ab ÷ P,auf</code>
+            <p class="f-note">Aufnahme = Abgabe ÷ η. Differenz = Abwärme.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Energiekosten</div>
+            <code>Kosten = kW × h × Preis/kWh</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Rechenzentrums-Effizienz</div>
+            <code>PUE = Gesamtleistung ÷ IT-Leistung</code>
+            <p class="f-note">Immer ≥ 1. Modern: 1,2–1,4.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Leistungsdreieck (Wirk/Blind/Schein)</div>
+            <code>P = S × cos φ · Q = √(S² − P²)</code>
+            <p class="f-note">
+              P in W (nutzbar), S in VA (Auslegung), Q in var. Drehstrom: P = √3 × U × I × cos φ.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Wärmelast im Serverraum</div>
+            <code>Kühllast [W] ≈ Σ elektrische Leistung der Geräte</code>
+            <p class="f-note">
+              Fast jede aufgenommene elektrische Leistung wird zu Wärme. Klimagerät entsprechend
+              dimensionieren + Redundanz (N+1).
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">BTU-Umrechnung (Klimageräte)</div>
+            <code>BTU/h = W × 3,412</code>
+            <p class="f-note">3.000 W IT-Last ≈ 10.236 BTU/h. Rückwärts: W = BTU/h ÷ 3,412.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Spannungsfall auf Leitungen</div>
+            <code>ΔU = 2 × l × I × ρ ÷ A</code>
+            <p class="f-note">
+              l = einfache Länge (m), A = Querschnitt (mm²), ρ Kupfer ≈ 0,0178. Faustregel: ΔU ≤ 3 %
+              der Nennspannung.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Reihenschaltung</div>
+            <code>R,ges = R1 + R2 + … · I überall gleich · U teilt sich auf</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Parallelschaltung</div>
+            <code>1/R,ges = 1/R1 + 1/R2 + … · U überall gleich · I teilt sich auf</code>
+            <p class="f-note">
+              Zwei Widerstände: R,ges = R1×R2 ÷ (R1+R2). R,ges ist immer KLEINER als der kleinste
+              Einzelwiderstand.
+            </p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-speicher-und-raid">Speicher &amp; RAID</h2>
+          <div class="f-row">
+            <div class="fname">Nettokapazität</div>
+            <code
+              >RAID 0: n × G · RAID 1: G · RAID 5: (n−1) × G · RAID 6: (n−2) × G · RAID 10: (n÷2) ×
+              G</code
+            >
+          </div>
+          <div class="f-row">
+            <div class="fname">Speichergrößen (binär)</div>
+            <code>1 KiB = 1.024 B · 1 MiB = 1.024 KiB · 1 GiB = 1.024 MiB</code>
+            <p class="f-note">
+              Hersteller rechnen dezimal (1 TB = 10¹² B) – daher „fehlt“ Platz im Betriebssystem.
+              Komplette Gegenüberstellung: Karte „Tabelle: Dezimal- vs. Binärpräfixe“.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Übertragungsdauer</div>
+            <code>t = Datenmenge ÷ Übertragungsrate</code>
+            <p class="f-note">
+              Einheiten angleichen! 1 Byte = 8 Bit. 2 GB über 100 MBit/s: (2×8×1000) ÷ 100 = 160 s.
+            </p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-netzplantechnik-projekt">Netzplantechnik (Projekt)</h2>
+          <div class="f-row">
+            <div class="fname">Vorwärtsrechnung</div>
+            <code>FEZ = FAZ + Dauer</code>
+            <p class="f-note">
+              FAZ = frühester Anfangs-, FEZ = frühester Endzeitpunkt (Maximum der Vorgänger-FEZ).
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Rückwärtsrechnung</div>
+            <code>SAZ = SEZ − Dauer</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Gesamtpuffer</div>
+            <code>GP = SAZ − FAZ</code>
+            <p class="f-note">GP = 0 → Vorgang liegt auf dem kritischen Pfad.</p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-abschreibung">Abschreibung (AfA)</h2>
+          <div class="f-row">
+            <div class="fname">Lineare Abschreibung</div>
+            <code>Jahresbetrag = Anschaffungskosten ÷ Nutzungsdauer</code>
+            <p class="f-note">
+              Anschaffung unterjährig: monatsgenau anteilig. Buchungssatz dazu: „Abschreibungen an
+              BGA“ (siehe Lektion Erfolgskonten &amp; GuV).
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Restbuchwert</div>
+            <code>Restbuchwert = Anschaffungskosten − (Jahresbetrag × verstrichene Jahre)</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Stundensatz</div>
+            <code>Stundensatz = Gesamtkosten ÷ produktive Stunden</code>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-wirtschaftlichkeit">Wirtschaftlichkeit &amp; Investition</h2>
+          <div class="f-row">
+            <div class="fname">Amortisationsdauer</div>
+            <code>Amortisation = Investition ÷ jährliche Ersparnis</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Kostenvergleichsrechnung</div>
+            <code>Jahreskosten = Fixkosten (AfA + Zinsen) + variable Kosten × Menge</code>
+            <p class="f-note">
+              Alternative mit den geringsten Jahreskosten gewinnt – bei Mengenabhängigkeit kritische
+              Menge bestimmen.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Rentabilität</div>
+            <code>Rentabilität = Gewinn ÷ Ø eingesetztes Kapital × 100 %</code>
+            <p class="f-note">Ø Kapital bei linearer AfA ≈ Anschaffungswert ÷ 2.</p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-zinsrechnung">Zinsrechnung &amp; Zinseszins</h2>
+          <div class="f-row">
+            <div class="fname">Einfache Zinsen</div>
+            <code>Z = K × p/100 × t · Tage: Z = K × p/100 × Tage/360</code>
+            <p class="f-note">Deutsches Bankjahr: 360 Tage, Monat = 30 Tage.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Zinseszins</div>
+            <code>Kn = K0 × (1 + p/100)ⁿ</code>
+            <p class="f-note">
+              Umkehrungen: K0 = Kn ÷ qⁿ (Barwert) · n = log(Kn/K0) ÷ log(q). Gilt genauso für
+              Datenwachstum („Storage +30 %/Jahr“).
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">72er-Regel (Überschlag)</div>
+            <code>Verdopplungszeit ≈ 72 ÷ Zinssatz in %</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Prozentänderungen verketten</div>
+            <code>Gesamtfaktor = Faktor1 × Faktor2 × …</code>
+            <p class="f-note">
+              +20 % dann −20 % → 1,2 × 0,8 = 0,96 = −4 %. Faktoren multiplizieren, nie Prozente
+              addieren!
+            </p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-analysis-grundidee">Analysis: nur die Grundidee</h2>
+          <div class="f-row">
+            <div class="fname">Ableitung (Differenzialrechnung)</div>
+            <code>f′(x) = momentane Änderungsrate / Steigung der Kurve</code>
+            <p class="f-note">
+              Antwort auf „Wie schnell ändert sich …?“ – z. B. Steigung einer Auslastungskurve.
+              Rechnen musst du das als FISI nicht.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Integral</div>
+            <code>∫ f(x) dx = Fläche unter der Kurve = aufsummierte Menge</code>
+            <p class="f-note">
+              Antwort auf „Wie viel kam insgesamt zusammen?“ – z. B. übertragene Datenmenge als
+              Fläche unter der Durchsatzkurve (Rate × Zeit aufsummiert).
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Merksatz</div>
+            <code>Ableitung = Tempo · Integral = Strecke</code>
+            <p class="f-note">
+              In AP1/AP2 wird beides nicht gerechnet – falls deine Berufsschule es unterrichtet:
+              Rechenregeln unten + Lektion „Gleichungssysteme, Ableitung &amp; Integral rechnen“
+              (LF5).
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Ableitungsregeln (Rechenstoff)</div>
+            <code
+              >Potenzregel: (xⁿ)′ = n·xⁿ⁻¹ · Faktor bleibt · Summen gliedweise · Konstante → 0</code
+            >
+            <p class="f-note">
+              Beispiel: f(x) = 2x³ − 4x² + 3x − 7 → f′(x) = 6x² − 8x + 3. Extremum: f′ = 0; f″ &gt;
+              0 Minimum, f″ &lt; 0 Maximum.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Integralregel (Rechenstoff)</div>
+            <code>∫xⁿ dx = xⁿ⁺¹ ÷ (n+1) + C · bestimmt: [F(x)] von a bis b = F(b) − F(a)</code>
+            <p class="f-note">Beispiel: ∫₀² 3x² dx = [x³]₀² = 8.</p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-handelskalkulation">Handelskalkulation</h2>
+          <div class="f-row">
+            <div class="fname">Vorwärts (Einkauf → Verkauf)</div>
+            <code>Listeneinkaufspreis − Rabatt − Skonto + Bezugskosten = Bezugspreis</code
+            ><code>Bezugspreis + Handlungskosten = Selbstkosten</code
+            ><code>Selbstkosten + Gewinn = Nettoverkaufspreis (+ USt = Brutto)</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Prozentrechnung im vermehrten/verminderten Grundwert</div>
+            <code>Grundwert = Prozentwert ÷ Prozentsatz</code>
+            <p class="f-note">
+              Skonto/Rabatt rechnen „im Hundert“ – auf den jeweils aktuellen Zwischenwert.
+            </p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-zahlensysteme">Zahlensysteme</h2>
+          <div class="f-row">
+            <div class="fname">Stellenwerte</div>
+            <code>Binär: 128 · 64 · 32 · 16 · 8 · 4 · 2 · 1</code
+            ><code>Hex: 1 Zeichen = 4 Bit (Nibble) → FF = 255</code>
+            <p class="f-note">
+              Alle Werte 0–15 zum Nachschlagen: Karte „Tabelle: Hex ↔ Dezimal ↔ Binär“.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Umrechnung dez → bin</div>
+            <code>Fortlaufend durch 2 teilen, Reste rückwärts lesen</code>
+            <p class="f-note">Oder Stellenwerte von links abziehen (Subtraktionsmethode).</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Datenmengen</div>
+            <code>Zeichen × Bit/Zeichen = Datenmenge</code>
+            <p class="f-note">ASCII 1 Byte/Zeichen, UTF-8 1–4 Byte.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Zweierkomplement (negative Zahlen)</div>
+            <code>−x: alle Bits kippen, dann +1</code>
+            <p class="f-note">
+              8 Bit: −5 = 11111011. Wertebereich: −128 bis +127. Führendes Bit 1 = negativ.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">IEEE-754 Gleitkomma (Aufbau)</div>
+            <code>Vorzeichen | Exponent (mit Bias) | Mantisse</code>
+            <p class="f-note">
+              32 Bit: 1+8+23. Deshalb ist 0,1 binär „krumm“ – nie Gleitkomma auf Gleichheit prüfen!
+            </p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-krypto-schluesselzahlen">Kryptographie: Schlüsselzahlen</h2>
+          <div class="f-row">
+            <div class="fname">Symmetrisch: Schlüssel für n Teilnehmer</div>
+            <code>Anzahl = n × (n − 1) ÷ 2</code>
+            <p class="f-note">
+              Jedes Paar braucht einen eigenen Schlüssel: 10 Teilnehmer → 45 Schlüssel.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Asymmetrisch: Schlüssel für n Teilnehmer</div>
+            <code>Anzahl = 2 × n</code>
+            <p class="f-note">
+              Je Teilnehmer ein Schlüsselpaar (privat + öffentlich): 10 Teilnehmer → 20 Schlüssel.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Schlüsselraum</div>
+            <code>Mögliche Schlüssel = 2^Bitlänge</code>
+            <p class="f-note">
+              Jedes zusätzliche Bit verdoppelt den Aufwand: AES-128 → 2¹²⁸ Möglichkeiten.
+            </p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-entgeltabrechnung">Entgeltabrechnung (brutto → netto)</h2>
+          <div class="f-row">
+            <div class="fname">Grundschema</div>
+            <code
+              >Brutto − Lohnsteuer − ggf. Kirchensteuer/Soli − SV-Arbeitnehmeranteile = Netto</code
+            >
+          </div>
+          <div class="f-row">
+            <div class="fname">Sozialversicherung (AN-Anteil ≈ Hälfte)</div>
+            <code>KV ≈ 7,3 % + ½ Zusatzbeitrag · RV 9,3 % · AV 1,3 % · PV ≈ 1,8 %</code>
+            <p class="f-note">
+              Stand 2026, Sätze jährlich prüfen! PV: Zuschlag für Kinderlose, Abschläge je Kind.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Arbeitgeber-Gesamtkosten</div>
+            <code>AG-Kosten ≈ Brutto + AG-SV-Anteile (≈ +20–22 %)</code>
+            <p class="f-note">
+              Deshalb kostet ein 3.000-€-Brutto-Azubi den Betrieb deutlich mehr als 3.000 €.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Prüfungstipp</div>
+            <code
+              >Reihenfolge: erst Steuern (auf Brutto), dann SV (auf Brutto) – beides parallel
+              abziehen</code
+            >
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-multimedia-und-datenmengen">Multimedia &amp; Datenmengen</h2>
+          <div class="f-row">
+            <div class="fname">Unkomprimierte Bildgröße</div>
+            <code>Größe [Byte] = Breite × Höhe × Farbtiefe [Bit] ÷ 8</code>
+            <p class="f-note">1920 × 1080 × 24 Bit ÷ 8 ≈ 6,2 MB.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Audio (PCM/WAV)</div>
+            <code>Größe = Abtastrate × Bittiefe × Kanäle × Dauer ÷ 8</code>
+            <p class="f-note">44.100 Hz × 16 Bit × 2 × 60 s ÷ 8 ≈ 10,6 MB pro Minute.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Video (unkomprimiert)</div>
+            <code>Datenrate = Bildgröße × Bilder/Sekunde</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Einheitenkette</div>
+            <code>Bit → Byte (÷8) → KB/KiB → MB/MiB → GB/GiB</code>
+            <p class="f-note">Dezimal ×1.000 (Hersteller), binär ×1.024 (Betriebssystem).</p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-zins-und-skonto">Zins &amp; Skonto</h2>
+          <div class="f-row">
+            <div class="fname">Jahreszins</div>
+            <code>Z = K × p ÷ 100</code>
+            <p class="f-note">Tageszins: Z = K × p × t ÷ (100 × 360).</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Effektivzins des Skontoverzichts</div>
+            <code>p,eff ≈ Skonto % × 360 ÷ (Zahlungsziel − Skontofrist)</code>
+            <p class="f-note">
+              2 % bei 10/30 Tagen → 2 × 360 ÷ 20 = 36 % p. a. → Skonto fast immer ziehen.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Skontobetrag</div>
+            <code>Skonto = Rechnungsbetrag × Skontosatz</code>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-break-even-und-deckungsbeitrag">Break-Even &amp; Deckungsbeitrag</h2>
+          <div class="f-row">
+            <div class="fname">Deckungsbeitrag je Stück</div>
+            <code>db = Verkaufspreis − variable Stückkosten</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Gewinnschwelle (Break-Even-Menge)</div>
+            <code>x = Fixkosten ÷ db</code>
+            <p class="f-note">10.000 € ÷ (50 − 30) € = 500 Stück.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Gewinn</div>
+            <code>G = db × Menge − Fixkosten</code>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-nutzwertanalyse">Nutzwertanalyse</h2>
+          <div class="f-row">
+            <div class="fname">Nutzwert einer Alternative</div>
+            <code>N = Σ (Gewichtung × Punktzahl)</code>
+            <p class="f-note">
+              Gewichtungen summieren sich auf 100 %. Höchster Nutzwert gewinnt – Begründung
+              dokumentieren!
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Vorgehen</div>
+            <code>Kriterien → Gewichten → Bewerten → Multiplizieren → Summieren</code>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-elektrische-arbeit-und-usv-zeit">Elektrische Arbeit &amp; USV-Zeit</h2>
+          <div class="f-row">
+            <div class="fname">Elektrische Arbeit</div>
+            <code>W = P × t</code>
+            <p class="f-note">In kWh: Watt ÷ 1.000 × Stunden. 200 W × 24 h = 4,8 kWh/Tag.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">USV-Überbrückungszeit (Näherung)</div>
+            <code>t ≈ Akku-Energie [Wh] × Wirkungsgrad ÷ Last [W]</code>
+            <p class="f-note">
+              Praxis: Herstellerkennlinie nutzen – die Zeit sinkt überproportional mit der Last.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Reihen-/Parallelschaltung</div>
+            <code>Reihe: R = R₁ + R₂ · Parallel: 1/R = 1/R₁ + 1/R₂</code>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-dreisatz-und-prozentrechnung">Dreisatz &amp; Prozentrechnung</h2>
+          <div class="f-row">
+            <div class="fname">Grundformeln</div>
+            <code
+              >Prozentwert = Grundwert × p % · Grundwert = Prozentwert ÷ p % · p % = Prozentwert ÷
+              Grundwert</code
+            >
+          </div>
+          <div class="f-row">
+            <div class="fname">Vermehrter / verminderter Grundwert</div>
+            <code>Neu = Grundwert × (1 ± p %)</code>
+            <p class="f-note">
+              Rückwärts: Grundwert = Neu ÷ (1 ± p %) – klassische Falle bei „inkl. 19 % USt“.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Dreisatz</div>
+            <code>1. auf Einheit rechnen (÷) · 2. auf Zielmenge hochrechnen (×)</code>
+            <p class="f-note">
+              Bei umgekehrter Proportionalität (mehr Maschinen → weniger Zeit) kehrt sich der zweite
+              Schritt um.
+            </p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-produktivitaet-wirtschaftlichkeit-re">
+            Produktivität, Wirtschaftlichkeit, Rentabilität
+          </h2>
+          <div class="f-row">
+            <div class="fname">Produktivität</div>
+            <code>Produktivität = Output ÷ Input</code>
+            <p class="f-note">Mengen! z. B. 120 Tickets ÷ 8 h = 15 Tickets/h.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Wirtschaftlichkeit</div>
+            <code>Wirtschaftlichkeit = Ertrag ÷ Aufwand</code>
+            <p class="f-note">Werte in €. &gt; 1 = wirtschaftlich.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Umsatzrentabilität</div>
+            <code>UR = Gewinn ÷ Umsatz × 100 %</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Eigenkapitalrentabilität</div>
+            <code>EKR = Gewinn ÷ Eigenkapital × 100 %</code>
+            <p class="f-note">
+              Vergleich mit Marktzins beantwortet: lohnt das eingesetzte Kapital?
+            </p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-lager-und-personal-wiso">Lager &amp; Personal (WISO)</h2>
+          <div class="f-row">
+            <div class="fname">Durchschnittlicher Lagerbestand</div>
+            <code>Ø Bestand = (Anfangsbestand + Endbestand) ÷ 2</code>
+            <p class="f-note">Genauer: (AB + 12 Monatsendbestände) ÷ 13.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Umschlagshäufigkeit</div>
+            <code>UH = Jahresverbrauch ÷ Ø Bestand</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Durchschnittliche Lagerdauer</div>
+            <code>Lagerdauer = 360 ÷ UH</code>
+            <p class="f-note">Hohe UH = kurze Lagerdauer = wenig gebundenes Kapital.</p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Meldebestand</div>
+            <code>Meldebestand = Tagesverbrauch × Lieferzeit + Sicherheitsbestand</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Optimale Bestellmenge (Andler)</div>
+            <code
+              >q = √( 2 × Jahresbedarf × Bestellkosten ÷ (Einstandspreis × Lagerkostensatz) )</code
+            >
+            <p class="f-note">
+              Gleicht Bestellkosten (viele kleine Bestellungen) gegen Lagerkosten (wenige große)
+              aus.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Personalkosten je Stunde</div>
+            <code>Stundensatz = (Brutto + AG-Anteile + Gemeinkosten) ÷ produktive Stunden</code>
+            <p class="f-note">
+              AG-Anteile ~21 %: RV, KV, PV, AV, Umlagen – Azubi-Zeit ist nie „kostenlos“.
+            </p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-statistik-basics">Statistik-Basics</h2>
+          <div class="f-row">
+            <div class="fname">Arithmetisches Mittel</div>
+            <code>x̄ = Summe aller Werte ÷ Anzahl</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Median</div>
+            <code
+              >Werte sortieren → mittlerer Wert (bei gerader Anzahl: Mittel der beiden
+              mittleren)</code
+            >
+            <p class="f-note">
+              Robust gegen Ausreißer – bei „ein Server braucht ewig“ ist der Median ehrlicher als
+              der Mittelwert.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Modus &amp; Spannweite</div>
+            <code>Modus = häufigster Wert · Spannweite = Maximum − Minimum</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Standardabweichung (Grundformel)</div>
+            <code>s = √( Σ(x − x̄)² ÷ n )</code>
+            <p class="f-note">
+              Kleines s = Werte liegen eng am Mittel. Für Stichproben teilt man durch n−1.
+            </p>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-mathe-werkzeugkasten">Mathe-Werkzeugkasten</h2>
+          <div class="f-row">
+            <div class="fname">Gleichung umstellen</div>
+            <code>Auf beiden Seiten dieselbe Operation – Ziel-Größe isolieren</code>
+            <p class="f-note">
+              t = Wh ÷ W entsteht aus Wh = W × t durch Teilen beider Seiten durch W.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">SI-Vorsätze</div>
+            <code
+              >p (10⁻¹²) · n (10⁻⁹) · µ (10⁻⁶) · m (10⁻³) · k (10³) · M (10⁶) · G (10⁹) · T
+              (10¹²)</code
+            >
+            <p class="f-note">
+              Binärpräfixe: Ki = 1.024, Mi = 1.024², Gi = 1.024³ – der ewige MB/MiB-Unterschied.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Wissenschaftliche Notation</div>
+            <code>3,5 × 10⁶ = 3.500.000 · Kommaverschiebung = Exponent</code>
+          </div>
+          <div class="f-row">
+            <div class="fname">Währungsumrechnung</div>
+            <code>Betrag in € = Fremdwährung ÷ Kurs (Kurs = Fremdwährung je 1 €)</code>
+            <p class="f-note">
+              Banken rechnen mit Geld-/Briefkurs: kaufen billiger, verkaufen teurer – Spanne
+              beachten.
+            </p>
+          </div>
+          <div class="f-row">
+            <div class="fname">Sinnvoll runden</div>
+            <code>Erst am ENDE runden – Zwischenwerte mit voller Genauigkeit weiterrechnen</code>
+          </div>
+        </div>
+
+        <div class="card f-card">
+          <h2 id="f-ihk-notenschluessel">IHK-Notenschlüssel</h2>
+          <div class="f-row">
+            <code>100–92 = 1 · 91–81 = 2 · 80–67 = 3 · 66–50 = 4 · 49–30 = 5 · 29–0 = 6</code>
+            <p class="f-note">
+              50 Punkte = bestanden. Der komplette Rechner steckt im Notentracker auf dem Dashboard.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        if (window.buildJumpNav)
+          buildJumpNav(
+            [...document.querySelectorAll("#main h2[id^='f-']")].map((h) => ({
+              id: h.id,
+              label: h.textContent.trim().replace(/\s+/g, " "),
+            }))
+          );
+        breadcrumbs([{ label: "Formelsammlung" }]);
+      };
+    </script>
+  </body>
+</html>

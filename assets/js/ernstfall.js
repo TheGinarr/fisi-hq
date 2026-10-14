@@ -1,0 +1,396 @@
+window.ERNSTFALL = [
+  {
+    id: "restore",
+    titel: "Serverausfall Montagmorgen: Restore unter Druck",
+    start: "07:52",
+    rto: 240,
+    intro:
+      "Montag, 07:52 Uhr. Du bist allein im Büro, dein Kollege ist krank. Das Monitoring meldet: Dateiserver FS01 antwortet nicht. Um 08:30 beginnen 45 Mitarbeitende zu arbeiten – die Auftragsdaten liegen auf FS01. Der Wartungsvertrag nennt eine RTO von 4 Stunden. Jede Entscheidung kostet simulierte Zeit. Du hast pro Schritt 75 echte Sekunden – wer zögert, verliert Sim-Zeit.",
+    schritte: [
+      {
+        txt: "Der Monitor zeigt: FS01 DOWN seit 07:49. Was tust du ZUERST?",
+        log: "CRITICAL fs01 ping timeout (3/3)\nCRITICAL fs01 smb share unreachable",
+        opts: [
+          {
+            t: "Sofort in den Serverraum und den Server hart neu starten",
+            min: 10,
+            score: 0,
+            fb: "Blinder Neustart zerstört ggf. Beweise und kann ein RAID im Rebuild endgültig kippen. Erst Zustand erfassen!",
+            next: 1,
+          },
+          {
+            t: "Zustand erfassen: Konsole/iLO aufrufen, LEDs und Fehlerbild prüfen",
+            min: 6,
+            score: 2,
+            fb: "Richtig: Erst Diagnose, dann Aktion – die Management-Konsole zeigt den Zustand ohne Risiko.",
+            next: 1,
+          },
+          {
+            t: "Erst mal Kaffee holen und um 8 Uhr schauen, vielleicht erholt er sich",
+            min: 25,
+            score: 0,
+            fb: "Ein CRITICAL wartet nicht. 25 Minuten verloren.",
+            next: 1,
+          },
+        ],
+      },
+      {
+        txt: "Die iLO-Konsole zeigt: RAID-Controller meldet 2 von 4 Platten ausgefallen (RAID 5). Das Array ist offline. Was bedeutet das – und was folgt daraus?",
+        log: "iLO: Smart Array P440\nLogical Drive 1 (RAID 5, 4x 4TB): FAILED\nPhysical Drive 1I:1:2 FAILED\nPhysical Drive 1I:1:4 FAILED",
+        opts: [
+          {
+            t: "RAID 5 verkraftet 2 Ausfälle – Rebuild starten",
+            min: 15,
+            score: 0,
+            fb: "Falsch: RAID 5 verkraftet genau EINEN Ausfall. Bei zwei Platten sind die Daten auf dem Array verloren – jetzt zählt nur noch das Backup.",
+            next: 2,
+          },
+          {
+            t: "Array ist verloren. Jetzt zählt das Backup – Sicherungsstand prüfen, BEVOR ich etwas anfasse",
+            min: 6,
+            score: 2,
+            fb: "Korrekt: 2 Ausfälle bei RAID 5 = Datenverlust auf dem Array. Der Restore-Plan beginnt mit der Frage: Was habe ich wovon?",
+            next: 2,
+          },
+          {
+            t: "Beide Platten ziehen und wieder stecken – vielleicht nur Kontaktfehler",
+            min: 12,
+            score: 1,
+            fb: "In seltenen Fällen legitim (nach Doku!), aber riskant und hier Zeitverschwendung: Der Controller hat die Platten als FAILED markiert.",
+            next: 2,
+          },
+        ],
+      },
+      {
+        txt: "08:04 Uhr. Das Telefon klingelt: der Geschäftsführer. „Warum geht nichts?! Wie lange dauert das?!“ Deine Antwort?",
+        anruf: true,
+        opts: [
+          {
+            t: "„Keine Panik, wird schon wieder, ich bin dran.“",
+            min: 2,
+            score: 0,
+            fb: "Beschwichtigen ohne Fakten zerstört Vertrauen – er ruft in 20 Minuten wieder an.",
+            next: 3,
+          },
+          {
+            t: "„FS01 hat einen Doppel-Plattenausfall, ich stelle aus der Sicherung wieder her. Erste Zwischenmeldung um 08:30, geplante Wiederherstellung bis 11 Uhr. Bitte informieren Sie die Teamleiter, dass Auftragsdaten bis dahin nicht erreichbar sind.“",
+            min: 4,
+            score: 3,
+            fb: "Stark: Fakten, Prognose, klarer nächster Kontaktpunkt UND ein Arbeitsauftrag an ihn – so sieht Ernstfall-Kommunikation aus (Vier-Ohren: Sachebene + Appell).",
+            next: 3,
+          },
+          {
+            t: "„Ich habe jetzt keine Zeit zum Telefonieren!“ – auflegen",
+            min: 1,
+            score: 0,
+            fb: "Sachlich fast verständlich, politisch ein Desaster: Ohne Information eskaliert er – und stört dich alle 10 Minuten.",
+            next: 3,
+          },
+        ],
+      },
+      {
+        txt: "Backup-Lage prüfen: Der Sicherungsserver zeigt den Bestand. Welcher Wiederherstellungsweg ist richtig?",
+        log: "Backup-Katalog FS01:\n  VOLL     So 03:00  OK   (4,1 TB)\n  INKR     Mo --:--  FEHLT (Job lief noch nicht)\n  INKR     Fr 22:00  OK\n  INKR     Do 22:00  OK\n  INKR     Mi 22:00  OK\nLetzte erfolgreiche Sicherung: So 03:00 (Voll)",
+        opts: [
+          {
+            t: "Voll (So) + alle Inkremente Mi–Fr zurückspielen",
+            min: 20,
+            score: 0,
+            fb: "Die Inkremente Mi–Fr gehören zur VORWOCHE – sie sind älter als die Vollsicherung von Sonntag und damit überflüssig. 20 Minuten in falsche Jobs versenkt.",
+            next: 4,
+          },
+          {
+            t: "Nur die Vollsicherung von Sonntag 03:00 – sie ist der jüngste Stand",
+            min: 8,
+            score: 2,
+            fb: "Richtig: Die Voll vom Sonntag IST der aktuellste Sicherungsstand. Datenverlust: Sonntag 03:00 bis Montagmorgen – zum Glück Wochenende, real also fast nichts.",
+            next: 4,
+          },
+          {
+            t: "Erst neue Platten bestellen und das RAID wieder aufbauen, dann über Restore nachdenken",
+            min: 30,
+            score: 0,
+            fb: "Hardware-Ersatz JA, aber parallel! Die Nutzer brauchen DATEN, nicht das alte Blech – Restore auf Ausweichsystem geht sofort.",
+            next: 4,
+          },
+        ],
+      },
+      {
+        txt: "Wohin stellst du wieder her? FS01-Hardware ist tot, Ersatzplatten kommen frühestens morgen.",
+        opts: [
+          {
+            t: "Als VM auf den Virtualisierungshost – Speicher ist frei, SMB-Freigaben lassen sich dort sofort bereitstellen",
+            min: 45,
+            score: 3,
+            fb: "Beste Wahl: Ausweichbetrieb als VM entkoppelt die Wiederherstellung von der defekten Hardware. Genau dafür ist Virtualisierung da.",
+            next: 5,
+          },
+          {
+            t: "Auf deinen Admin-PC – der hat eine 6-TB-Platte",
+            min: 40,
+            score: 0,
+            fb: "Ein Arbeitsplatz-PC als Produktiv-Fileserver: keine Redundanz, kein Backup-Agent, Sicherheitsalbtraum. Notlösung höchstens für einzelne Dateien.",
+            next: 5,
+          },
+          {
+            t: "Warten bis morgen auf die Ersatzplatten und dann auf FS01 wiederherstellen",
+            min: 0,
+            score: 0,
+            fb: "Das reißt die RTO (4 h) um einen ganzen Tag. 45 Leute × 8 h Stillstand – wirtschaftlich indiskutabel.",
+            next: 5,
+            strafe: 600,
+          },
+        ],
+      },
+      {
+        txt: "09:35 Uhr. Der Restore läuft (4,1 TB, noch ~90 Minuten). Eine Teamleiterin steht am Platz: „Können Sie nicht schnell WENIGSTENS den Ordner ‚Aufträge_aktuell‘ zuerst freigeben?“",
+        anruf: true,
+        opts: [
+          {
+            t: "„Nein, Sie müssen warten wie alle.“",
+            min: 2,
+            score: 0,
+            fb: "Sachlich vertretbar, kommunikativ verschenkt – und fachlich falsch: Priorisierter Restore einzelner Ordner ist möglich.",
+            next: 6,
+          },
+          {
+            t: "„Gute Idee – ich ziehe den Ordner im Restore vor. Geben Sie mir 15 Minuten, ich melde mich bei Ihnen.“ Ordner-Restore priorisieren",
+            min: 15,
+            score: 3,
+            fb: "Stark: Business-Prioritäten steuern den Restore. Der wichtigste Ordner zuerst reduziert den Schaden, während der Rest weiterläuft.",
+            next: 6,
+          },
+          {
+            t: "Den Gesamt-Restore abbrechen und nur diesen Ordner wiederherstellen",
+            min: 25,
+            score: 1,
+            fb: "Abbrechen kostet den Fortschritt des Gesamtjobs – Vorziehen ging auch ohne Abbruch. Trotzdem besser als Ignorieren.",
+            next: 6,
+          },
+        ],
+      },
+      {
+        txt: "11:10 Uhr. Restore abgeschlossen. Was kommt VOR der Freigabe an alle?",
+        opts: [
+          {
+            t: "Sofort Mail an alle: „Alles wieder da!“",
+            min: 5,
+            score: 0,
+            fb: "Und wenn die Freigaben-Rechte fehlen oder Dateien korrupt sind? Erst prüfen, dann verkünden – Ehrlichkeitsregel.",
+            next: 7,
+          },
+          {
+            t: "Stichproben-Verifikation: Testdateien öffnen, Rechte/Freigaben prüfen, eine Nutzerin testen lassen – dann strukturierte Info an alle",
+            min: 15,
+            score: 3,
+            fb: "Genau: Verifizierter Restore + kontrollierte Freigabe + klare Kommunikation (was geht wieder, was ist zu beachten, wohin bei Problemen).",
+            next: 7,
+          },
+          {
+            t: "Erstmal Mittagspause – war ein harter Vormittag",
+            min: 45,
+            score: 0,
+            fb: "Verständlich, aber die Firma steht seit 3 Stunden. Pause NACH der Freigabe.",
+            next: 7,
+          },
+        ],
+      },
+      {
+        txt: "Nachspiel: Der Ausfall ist überstanden. Welche DREI Punkte gehören jetzt ins Incident-Nachspiel? (Wähle das beste Paket)",
+        opts: [
+          {
+            t: "Haken dran, weiterarbeiten – Hauptsache es läuft wieder",
+            min: 0,
+            score: 0,
+            fb: "Wer nicht nacharbeitet, erlebt denselben Ausfall wieder – und diesmal ohne Glück beim Backup-Stand.",
+            next: -1,
+          },
+          {
+            t: "Incident-Doku (Zeitleiste, Ursache, Maßnahmen) + Ersatzhardware/RAID 6 beschaffen + Lessons Learned: Monitoring für RAID-Zustand & Backup-Alarme schärfen, Restore-Test einplanen",
+            min: 10,
+            score: 3,
+            fb: "Das vollständige Paket: dokumentieren, Ursache dauerhaft beheben, Frühwarnung verbessern. DAS unterscheidet Profis von Glückspilzen.",
+            next: -1,
+          },
+          {
+            t: "Dem Chef eine lange Entschuldigungsmail schreiben",
+            min: 10,
+            score: 1,
+            fb: "Ein sachlicher Abschlussbericht ist richtig – Entschuldigungen ersetzen aber keine Maßnahmen.",
+            next: -1,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "ransom",
+    titel: "Ransomware 14:32: Der Wettlauf",
+    start: "14:32",
+    rto: 360,
+    intro:
+      "Dienstag, 14:32 Uhr. Eine Kollegin ruft: „Auf meinem Bildschirm steht, alle Dateien sind verschlüsselt – soll ich den Link anklicken?“ Auf dem Abteilungs-Share tauchen Dateien mit Endung .locked auf. Du bist der Admin vom Dienst. Jede Minute zählt – die Verschlüsselung LÄUFT NOCH.",
+    schritte: [
+      {
+        txt: "Erste Reaktion – die Verschlüsselung frisst sich gerade durch das Share:",
+        log: "\\\\fs01\\vertrieb: 12.407 Dateien geändert in 9 min\nangebot_2026.xlsx -> angebot_2026.xlsx.locked\nREADME_RESTORE.txt neu in 34 Ordnern",
+        opts: [
+          {
+            t: "Den betroffenen PC der Kollegin sofort vom Netz trennen (LAN/WLAN), PC AN lassen; ihr sagen: nichts anklicken",
+            min: 3,
+            score: 3,
+            fb: "Richtig: Netztrennung stoppt die Ausbreitung, das Gerät bleibt für die Forensik an. Und der Link bleibt unangeklickt.",
+            next: 1,
+          },
+          {
+            t: "Den Fileserver herunterfahren – da liegt der Schaden",
+            min: 5,
+            score: 1,
+            fb: "Stoppt die Verschlüsselung auch, aber härter als nötig: Die QUELLE ist der Client. Server-Shutdown zerstört zudem flüchtige Spuren.",
+            next: 1,
+          },
+          {
+            t: "Erst mal einen Virenscan auf dem PC der Kollegin starten",
+            min: 15,
+            score: 0,
+            fb: "Der Scan läuft Stunden, während die Verschlüsselung weiterfrisst. Erst isolieren, dann analysieren!",
+            next: 1,
+          },
+        ],
+      },
+      {
+        txt: "14:41 Uhr. Ausbreitung gestoppt? Prüfen – und dann die wichtigste Frage:",
+        log: "fs01: Schreibrate normalisiert\nLetzte .locked-Datei: 14:39:12",
+        opts: [
+          {
+            t: "Sofort die BACKUPS prüfen und vom Netz isolieren – sind sie erreichbar/beschreibbar gewesen?",
+            min: 6,
+            score: 3,
+            fb: "DIE Schlüsselfrage: Erreichbare Backups sind das erste Ziel moderner Ransomware. Offline/immutable-Kopien sind jetzt Gold.",
+            next: 2,
+          },
+          {
+            t: "Die README_RESTORE.txt öffnen und schauen, was die Erpresser wollen",
+            min: 5,
+            score: 1,
+            fb: "Kenntnisnahme okay (für die Anzeige), aber Priorität haben die Backups – gezahlt wird ohnehin nicht leichtfertig.",
+            next: 2,
+          },
+          {
+            t: "Alle PCs im Haus herunterfahren lassen, Feierabend für alle",
+            min: 20,
+            score: 1,
+            fb: "Übermaß: Gezielte Eindämmung (betroffenes Segment) schlägt Vollabschaltung – die Firma muss handlungsfähig bleiben.",
+            next: 2,
+          },
+        ],
+      },
+      {
+        txt: "Backup-Befund: Das NAS mit den Tagessicherungen war als Laufwerk B: auf dem befallenen Client gemountet …",
+        log: "nas01\\backup: 2.190 Dateien .locked (Sicherungen Mo+Di!)\nBandlaufwerk: Wochensicherung Fr 22:00 – OFFLINE im Schrank\nCloud-Archiv (immutable, 30 Tage): Stand So 03:00 – INTAKT",
+        opts: [
+          {
+            t: "Panik: „Die Backups sind weg, wir müssen zahlen!“",
+            min: 10,
+            score: 0,
+            fb: "Falsch gelesen: NUR die online erreichbaren Tagessicherungen sind hin. Band (offline) und Cloud-Archiv (immutable) sind intakt – 3-2-1 rettet den Tag.",
+            next: 3,
+          },
+          {
+            t: "Nüchtern bewerten: Band von Freitag + Cloud von Sonntag sind sauber. Schlimmster Datenverlust: Montag+Dienstag. Damit planen",
+            min: 5,
+            score: 3,
+            fb: "Exakt: Die Offline-Komponente war der Sinn der Übung. RPO-Schaden benennen und den Wiederanlauf darauf aufbauen.",
+            next: 3,
+          },
+          {
+            t: "Das NAS sofort formatieren, damit die Verschlüsselung dort aufhört",
+            min: 10,
+            score: 0,
+            fb: "Das NAS ist bereits isoliert – Formatieren vernichtet forensische Spuren und ändert nichts am Befund.",
+            next: 3,
+          },
+        ],
+      },
+      {
+        txt: "14:58 Uhr. Chef, Datenschutz, Meldepflichten – wen musst du jetzt informieren/einbinden?",
+        anruf: true,
+        opts: [
+          {
+            t: "Niemanden – erst alles reparieren, dann reden",
+            min: 5,
+            score: 0,
+            fb: "Bei Ransomware mit möglichem Datenabfluss läuft die 72-h-Uhr der DSGVO (Art. 33). Schweigen kann teurer werden als der Angriff.",
+            next: 4,
+          },
+          {
+            t: "Geschäftsführung sofort (Entscheidungen!), Datenschutzbeauftragten wegen Art.-33-Prüfung (72 h!), und Anzeige/Beratung bei der Polizei (ZAC) vorschlagen; Cyber-Versicherung prüfen",
+            min: 8,
+            score: 3,
+            fb: "Vollständig: Interne Eskalation, Datenschutz-Uhr, Strafverfolgung und Versicherung – Ernstfälle sind Teamsport mit Fristen.",
+            next: 4,
+          },
+          {
+            t: "Eine Rundmail an die ganze Firma mit allen Details und Screenshots der Erpressernachricht",
+            min: 10,
+            score: 1,
+            fb: "Information ja – aber gesteuert: kurze Handlungsanweisung an alle (nichts öffnen, Auffälliges melden), Details nur an den Krisenkreis.",
+            next: 4,
+          },
+        ],
+      },
+      {
+        txt: "Wiederanlauf planen. Der Vertrieb braucht seine Daten, der befallene Client ist isoliert, Einfallstor unklar. Reihenfolge?",
+        opts: [
+          {
+            t: "Restore sofort auf die bestehenden Systeme – Zeit ist Geld",
+            min: 30,
+            score: 0,
+            fb: "Auf möglicherweise kompromittierte Systeme restoren heißt: Der Angreifer verschlüsselt Runde zwei. Erst Einfallstor schließen!",
+            next: 5,
+          },
+          {
+            t: "Erst Einfallstor identifizieren und schließen (Mail-Anhang? Makro? Patch-Stand?), betroffene Systeme neu aufsetzen, DANN Restore aus sauberem Stand (Band/Cloud) mit Malware-Scan",
+            min: 90,
+            score: 3,
+            fb: "Der saubere Weg: Ursache schließen → saubere Basis → verifizierter Restore. Dauert länger, verhindert aber die zweite Welle.",
+            next: 5,
+          },
+          {
+            t: "Zahlung anweisen, die Erpresser liefern bestimmt den Schlüssel",
+            min: 60,
+            score: 0,
+            fb: "Keine Garantie, finanziert Kriminalität, ggf. rechtlich heikel – und das Einfallstor bliebe offen. Zahlung ist allerletztes Mittel einer Geschäftsführungs-Entscheidung, nie deine.",
+            next: 5,
+          },
+        ],
+      },
+      {
+        txt: "17:40 Uhr. Restore läuft, Vertrieb arbeitet eingeschränkt. Das Abschlusspaket für die nächsten Tage?",
+        opts: [
+          {
+            t: "Incident-Report + Passwort-Resets/MFA erzwingen + Awareness-Kurzschulung + Backup-Konzept härten (Tagessicherung ebenfalls offline/immutable) + Monitoring-Regel für Massen-Umbenennungen",
+            min: 15,
+            score: 3,
+            fb: "Das volle Lessons-Learned-Paket – aus dem Vorfall wird dauerhafte Resilienz.",
+            next: -1,
+          },
+          {
+            t: "Dem Vertrieb verbieten, je wieder Anhänge zu öffnen",
+            min: 5,
+            score: 0,
+            fb: "Unrealistisch und am Problem vorbei – Technik (Filter, Makro-Blockierung) + Awareness schlagen Verbote.",
+            next: -1,
+          },
+          {
+            t: "Neuen Virenscanner kaufen und das Thema abschließen",
+            min: 10,
+            score: 1,
+            fb: "Ein Baustein von vielen – ohne Backup-Härtung und Awareness bleibt die Lücke.",
+            next: -1,
+          },
+        ],
+      },
+    ],
+  },
+];

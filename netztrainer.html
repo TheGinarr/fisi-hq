@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Netz- & Subnetting-Trainer – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Subnetting-Aufgaben mit Schritt-für-Schritt-Erklärung, Zufallsgenerator und Netzwerkplanungs-Szenarien."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/videos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="shorts.html">Lern-Snacks</a><a href="lernkarten.html">Lernkarten</a
+          ><a href="formeln.html">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="lernstand.html">Erfolge</a><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Netz- &amp; Subnetting-Trainer</h1>
+        <p class="sub">
+          Der Prüfungsklassiker zum Drillen: Netzadresse, Broadcast, Hostanzahl und Maske bestimmen
+          – mit Rechenweg zu jeder Aufgabe. Grundlagen dazu in der Lektion
+          <a href="lektion.html?id=l201">Subnetting Schritt für Schritt</a>.
+        </p>
+      </div>
+
+      <section class="card" aria-labelledby="h-sub">
+        <h2 id="h-sub">Subnetting-Aufgabe</h2>
+        <div class="chip-row" id="task-picker"></div>
+        <div class="q-box" style="box-shadow: none">
+          <p class="q-title">Gegeben: Host <code id="t-ip">…</code> – bestimme die vier Werte.</p>
+          <div class="grid c2" style="gap: 12px; max-width: 720px">
+            <label
+              >Netzadresse<br /><input
+                class="gap-input"
+                id="in-net"
+                class="w-100"
+                placeholder="z. B. 192.168.1.0"
+                autocomplete="off"
+            /></label>
+            <label
+              >Broadcast-Adresse<br /><input
+                class="gap-input"
+                id="in-bc"
+                class="w-100"
+                placeholder="z. B. 192.168.1.255"
+                autocomplete="off"
+            /></label>
+            <label
+              >Nutzbare Hosts<br /><input
+                class="gap-input"
+                id="in-hosts"
+                class="w-100"
+                placeholder="Anzahl"
+                autocomplete="off"
+            /></label>
+            <label
+              >Subnetzmaske (Punktnotation)<br /><input
+                class="gap-input"
+                id="in-mask"
+                class="w-100"
+                placeholder="z. B. 255.255.255.0"
+                autocomplete="off"
+            /></label>
+          </div>
+          <div class="q-actions">
+            <button class="btn" id="check-subnet">Prüfen</button>
+            <button class="btn ghost" id="new-random">Zufallsaufgabe</button>
+          </div>
+          <div id="subnet-fb"></div>
+        </div>
+      </section>
+
+      <section class="section card" id="rechner" aria-labelledby="h-rechner">
+        <h2 id="h-rechner">Subnetz- &amp; VLSM-Rechner (freie Eingabe)</h2>
+        <p style="font-size: 0.86rem; color: var(--tx3); margin: 0 0 10px">
+          Zum Nachrechnen eigener Aufgaben – erst selbst rechnen, dann prüfen. Läuft komplett lokal
+          im Browser.
+        </p>
+        <div
+          class="gap-grid"
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+          "
+        >
+          <label
+            >IP-Adresse mit Präfix<br /><input
+              class="gap-input w-100"
+              id="rc-ip"
+              placeholder="z. B. 192.168.10.77/26"
+              autocomplete="off"
+          /></label>
+        </div>
+        <div class="q-actions"><button class="btn" id="rc-go">Berechnen</button></div>
+        <div id="rc-out" class="mt-10" aria-live="polite"></div>
+        <h3 class="mt-16" style="font-size: 1rem">VLSM-Aufteilung</h3>
+        <div
+          class="gap-grid"
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+          "
+        >
+          <label
+            >Basisnetz<br /><input
+              class="gap-input w-100"
+              id="vl-netz"
+              placeholder="z. B. 172.16.0.0/22"
+              autocomplete="off"
+          /></label>
+          <label
+            >Benötigte Hosts je Subnetz (Komma)<br /><input
+              class="gap-input w-100"
+              id="vl-hosts"
+              placeholder="z. B. 100, 50, 20, 2"
+              autocomplete="off"
+          /></label>
+        </div>
+        <div class="q-actions"><button class="btn" id="vl-go">Aufteilen</button></div>
+        <div id="vl-out" class="mt-10" aria-live="polite"></div>
+      </section>
+
+      <section class="section card" id="challenge" aria-labelledby="h-chal">
+        <h2 id="h-chal">Subnetting-Challenge (gegen die Uhr, adaptiv)</h2>
+        <p class="text-dim">
+          30 Sekunden pro Frage. Drei richtige in Folge = die Aufgaben werden schwerer (tiefere
+          Präfixe), ein Fehler = wieder leichter. Wie weit kommst du in einer Runde à 10 Fragen?
+        </p>
+        <div class="q-actions">
+          <button class="btn" id="chal-start">Challenge starten</button
+          ><span class="q-progress" id="chal-best"></span>
+        </div>
+        <div id="chal-host" class="mt-12"></div>
+      </section>
+
+      <section class="section card" id="drills" aria-labelledby="h-drill">
+        <h2 id="h-drill">Umrechnungs-Drills: Zahlensysteme &amp; IPv6</h2>
+        <p class="text-dim">
+          Die zwei Fertigkeiten, die in der AP1 einfach sitzen müssen. Endlos-Modus: Nach jeder
+          Antwort kommt sofort die nächste Aufgabe, die Serie zählt mit.
+        </p>
+        <div class="grid c2">
+          <div>
+            <h3 class="fs-100">Binär · Dezimal · Hex</h3>
+            <p id="zs-task" style="font-size: 1.05rem; font-weight: 600"></p>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap">
+              <input
+                id="zs-in"
+                class="gap-input"
+                style="min-width: 160px"
+                autocomplete="off"
+                spellcheck="false"
+                aria-label="Antwort Zahlensystem-Aufgabe"
+              /><button class="btn small" id="zs-ok">Prüfen</button>
+            </div>
+            <p id="zs-fb" style="font-size: 0.9rem; margin-top: 8px" aria-live="polite"></p>
+            <p style="font-size: 0.8rem; color: var(--tx3)">
+              Serie: <strong id="zs-streak">0</strong> richtig in Folge
+            </p>
+          </div>
+          <div>
+            <h3 class="fs-100">IPv6 kürzen / expandieren</h3>
+            <p
+              id="v6-task"
+              style="
+                font-size: 0.98rem;
+                font-weight: 600;
+                font-family: var(--mono);
+                word-break: break-all;
+              "
+            ></p>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap">
+              <input
+                id="v6-in"
+                class="gap-input"
+                style="min-width: 230px; font-family: var(--mono)"
+                autocomplete="off"
+                spellcheck="false"
+                aria-label="Antwort IPv6-Aufgabe"
+              /><button class="btn small" id="v6-ok">Prüfen</button>
+            </div>
+            <p id="v6-fb" style="font-size: 0.9rem; margin-top: 8px" aria-live="polite"></p>
+            <p style="font-size: 0.8rem; color: var(--tx3)">
+              Serie: <strong id="v6-streak">0</strong> richtig in Folge · Regeln: führende Nullen
+              weg, längste Nullfolge (ab 2 Gruppen) einmal als ::
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div id="subnet-video"></div>
+
+      <section class="section card" id="planung" aria-labelledby="h-plan">
+        <h2 id="h-plan">Netzwerkplanung: Szenario-Aufgaben</h2>
+        <p>
+          Zwei realistische Kundenszenarien – entscheide wie im Betrieb. Jede Entscheidung wird
+          fachlich erklärt.
+        </p>
+        <div class="chip-row" id="plan-picker"></div>
+        <div id="plan-brief" class="callout" style="display: none"></div>
+        <div id="plan-host"></div>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      function maskFromPrefix(p) {
+        const m = [];
+        for (let i = 0; i < 4; i++) {
+          const bits = Math.min(8, Math.max(0, p - 8 * i));
+          m.push(256 - Math.pow(2, 8 - bits));
+        }
+        return m.join(".");
+      }
+      function ipToInt(ip) {
+        return ip.split(".").reduce((a, o) => (a << 8) + +o, 0) >>> 0;
+      }
+      function intToIp(n) {
+        return [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join(".");
+      }
+      function calc(ip, prefix) {
+        const i = ipToInt(ip),
+          mask = prefix === 0 ? 0 : (~0 << (32 - prefix)) >>> 0;
+        const net = (i & mask) >>> 0,
+          bc = (net | (~mask >>> 0)) >>> 0;
+        return {
+          net: intToIp(net),
+          bc: intToIp(bc),
+          hosts: Math.max(0, Math.pow(2, 32 - prefix) - 2),
+          mask: maskFromPrefix(prefix),
+        };
+      }
+      window.pageInit = function () {
+        if (window.renderVideoSlot && window.VIDEO_SLOTS && document.getElementById("subnet-video"))
+          renderVideoSlot(document.getElementById("subnet-video"), VIDEO_SLOTS.lessons.l201);
+
+        /* ---------- Umrechnungs-Drills ---------- */
+        (function () {
+          const R = (n) => Math.floor(Math.random() * n);
+          // Zahlensysteme
+          const zsT = document.getElementById("zs-task"),
+            zsI = document.getElementById("zs-in"),
+            zsF = document.getElementById("zs-fb"),
+            zsS = document.getElementById("zs-streak");
+          if (!zsT) return;
+          let zsCur = null,
+            zsStreak = 0;
+          function zsNew() {
+            const n = 1 + R(255);
+            const kind = R(4);
+            zsCur = [
+              {
+                q: "Wandle " + n + " (dezimal) in BINÄR um:",
+                a: n.toString(2),
+                how: n + " = " + n.toString(2) + "₂ (Stellenwerte 128·64·32·16·8·4·2·1 abziehen)",
+              },
+              {
+                q: "Wandle " + n.toString(2) + "₂ (binär) in DEZIMAL um:",
+                a: String(n),
+                how: n.toString(2) + "₂ = " + n + " (gesetzte Stellenwerte addieren)",
+              },
+              {
+                q: "Wandle " + n + " (dezimal) in HEX um:",
+                a: n.toString(16),
+                how:
+                  n +
+                  " = " +
+                  n.toString(16).toUpperCase() +
+                  "₁₆ (durch 16 teilen: " +
+                  Math.floor(n / 16) +
+                  " Rest " +
+                  (n % 16) +
+                  ")",
+              },
+              {
+                q: "Wandle " + n.toString(16).toUpperCase() + "₁₆ (hex) in DEZIMAL um:",
+                a: String(n),
+                how:
+                  n.toString(16).toUpperCase() +
+                  "₁₆ = " +
+                  Math.floor(n / 16) +
+                  "×16 + " +
+                  (n % 16) +
+                  " = " +
+                  n,
+              },
+            ][kind];
+            zsT.textContent = zsCur.q;
+            zsI.value = "";
+            zsF.textContent = "";
+          }
+          function zsCheck() {
+            const v = zsI.value.trim().toLowerCase().replace(/^0x/, "").replace(/\s/g, "");
+            if (!v) return;
+            if (v === zsCur.a.toLowerCase()) {
+              zsStreak++;
+              zsF.innerHTML = '<span style="color:var(--ok)">Richtig.</span>';
+              if (zsStreak && zsStreak % 10 === 0)
+                Gami.addXp(10, "Zahlensystem-Serie: " + zsStreak);
+              setTimeout(zsNew, 700);
+            } else {
+              zsStreak = 0;
+              zsF.innerHTML =
+                '<span style="color:var(--err)">Falsch.</span> Lösung: <code>' +
+                zsCur.a +
+                "</code> – " +
+                zsCur.how;
+              setTimeout(zsNew, 3600);
+            }
+            zsS.textContent = zsStreak;
+          }
+          document.getElementById("zs-ok").addEventListener("click", zsCheck);
+          zsI.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") zsCheck();
+          });
+          zsNew();
+          // IPv6
+          const v6T = document.getElementById("v6-task"),
+            v6I = document.getElementById("v6-in"),
+            v6F = document.getElementById("v6-fb"),
+            v6S = document.getElementById("v6-streak");
+          let v6Cur = null,
+            v6Streak = 0;
+          function v6Compress(groups) {
+            // laengste Nullfolge (>=2) einmal durch :: ersetzen, fuehrende Nullen kuerzen
+            const g = groups.map((x) => x.replace(/^0+(?=.)/, ""));
+            let best = -1,
+              bestLen = 0,
+              run = -1,
+              len = 0;
+            for (let i = 0; i < 8; i++) {
+              if (g[i] === "0") {
+                if (run < 0) run = i;
+                len++;
+                if (len > bestLen) {
+                  bestLen = len;
+                  best = run;
+                }
+              } else {
+                run = -1;
+                len = 0;
+              }
+            }
+            if (bestLen < 2) return g.join(":");
+            const left = g.slice(0, best).join(":"),
+              right = g.slice(best + bestLen).join(":");
+            return (left || "") + "::" + (right || "");
+          }
+          function v6Expand(groups) {
+            return groups.map((x) => x.padStart(4, "0")).join(":");
+          }
+          function v6New() {
+            // realistische Adresse mit Nullblock erzeugen
+            const g = [];
+            const zStart = 1 + R(4),
+              zLen = 2 + R(3);
+            for (let i = 0; i < 8; i++) {
+              if (i >= zStart && i < zStart + zLen) g.push("0000");
+              else if (R(4) === 0) g.push("00" + (R(15) + 1).toString(16) + R(16).toString(16));
+              else g.push((R(0xefff) + 0x1000).toString(16).padStart(4, "0"));
+            }
+            const full = g.join(":"),
+              short = v6Compress(g);
+            v6Cur =
+              R(2) === 0
+                ? { q: "KÜRZE maximal: " + full, a: short }
+                : { q: "EXPANDIERE vollständig: " + short, a: v6Expand(g) };
+            v6T.textContent = v6Cur.q;
+            v6I.value = "";
+            v6F.textContent = "";
+          }
+          function v6Check() {
+            const v = v6I.value.trim().toLowerCase().replace(/\s/g, "");
+            if (!v) return;
+            if (v === v6Cur.a.toLowerCase()) {
+              v6Streak++;
+              v6F.innerHTML = '<span style="color:var(--ok)">Richtig.</span>';
+              if (v6Streak && v6Streak % 10 === 0) Gami.addXp(10, "IPv6-Serie: " + v6Streak);
+              setTimeout(v6New, 700);
+            } else {
+              v6Streak = 0;
+              v6F.innerHTML =
+                '<span style="color:var(--err)">Falsch.</span> Lösung: <code>' +
+                v6Cur.a +
+                "</code>";
+              setTimeout(v6New, 3600);
+            }
+            v6S.textContent = v6Streak;
+          }
+          document.getElementById("v6-ok").addEventListener("click", v6Check);
+          v6I.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") v6Check();
+          });
+          v6New();
+        })();
+
+        /* ---------- Subnetting-Challenge: adaptiv + Countdown ---------- */
+        (function () {
+          const host = document.getElementById("chal-host"),
+            bestEl = document.getElementById("chal-best"),
+            startBtn = document.getElementById("chal-start");
+          const best = () => Store.get("netzChallengeBest", 0);
+          const showBest = () => (bestEl.textContent = best() ? "Bestwert: " + best() + "/10" : "");
+          showBest();
+          const R = (n) => Math.floor(Math.random() * n);
+          function ipToInt(ip) {
+            return ip.split(".").reduce((a, o) => (a << 8) + +o, 0) >>> 0;
+          }
+          function intToIp(n) {
+            return [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join(".");
+          }
+          function makeQ(diff) {
+            // diff 0..2
+            const prefixPool =
+              diff === 0
+                ? [24, 25, 26]
+                : diff === 1
+                  ? [22, 23, 26, 27, 28]
+                  : [20, 21, 27, 28, 29, 30];
+            const p = prefixPool[R(prefixPool.length)];
+            const base = (10 << 24) + (R(200) << 16) + (R(250) << 8) + R(250);
+            const mask = p === 0 ? 0 : (0xffffffff << (32 - p)) >>> 0;
+            const net = (base & mask) >>> 0,
+              bc = (net | (~mask >>> 0)) >>> 0;
+            const kinds = [
+              ["Wie lautet die NETZADRESSE von " + intToIp(base) + "/" + p + "?", intToIp(net)],
+              [
+                "Wie lautet die BROADCAST-Adresse von " + intToIp(base) + "/" + p + "?",
+                intToIp(bc),
+              ],
+              [
+                "Wie viele nutzbare HOSTS hat ein /" + p + "-Netz?",
+                String(p >= 31 ? 0 : Math.pow(2, 32 - p) - 2),
+              ],
+              [
+                "Wie lautet der ERSTE nutzbare Host in " + intToIp(base) + "/" + p + "?",
+                intToIp(net + 1),
+              ],
+              ["Wie lautet die SUBNETZMASKE für /" + p + "?", intToIp(mask)],
+            ];
+            const k = kinds[R(kinds.length)];
+            return { q: k[0], a: k[1] };
+          }
+          startBtn.addEventListener("click", () => {
+            startBtn.disabled = true;
+            let i = 0,
+              ok = 0,
+              streak = 0,
+              diff = 0,
+              timer = null;
+            function ask() {
+              if (i >= 10) return done();
+              const q = makeQ(diff);
+              let left = 30;
+              host.innerHTML =
+                '<p class="fw-600">Frage ' +
+                (i + 1) +
+                '/10 <span style="color:var(--tx3);font-weight:400">(Stufe ' +
+                ["leicht", "mittel", "schwer"][diff] +
+                ')</span> · <span id="chal-t" class="mono">30 s</span></p>' +
+                '<p style="font-size:1.02rem">' +
+                q.q +
+                "</p>" +
+                '<div style="display:flex;gap:8px;flex-wrap:wrap"><input id="chal-in" class="gap-input" style="min-width:190px" autocomplete="off" placeholder="Antwort"><button class="btn small" id="chal-ok">Prüfen</button></div>' +
+                '<div id="chal-fb" style="margin-top:8px;font-size:.92rem" aria-live="polite"></div>';
+              const inp = document.getElementById("chal-in");
+              inp.focus();
+              const tEl = document.getElementById("chal-t");
+              timer = setInterval(() => {
+                left--;
+                tEl.textContent = left + " s";
+                if (left <= 0) submit(true);
+              }, 1000);
+              function submit(timeout) {
+                clearInterval(timer);
+                const val = (inp.value || "").trim().replace(/\s+/g, "");
+                const good = !timeout && val === q.a;
+                if (good) {
+                  ok++;
+                  streak++;
+                  if (streak >= 3 && diff < 2) {
+                    diff++;
+                    streak = 0;
+                  }
+                } else {
+                  streak = 0;
+                  if (diff > 0) diff--;
+                }
+                document.getElementById("chal-fb").innerHTML = good
+                  ? '<span style="color:var(--ok)">Richtig.</span>'
+                  : '<span style="color:var(--err)">' +
+                    (timeout ? "Zeit abgelaufen." : "Falsch.") +
+                    "</span> Lösung: <code>" +
+                    q.a +
+                    "</code>";
+                document.getElementById("chal-ok").disabled = true;
+                inp.disabled = true;
+                i++;
+                setTimeout(ask, good ? 900 : 2400);
+              }
+              document.getElementById("chal-ok").addEventListener("click", () => submit(false));
+              inp.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") submit(false);
+              });
+            }
+            function done() {
+              const nb = Math.max(best(), ok);
+              Store.set("netzChallengeBest", nb);
+              if (ok >= 3) Store.set("subnetSolved", Store.get("subnetSolved", 0) + 3);
+              host.innerHTML =
+                '<div class="m-note" style="border-left:3px solid var(--ac);background:var(--bg3);padding:10px 12px;border-radius:0 3px 3px 0"><strong>Runde beendet: ' +
+                ok +
+                "/10 richtig.</strong> " +
+                (ok >= 8
+                  ? "Stark – Subnetting sitzt."
+                  : ok >= 5
+                    ? "Solide Basis – die schweren Stufen kommen mit Übung."
+                    : "Nimm dir den Lösungsweg oben im Trainer noch einmal vor, dann klappt die nächste Runde besser.") +
+                (nb === ok && ok > 0 ? " Neuer Bestwert!" : "") +
+                "</div>";
+              startBtn.disabled = false;
+              showBest();
+              if (ok > 0) Gami.addXp(ok * 3, "Subnetting-Challenge: " + ok + "/10");
+            }
+            ask();
+          });
+        })();
+
+        breadcrumbs([{ label: "Netz- & Subnetting-Trainer" }]);
+        let current = null;
+        const fb = document.getElementById("subnet-fb");
+        function load(t) {
+          current = t;
+          document.getElementById("t-ip").textContent = t.ip + "/" + t.prefix;
+          ["in-net", "in-bc", "in-hosts", "in-mask"].forEach(
+            (id) => (document.getElementById(id).value = "")
+          );
+          fb.innerHTML = "";
+          document
+            .querySelectorAll("#task-picker .chip")
+            .forEach((c) => c.setAttribute("aria-pressed", c.dataset.id === t.id));
+        }
+        const picker = document.getElementById("task-picker");
+        picker.innerHTML = DATA.subnet
+          .map(
+            (t, i) =>
+              `<button class="chip" data-id="${t.id}" aria-pressed="false">Aufgabe ${i + 1}</button>`
+          )
+          .join("");
+        picker
+          .querySelectorAll(".chip")
+          .forEach((c) =>
+            c.addEventListener("click", () => load(DATA.subnet.find((t) => t.id === c.dataset.id)))
+          );
+        load(DATA.subnet[0]);
+
+        document.getElementById("new-random").addEventListener("click", () => {
+          const prefix = 25 + Math.floor(Math.random() * 6); // /25–/30
+          const ip = [
+            [10, 172, 192][Math.floor(Math.random() * 3)],
+            Math.floor(Math.random() * 255),
+            Math.floor(Math.random() * 255),
+            1 + Math.floor(Math.random() * 253),
+          ];
+          if (ip[0] === 172) ip[1] = 16 + Math.floor(Math.random() * 16);
+          if (ip[0] === 192) ip[1] = 168;
+          const ips = ip.join(".");
+          const a = calc(ips, prefix);
+          load({
+            id: "rnd",
+            ip: ips,
+            prefix,
+            net: a.net,
+            bc: a.bc,
+            hosts: a.hosts,
+            mask: a.mask,
+            steps: `Maske /${prefix} = ${a.mask}. Schrittweite im letzten belegten Oktett bestimmen (256 − Maskenwert), Block finden, erste Adresse = Netz, letzte = Broadcast. Hosts: 2^${32 - prefix} − 2 = ${a.hosts}.`,
+          });
+          toast("Neue Zufallsaufgabe geladen");
+        });
+
+        document.getElementById("check-subnet").addEventListener("click", () => {
+          const v = (id) => document.getElementById(id).value.trim();
+          const results = [
+            { l: "Netzadresse", ok: v("in-net") === current.net, soll: current.net },
+            { l: "Broadcast", ok: v("in-bc") === current.bc, soll: current.bc },
+            {
+              l: "Nutzbare Hosts",
+              ok: v("in-hosts") === String(current.hosts),
+              soll: current.hosts,
+            },
+            { l: "Maske", ok: v("in-mask") === current.mask, soll: current.mask },
+          ];
+          const all = results.every((r) => r.ok);
+          Progress.quizStat("Subnetting", all);
+          if (all) {
+            Store.set("subnetSolved", Store.get("subnetSolved", 0) + 1);
+            Gami.addXp(25, "Subnetting-Aufgabe gelöst");
+            Gami.checkBadges();
+          }
+          fb.innerHTML = `<div class="q-feedback ${all ? "good" : "bad"}" role="status">
+      <strong>${all ? "Alles richtig – sauber gerechnet!" : "Noch nicht ganz."}</strong>
+      <table class="tbl"><tr><th>Wert</th><th>Deine Antwort</th><th>Richtig</th></tr>
+      ${results.map((r, i) => `<tr><td>${r.l} ${r.ok ? "✓" : "✗"}</td><td>${esc(v(["in-net", "in-bc", "in-hosts", "in-mask"][i])) || "–"}</td><td><code>${r.soll}</code></td></tr>`).join("")}</table>
+      <p><strong>Rechenweg:</strong> ${current.steps}</p>
+      ${all ? "" : "<p><strong>Tipp:</strong> Bestimme zuerst die Schrittweite (256 − Maskenwert) und zähle die Blöcke ab. Versuch danach eine ähnliche Aufgabe – Wiederholung macht den Meister.</p>"}
+    </div>`;
+        });
+
+        /* ---- Planung ---- */
+        const pp = document.getElementById("plan-picker");
+        pp.innerHTML = DATA.planning
+          .map(
+            (p) => `<button class="chip" data-id="${p.id}" aria-pressed="false">${p.title}</button>`
+          )
+          .join("");
+        const brief = document.getElementById("plan-brief"),
+          phost = document.getElementById("plan-host");
+        pp.querySelectorAll(".chip").forEach((c) =>
+          c.addEventListener("click", () => {
+            pp.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", x === c));
+            const p = DATA.planning.find((x) => x.id === c.dataset.id);
+            brief.style.display = "block";
+            brief.innerHTML = `<span class="ct">Kundenszenario</span>${p.brief}`;
+            const qs_ = p.steps.map((s, i) => ({
+              id: p.id + "_" + i,
+              topic: "Netzwerkplanung",
+              rel: "med",
+              type: "single",
+              q: s.text,
+              options: s.options,
+              correct: s.correct,
+              explain: s.explain,
+              xp: 15,
+            }));
+            runQuiz(qs_, phost, {
+              onDone(r) {
+                if (r.pct === 100) {
+                  Store.set("plan_" + p.id, true);
+                  Gami.addXp(p.reward, "Planungsszenario gemeistert");
+                }
+              },
+            });
+            phost.scrollIntoView({ behavior: "smooth" });
+          })
+        );
+        if (location.hash === "#planung") document.getElementById("planung").scrollIntoView();
+      };
+    </script>
+    <script>
+      /* Subnetz- & VLSM-Rechner: eigenstaendig, kein Eingriff in pageInit */
+      document.addEventListener("DOMContentLoaded", function () {
+        const ip2n = (ip) => ip.split(".").reduce((a, o) => (a << 8) + +o, 0) >>> 0;
+        const n2ip = (n) => [24, 16, 8, 0].map((s) => (n >>> s) & 255).join(".");
+        const maske = (p) => (p === 0 ? 0 : (0xffffffff << (32 - p)) >>> 0);
+        const gueltig = (ip) =>
+          /^(\d{1,3}\.){3}\d{1,3}$/.test(ip) && ip.split(".").every((o) => +o <= 255);
+        function rechne(ipStr, p) {
+          const m = maske(p),
+            netz = (ip2n(ipStr) & m) >>> 0,
+            bc = (netz | (~m >>> 0)) >>> 0;
+          const hosts = p >= 31 ? (p === 31 ? 2 : 1) : Math.pow(2, 32 - p) - 2;
+          return {
+            netz: n2ip(netz),
+            bc: n2ip(bc),
+            maske: n2ip(m),
+            hosts,
+            erste: p >= 31 ? n2ip(netz) : n2ip(netz + 1),
+            letzte: p >= 31 ? n2ip(bc) : n2ip(bc - 1),
+            netzN: netz,
+          };
+        }
+        const rcBtn = document.getElementById("rc-go");
+        if (rcBtn)
+          rcBtn.addEventListener("click", () => {
+            const out = document.getElementById("rc-out");
+            const v = document.getElementById("rc-ip").value.trim();
+            const m = v.match(/^([\d.]+)\s*\/\s*(\d{1,2})$/);
+            if (!m || !gueltig(m[1]) || +m[2] > 32) {
+              out.innerHTML = '<p class="hint">Bitte im Format 192.168.10.77/26 eingeben.</p>';
+              return;
+            }
+            const r = rechne(m[1], +m[2]);
+            out.innerHTML =
+              '<table class="tbl"><tr><th>Netzadresse</th><th>Broadcast</th><th>Maske</th><th>Nutzbare Hosts</th><th>Erste–letzte IP</th></tr>' +
+              `<tr><td>${r.netz}/${m[2]}</td><td>${r.bc}</td><td>${r.maske}</td><td>${r.hosts.toLocaleString("de-DE")}</td><td>${r.erste} – ${r.letzte}</td></tr></table>` +
+              `<p class="f-note" style="font-size:.82rem;color:var(--tx3)">Rechenweg: Blockgröße = 256 − Maskenwert im betroffenen Oktett; Hosts = 2^${32 - m[2]} − 2.</p>`;
+          });
+        const vlBtn = document.getElementById("vl-go");
+        if (vlBtn)
+          vlBtn.addEventListener("click", () => {
+            const out = document.getElementById("vl-out");
+            const nv = document.getElementById("vl-netz").value.trim();
+            const m = nv.match(/^([\d.]+)\s*\/\s*(\d{1,2})$/);
+            const bedarf = document
+              .getElementById("vl-hosts")
+              .value.split(",")
+              .map((s) => parseInt(s.trim(), 10))
+              .filter((n) => n > 0);
+            if (!m || !gueltig(m[1]) || +m[2] > 30 || !bedarf.length) {
+              out.innerHTML =
+                '<p class="hint">Basisnetz wie 172.16.0.0/22 und Hostzahlen wie „100, 50, 20“ angeben.</p>';
+              return;
+            }
+            const basisP = +m[2];
+            let cursor = (ip2n(m[1]) & maske(basisP)) >>> 0;
+            const ende = (cursor + Math.pow(2, 32 - basisP)) >>> 0;
+            const sortiert = bedarf.slice().sort((a, b) => b - a);
+            const zeilen = [];
+            for (const h of sortiert) {
+              let hostbits = 1;
+              while (Math.pow(2, hostbits) - 2 < h) hostbits++;
+              const p = 32 - hostbits,
+                groesse = Math.pow(2, hostbits);
+              if (cursor + groesse > ende) {
+                zeilen.push(
+                  `<tr><td colspan="5">Bedarf ${h} Hosts passt nicht mehr ins Basisnetz!</td></tr>`
+                );
+                break;
+              }
+              const r = rechne(n2ip(cursor), p);
+              zeilen.push(
+                `<tr><td>${h}</td><td>${r.netz}/${p}</td><td>${r.maske}</td><td>${r.erste} – ${r.letzte}</td><td>${(Math.pow(2, hostbits) - 2).toLocaleString("de-DE")}</td></tr>`
+              );
+              cursor = (cursor + groesse) >>> 0;
+            }
+            out.innerHTML =
+              '<table class="tbl"><tr><th>Bedarf</th><th>Subnetz</th><th>Maske</th><th>Bereich</th><th>Nutzbar</th></tr>' +
+              zeilen.join("") +
+              "</table>" +
+              '<p class="f-note" style="font-size:.82rem;color:var(--tx3)">VLSM-Regel: größten Bedarf zuerst zuteilen, jedes Subnetz beginnt am nächsten freien Block.</p>';
+          });
+      });
+    </script>
+  </body>
+</html>

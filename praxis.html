@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Praxis-Trainer – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Interaktive Praxis: simulierte Kommandozeile mit echten Aufgaben (Linux, Windows, Cisco) und realistische Der-Server-ist-down-Missionen mit Bewertung."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+    <style>
+      .task-chip[aria-pressed="true"] {
+        background: var(--ac);
+        color: var(--ac-tx);
+        border-color: var(--ac-strong);
+      }
+      .m-test {
+        display: inline-block;
+        margin: 4px 6px 4px 0;
+      }
+      .m-log {
+        background: var(--code-bg);
+        color: var(--code-tx);
+        font-family: var(--mono);
+        font-size: 0.82rem;
+        padding: 10px 12px;
+        border-radius: 4px;
+        border: 1px solid var(--line-strong);
+        white-space: pre-wrap;
+        margin: 8px 0;
+      }
+      .m-opt {
+        display: block;
+        width: 100%;
+        text-align: left;
+        margin: 6px 0;
+        padding: 9px 12px;
+        border: 1px solid var(--line-strong);
+        border-radius: 3px;
+        background: var(--bg2);
+        color: var(--tx);
+        font-size: 0.92rem;
+        cursor: pointer;
+        font-family: var(--font);
+      }
+      .m-opt:hover {
+        border-color: var(--ac);
+        background: var(--bg3);
+      }
+      .m-opt.ok {
+        border-color: var(--ok);
+        background: rgba(26, 154, 82, 0.13);
+      }
+      .m-opt.bad {
+        border-color: var(--err);
+        background: rgba(210, 59, 59, 0.13);
+      }
+      .m-score {
+        border-left: 3px solid var(--ac);
+        background: var(--bg3);
+        padding: 10px 12px;
+        border-radius: 0 3px 3px 0;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="formeln.html">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="card split-card-accent">
+        <div>
+          <strong>Neu: Ernstfall-Simulator</strong>
+          <p class="sub-note">
+            Serverausfall und Ransomware unter echtem Zeitdruck: Sim-Uhr, Störanrufe vom Chef, 75
+            Sekunden pro Entscheidung – mit Debriefing und Einsatzprotokoll.
+          </p>
+        </div>
+        <a class="btn" href="ernstfall.html">Einsatz starten</a>
+      </div>
+      <div class="page-head">
+        <h1>Praxis-Trainer: Terminal &amp; Support-Missionen</h1>
+        <p class="sub">
+          Simulierte Kommandozeile (Linux, Windows, Cisco) und „Der Server ist down“-Missionen –
+          bewertet nach Treffsicherheit und Arbeitsschritten.
+        </p>
+      </div>
+
+      <section class="section card" aria-labelledby="h-term">
+        <h2 id="h-term">Interaktive Kommandozeile</h2>
+        <p class="text-dim">
+          Wähle eine Aufgabe, tippe Befehle wie am echten System. <code>hilfe</code> zeigt
+          unterstützte Befehle, <code>antwort &lt;lösung&gt;</code> schließt die Aufgabe ab.
+          <span id="term-state"></span>
+        </p>
+        <div class="chip-row" id="task-chips" role="group" aria-label="Aufgabe wählen"></div>
+        <div style="margin: 10px 0 6px"><strong id="task-goal"></strong></div>
+        <div class="term">
+          <div class="term-bar"><span id="term-title">Terminal</span></div>
+          <pre class="term-out" id="term-out"></pre>
+          <div class="term-in">
+            <span class="ps" id="term-ps">$</span
+            ><input
+              id="term-input"
+              autocomplete="off"
+              spellcheck="false"
+              aria-label="Befehl eingeben"
+            />
+          </div>
+        </div>
+        <div class="q-actions" style="margin-top: 8px">
+          <button class="btn small ghost" id="term-hint">Hinweis</button
+          ><button class="btn small ghost" id="term-reset">Aufgabe zurücksetzen</button>
+        </div>
+      </section>
+
+      <section class="section card" aria-labelledby="h-miss">
+        <h2 id="h-miss">„Der Server ist down“-Missionen</h2>
+        <p class="text-dim">
+          Realistische Supportfälle: Erst Tests fahren (jeder Klick zählt als Arbeitsschritt!), dann
+          Ursache benennen, zuletzt dokumentieren. Bewertet werden Treffsicherheit und Effizienz.
+        </p>
+        <div class="chip-row" id="miss-chips" role="group" aria-label="Mission wählen"></div>
+        <div id="miss-host" class="mt-10"></div>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Praxis-Trainer" }]);
+        const esc = window.escHtml;
+
+        /* ================= Interaktive Kommandozeile ================= */
+        const TASKS = [
+          {
+            id: "t1",
+            os: "Linux",
+            ps: "admin@web01:~$",
+            title: "Port 8080 – wer war's?",
+            goal: "Finde heraus, welcher Dienst Port 8080 verwendet. Abschluss: antwort <dienstname>",
+            solution: ["tomcat", "tomcat9", "java/tomcat"],
+            hints: [
+              "Offene Ports samt Prozess zeigt dir ss -tulpn (oder netstat -tulpn).",
+              "In der Zeile mit :8080 steht der Prozess – prüfe ihn mit systemctl status tomcat.",
+            ],
+            cmds: [
+              [
+                /^(sudo )?(ss|netstat) ?-?[a-z]*(\s*\|\s*grep\s*8080)?$/,
+                'Netid  State   Local Address:Port   Process\ntcp    LISTEN  0.0.0.0:22           users:(("sshd",pid=812))\ntcp    LISTEN  127.0.0.1:3306       users:(("mysqld",pid=1044))\ntcp    LISTEN  <span class="t-warn">0.0.0.0:8080</span>         users:(("<span class="t-warn">java</span>",pid=1123))\ntcp    LISTEN  0.0.0.0:80           users:(("nginx",pid=901))',
+              ],
+              [
+                /^ps (aux|-ef)(\s*\|\s*grep\s*(java|1123))?$/,
+                'root      1123  2.1  8.4  java -Djava.util.logging -classpath /usr/share/<span class="t-warn">tomcat9</span>/bin/bootstrap.jar org.apache.catalina.startup.Bootstrap start',
+              ],
+              [
+                /^(sudo )?systemctl status tomcat9?$/,
+                '<span class="t-ok">●</span> tomcat9.service - Apache Tomcat 9 Web Application Server\n   Active: <span class="t-ok">active (running)</span> since Tue 2026-07-14 06:12:44 CEST\n Main PID: 1123 (java)',
+              ],
+              [
+                /^curl( -i)? (http:\/\/)?localhost:8080\/?$/,
+                "HTTP/1.1 200\nServer: Apache Tomcat/9.0",
+              ],
+            ],
+          },
+          {
+            id: "t2",
+            os: "Linux",
+            ps: "root@db01:~#",
+            title: "Die Platte läuft voll",
+            goal: "Der Server meldet 'No space left on device'. Finde das Verzeichnis, das den Platz frisst. Abschluss: antwort <verzeichnis>",
+            solution: ["/var/log", "var/log", "/var/log/", "log"],
+            hints: [
+              "df -h zeigt, welche Partition voll ist.",
+              "Dann mit du -sh /var/* eine Ebene tiefer schauen.",
+            ],
+            cmds: [
+              [
+                /^df( -h)?$/,
+                'Filesystem      Size  Used Avail Use% Mounted on\n/dev/sda2        40G   12G   28G  30% /\n/dev/sda3        20G   20G     0 <span class="t-err">100%</span> <span class="t-warn">/var</span>',
+              ],
+              [
+                /^(sudo )?du -sh \/var\/?\*?$/,
+                '120M  /var/cache\n64K   /var/mail\n<span class="t-err">18G</span>   <span class="t-warn">/var/log</span>\n1,1G  /var/lib',
+              ],
+              [
+                /^(sudo )?du -sh \/var\/log\/?\*?$/,
+                '<span class="t-err">17G</span>  /var/log/app/debug.log\n412M /var/log/journal\n201M /var/log/mysql',
+              ],
+              [
+                /^ls( -lh?a?)? \/var\/log\/?(app\/?)?$/,
+                "drwxr-xr-x app\ndrwxr-xr-x journal\n-rw-r--r-- 17G debug.log",
+              ],
+            ],
+          },
+          {
+            id: "t3",
+            os: "Windows",
+            ps: "PS C:\\Users\\admin>",
+            title: "Wie lautet das Standardgateway?",
+            goal: "Ein Client kommt nicht ins Internet. Ermittle das konfigurierte Standardgateway. Abschluss: antwort <ip-adresse>",
+            solution: ["192.168.10.1"],
+            hints: [
+              "ipconfig /all zeigt die komplette Adapter-Konfiguration.",
+              "Die Zeile 'Standardgateway' ist gesucht.",
+            ],
+            cmds: [
+              [
+                /^ipconfig( \/all)?$/,
+                'Ethernet-Adapter Ethernet0:\n   IPv4-Adresse  . . . . . . : 192.168.10.57\n   Subnetzmaske  . . . . . . : 255.255.255.0\n   <span class="t-warn">Standardgateway . . . . . : 192.168.10.1</span>\n   DNS-Server  . . . . . . . : 192.168.10.10',
+              ],
+              [
+                /^route print$/,
+                'Aktive Routen:\n  0.0.0.0  0.0.0.0  <span class="t-warn">192.168.10.1</span>  192.168.10.57  281',
+              ],
+              [
+                /^ping 192\.168\.10\.1$/,
+                "Antwort von 192.168.10.1: Bytes=32 Zeit&lt;1ms TTL=64 (4/4 empfangen)",
+              ],
+              [
+                /^(tracert|nslookup).*$/,
+                "Nicht nötig für diese Aufgabe – das Gateway steht in der Adapter-Konfiguration.",
+              ],
+            ],
+          },
+          {
+            id: "t4",
+            os: "Cisco IOS",
+            ps: "SW-CORE#",
+            title: "Welcher Port ist down?",
+            goal: "Ein Etagen-Uplink ist tot. Finde das Interface, das down ist (nicht administrativ deaktiviert). Abschluss: antwort <interface>",
+            solution: ["gigabitethernet0/2", "gig0/2", "gi0/2", "g0/2"],
+            hints: [
+              "show ip interface brief zeigt den Status aller Ports.",
+              "'down/down' = Leitungsproblem, 'administratively down' = absichtlich abgeschaltet.",
+            ],
+            cmds: [
+              [
+                /^show ip interface brief$/,
+                'Interface              IP-Address  Status                 Protocol\nGigabitEthernet0/1     unassigned  up                     up\n<span class="t-warn">GigabitEthernet0/2     unassigned  down                   down</span>\nGigabitEthernet0/3     unassigned  administratively down  down\nVlan10                 10.0.10.2   up                     up',
+              ],
+              [
+                /^show interfaces? g(igabitethernet)?0\/2$/,
+                'GigabitEthernet0/2 is <span class="t-err">down</span>, line protocol is down\n  Last input never, output never\n  0 packets input, 0 bytes',
+              ],
+              [
+                /^show (running-config|run).*$/,
+                "interface GigabitEthernet0/2\n description Uplink-Etage2\n switchport mode trunk\n(kein shutdown konfiguriert)",
+              ],
+              [
+                /^show vlan( brief)?$/,
+                "VLAN Name      Status    Ports\n10   Clients   active    Gi0/1\n20   Server    active    Gi0/4",
+              ],
+            ],
+          },
+        ];
+        const tOut = document.getElementById("term-out"),
+          tIn = document.getElementById("term-input"),
+          tPs = document.getElementById("term-ps"),
+          tGoal = document.getElementById("task-goal"),
+          tTitle = document.getElementById("term-title"),
+          tState = document.getElementById("term-state");
+        const tDone = new Set(Store.get("termDone", []));
+        let cur = TASKS[0],
+          hintIdx = 0;
+        const chips = document.getElementById("task-chips");
+        function updState() {
+          tState.textContent = tDone.size + "/" + TASKS.length + " Aufgaben gelöst.";
+        }
+        function drawChips() {
+          chips.innerHTML = TASKS.map(
+            (t) =>
+              '<button class="chip task-chip" data-t="' +
+              t.id +
+              '" aria-pressed="' +
+              (t === cur) +
+              '">' +
+              (tDone.has(t.id) ? "✓ " : "") +
+              esc(t.os + " – " + t.title) +
+              "</button>"
+          ).join("");
+          chips.querySelectorAll("button").forEach((b) =>
+            b.addEventListener("click", () => {
+              cur = TASKS.find((x) => x.id === b.dataset.t);
+              hintIdx = 0;
+              startTask();
+            })
+          );
+        }
+        function print(html) {
+          tOut.innerHTML += html + "\n";
+          tOut.scrollTop = tOut.scrollHeight;
+        }
+        function startTask() {
+          drawChips();
+          updState();
+          tGoal.textContent = "Aufgabe: " + cur.goal;
+          tTitle.textContent = cur.os + " – simulierte Konsole";
+          tPs.textContent = cur.ps;
+          tOut.innerHTML = "";
+          print(
+            '<span class="t-dim">Simulierte ' +
+              esc(cur.os) +
+              '-Konsole. Tipp: erst schauen, dann urteilen. "hilfe" listet Befehle.</span>'
+          );
+        }
+        function supported() {
+          const map = {
+            t1: "ss -tulpn · netstat -tulpn · ps aux · systemctl status tomcat9 · curl localhost:8080",
+            t2: "df -h · du -sh /var/* · du -sh /var/log/* · ls -lh /var/log",
+            t3: "ipconfig /all · route print · ping 192.168.10.1",
+            t4: "show ip interface brief · show interface g0/2 · show run · show vlan brief",
+          };
+          return map[cur.id];
+        }
+        function exec(raw) {
+          const c = raw.trim().replace(/\s+/g, " ");
+          if (!c) return;
+          print('<span class="t-in">' + esc(cur.ps) + " " + esc(c) + "</span>");
+          const lc = c.toLowerCase();
+          if (lc === "hilfe" || lc === "help")
+            return print(
+              '<span class="t-dim">Unterstützt: ' +
+                esc(supported()) +
+                " · antwort &lt;lösung&gt; · aufgabe (Ziel anzeigen) · clear · witz</span>"
+            );
+          if (lc === "aufgabe") return print('<span class="t-dim">' + esc(cur.goal) + "</span>");
+          if (lc === "clear" || lc === "cls") {
+            tOut.innerHTML = "";
+            return;
+          }
+          if (lc === "witz" || lc === "fortune")
+            return print(
+              '<span class="t-warn">' +
+                esc(window.WITZE[Math.floor(Math.random() * window.WITZE.length)]) +
+                "</span>"
+            );
+          if (lc === "sudo make me a sandwich" || lc === "sudo mach mir ein sandwich")
+            return print(
+              '<span class="t-ok">Okay.</span> <span class="t-dim">(make me a sandwich ohne sudo: „Mach es dir doch selbst.“)</span>'
+            );
+          if (lc === "make me a sandwich" || lc === "mach mir ein sandwich")
+            return print('<span class="t-err">Mach es dir doch selbst.</span>');
+          if (lc.startsWith("antwort ")) {
+            const a = lc.slice(8).trim().replace(/\s+/g, "");
+            if (
+              cur.solution.some(
+                (sol) =>
+                  a === sol.replace(/\s+/g, "") ||
+                  (sol.length > 3 && a.includes(sol.replace(/[^a-z0-9\/.]/g, "")))
+              )
+            ) {
+              print('<span class="t-ok">Richtig! Aufgabe gelöst.</span>');
+              if (!tDone.has(cur.id)) {
+                tDone.add(cur.id);
+                Store.set("termDone", [...tDone]);
+                Gami.addXp(15, "Terminal-Aufgabe gelöst");
+              }
+              drawChips();
+              updState();
+            } else
+              print(
+                '<span class="t-err">Das passt noch nicht.</span> <span class="t-dim">Schau dir die Ausgaben genau an oder hole dir einen Hinweis.</span>'
+              );
+            return;
+          }
+          for (const [re, out] of cur.cmds) if (re.test(lc)) return print(out);
+          print(
+            '<span class="t-err">' +
+              esc(c.split(" ")[0]) +
+              ': Kommando in dieser Simulation nicht verfügbar.</span> <span class="t-dim">"hilfe" zeigt, was geht.</span>'
+          );
+        }
+        tIn.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            exec(tIn.value);
+            tIn.value = "";
+          }
+        });
+        document.getElementById("term-hint").addEventListener("click", () => {
+          print(
+            '<span class="t-warn">Hinweis: ' +
+              esc(cur.hints[Math.min(hintIdx, cur.hints.length - 1)]) +
+              "</span>"
+          );
+          hintIdx++;
+        });
+        document.getElementById("term-reset").addEventListener("click", () => {
+          hintIdx = 0;
+          startTask();
+        });
+        startTask();
+
+        /* ================= Server-down-Missionen ================= */
+        const MISSIONS = [
+          {
+            id: "m1",
+            title: "Seit dem Update ist das Netzlaufwerk weg",
+            story:
+              "Montag, 8:05 Uhr. Drei Anrufe in fünf Minuten: „Laufwerk Z: ist weg!“ Am Wochenende wurde der Dateiserver FILESRV gewartet und hat dabei eine neue IP bekommen. Finde die Ursache – mit so wenig Arbeitsschritten wie möglich.",
+            optimal: 3,
+            tests: [
+              {
+                l: "ping 192.168.10.20 (alte Doku-IP)",
+                out: "Zeitüberschreitung der Anforderung (0/4 empfangen).",
+                useful: true,
+              },
+              {
+                l: "ping filesrv",
+                out: "Ping-Anforderung konnte Host filesrv nicht finden.",
+                useful: true,
+              },
+              {
+                l: "nslookup filesrv",
+                out: "Server: dc01.firma.local\nAddress: 192.168.10.10\n*** dc01.firma.local kann filesrv nicht finden: Non-existent domain (NXDOMAIN)",
+                useful: true,
+              },
+              {
+                l: "Client neu starten",
+                out: "Client startet neu … Problem besteht weiterhin. (Das kostete 10 Minuten.)",
+                useful: false,
+              },
+              {
+                l: "Patchkabel am Client tauschen",
+                out: "Kabel getauscht … keine Änderung. Andere Netzdienste laufen ja auch.",
+                useful: false,
+              },
+              {
+                l: "Get-Service LanmanWorkstation (Client)",
+                out: "Status: Running – der SMB-Client läuft normal.",
+                useful: false,
+              },
+            ],
+            causes: [
+              "Der Switchport des Servers ist defekt",
+              "Der DNS-A-Eintrag von FILESRV zeigt noch auf die alte IP / fehlt nach dem IP-Wechsel",
+              "SMB wurde durch das Update deaktiviert",
+              "Die Benutzerkennwörter sind abgelaufen",
+            ],
+            correct: 1,
+            causeExplain:
+              "NXDOMAIN bei nslookup + Namensauflösung schlägt fehl, während das Netz sonst läuft: klassischer DNS-Fehler nach IP-Wechsel. Der A-Record muss auf die neue IP aktualisiert (und ggf. der alte DHCP-Eintrag bereinigt) werden.",
+            docs: [
+              "„DNS war kaputt, habe es repariert.“",
+              "Störung: Zugriff auf \\\\filesrv\\daten ab 14.07. 08:00 gestört (alle Clients). Diagnose: ping/nslookup → NXDOMAIN, Server nach Wartung mit neuer IP. Ursache: veralteter/fehlender DNS-A-Record. Lösung: A-Record filesrv → 192.168.10.24 korrigiert, TTL beachtet, Erreichbarkeit verifiziert. Vorbeugung: DNS-Prüfung in Wartungs-Checkliste aufgenommen.",
+              "Die Ursache lag mal wieder an der Wartung vom Wochenende, Kollege X sollte künftig besser aufpassen. Nach längerer Suche behoben.",
+            ],
+            docCorrect: 1,
+            docExplain:
+              "Gute Doku nennt Symptom, Diagnoseweg, Ursache, Lösung und Vorbeugung – sachlich und nachvollziehbar. Variante 1 ist inhaltsleer, Variante 3 sucht Schuldige statt Lösungen.",
+          },
+          {
+            id: "m2",
+            title: "Der Webshop kriecht – aber nur nachts",
+            story:
+              "Der Kunde meldet: Seit zwei Wochen ist der Webshop jede Nacht zwischen 03:00 und 04:30 Uhr extrem langsam, Bestellabbrüche inklusive. Tagsüber ist alles normal. Finde die Ursache effizient.",
+            optimal: 3,
+            tests: [
+              {
+                l: "Monitoring: Netzwerk-Graph der Nacht ansehen",
+                out: "NIC des Webservers: 03:00–04:30 Uhr konstant 990 MBit/s (Sättigung). CPU/RAM unauffällig.",
+                useful: true,
+              },
+              {
+                l: "crontab -l / Aufgabenplanung prüfen",
+                out: "0 3 * * * /usr/local/bin/backup-full.sh → VOLLBACKUP aller VMs auf das NAS, seit 2 Wochen aktiv (vorher: inkrementell).",
+                useful: true,
+              },
+              {
+                l: "iftop während des Zeitfensters",
+                out: "Top-Verbindung: webserver → nas01, ~980 MBit/s. Backup-Traffic läuft über dasselbe 1-GBit-LAN wie der Shop.",
+                useful: true,
+              },
+              {
+                l: "Webserver sofort neu starten",
+                out: "Neustart um 03:30 … Shop kurz offline, danach genauso langsam. (Kunde not amused.)",
+                useful: false,
+              },
+              {
+                l: "RAM-Erweiterung bestellen",
+                out: "RAM ist laut Monitoring nur zu 40 % belegt – die Bestellung löst nichts.",
+                useful: false,
+              },
+              {
+                l: "DDoS-Verdacht: IP-Ranges sperren",
+                out: "Die Zugriffe kommen aus dem eigenen LAN (nas01) – keine externen Angreifer.",
+                useful: false,
+              },
+            ],
+            causes: [
+              "Zu wenig RAM im Webserver",
+              "Nächtlicher DDoS-Angriff",
+              "Das neue nächtliche Vollbackup sättigt das LAN/die NIC des Webservers",
+              "Die Datenbank hat einen Deadlock",
+            ],
+            correct: 2,
+            causeExplain:
+              "Monitoring + Cron zeigen es klar: Das auf voll umgestellte Backup schiebt stundenlang ~1 GBit/s über dieselbe Leitung wie der Shop. Lösung: Backupfenster/-art anpassen (inkrementell + wöchentlich voll), Bandbreitenlimit setzen oder eigenes Backup-Netz/VLAN nutzen.",
+            docs: [
+              "Störung: Shop-Performance nachts 03:00–04:30 degradiert (seit Umstellung Backup auf täglich voll). Diagnose: Monitoring (NIC-Sättigung), Cron, iftop (webserver→nas01). Ursache: Vollbackup teilt sich das 1-GBit-LAN mit dem Shop. Lösung: Backup auf inkrementell + So. voll umgestellt, Bandbreitenlimit 400 MBit/s, mittelfristig eigenes Storage-VLAN. Wirksamkeit über Monitoring bestätigt.",
+              "„Backup war schuld. Läuft wieder.“",
+              "Wir haben diverse Sachen probiert (Neustart, Firewall, RAM geprüft) und irgendwann lief es wieder besser.",
+            ],
+            docCorrect: 0,
+            docExplain:
+              "Variante 1 dokumentiert Symptom → Diagnose → Ursache → Lösung → Kontrolle. Die anderen sind nicht nachvollziehbar – bei der nächsten Störung fängt jemand wieder bei null an.",
+          },
+        ];
+        const mDone = new Set(Store.get("missDone", []));
+        const mChips = document.getElementById("miss-chips"),
+          mHost = document.getElementById("miss-host");
+        let mCur = MISSIONS[0];
+        function mDraw() {
+          mChips.innerHTML = MISSIONS.map(
+            (m) =>
+              '<button class="chip task-chip" data-m="' +
+              m.id +
+              '" aria-pressed="' +
+              (m === mCur) +
+              '">' +
+              (mDone.has(m.id) ? "✓ " : "") +
+              esc(m.title) +
+              "</button>"
+          ).join("");
+          mChips.querySelectorAll("button").forEach((b) =>
+            b.addEventListener("click", () => {
+              mCur = MISSIONS.find((x) => x.id === b.dataset.m);
+              mStart();
+            })
+          );
+        }
+        function mStart() {
+          mDraw();
+          const st = { steps: 0, usefulSeen: 0, causeErr: 0, docErr: 0 };
+          mHost.innerHTML =
+            '<h3 style="margin:6px 0">' +
+            esc(mCur.title) +
+            '</h3><p style="font-size:.92rem">' +
+            esc(mCur.story) +
+            "</p>" +
+            '<p style="font-weight:600;margin:12px 0 4px">Phase 1 – Diagnose (führe Tests aus; sinnvoll wählen, jeder Klick zählt):</p><div id="m-tests"></div><div id="m-testout"></div>' +
+            '<div id="m-phase2"></div><div id="m-phase3"></div><div id="m-final"></div>';
+          const tHost = document.getElementById("m-tests"),
+            oHost = document.getElementById("m-testout");
+          mCur.tests.forEach((t, i) => {
+            const b = document.createElement("button");
+            b.className = "btn small ghost m-test";
+            b.textContent = t.l;
+            b.addEventListener("click", () => {
+              b.disabled = true;
+              st.steps++;
+              if (t.useful) st.usefulSeen++;
+              oHost.insertAdjacentHTML(
+                "beforeend",
+                '<div class="m-log"><strong>' + esc(t.l) + "</strong>\n" + t.out + "</div>"
+              );
+              if (st.usefulSeen >= 2 && !document.getElementById("m-causes")) phase2();
+            });
+            tHost.appendChild(b);
+          });
+          function phase2() {
+            document.getElementById("m-phase2").innerHTML =
+              '<p style="font-weight:600;margin:14px 0 4px">Phase 2 – Was ist die Ursache?</p><div id="m-causes"></div>';
+            const cHost = document.getElementById("m-causes");
+            mCur.causes.forEach((c, i) => {
+              const b = document.createElement("button");
+              b.className = "m-opt";
+              b.textContent = c;
+              b.addEventListener("click", () => {
+                if (i === mCur.correct) {
+                  cHost.querySelectorAll(".m-opt").forEach((x) => (x.disabled = true));
+                  b.classList.add("ok");
+                  cHost.insertAdjacentHTML(
+                    "afterend",
+                    '<div class="m-score"><strong>Ursache gefunden.</strong> ' +
+                      esc(mCur.causeExplain) +
+                      "</div>"
+                  );
+                  phase3();
+                } else {
+                  st.causeErr++;
+                  b.classList.add("bad");
+                  b.disabled = true;
+                }
+              });
+              cHost.appendChild(b);
+            });
+          }
+          function phase3() {
+            document.getElementById("m-phase3").innerHTML =
+              '<p style="font-weight:600;margin:14px 0 4px">Phase 3 – Wie dokumentierst du den Fall?</p><div id="m-docs"></div>';
+            const dHost = document.getElementById("m-docs");
+            mCur.docs.forEach((c, i) => {
+              const b = document.createElement("button");
+              b.className = "m-opt";
+              b.textContent = c;
+              b.addEventListener("click", () => {
+                if (i === mCur.docCorrect) {
+                  dHost.querySelectorAll(".m-opt").forEach((x) => (x.disabled = true));
+                  b.classList.add("ok");
+                  finish();
+                } else {
+                  st.docErr++;
+                  b.classList.add("bad");
+                  b.disabled = true;
+                }
+              });
+              dHost.appendChild(b);
+            });
+          }
+          function finish() {
+            const wasted = Math.max(0, st.steps - mCur.optimal);
+            let grade = "Sehr gut – wie ein Profi.";
+            if (st.causeErr + st.docErr >= 2 || wasted >= 3)
+              grade = "Gelöst – aber der Weg war teuer. Weniger raten, mehr messen.";
+            else if (st.causeErr + st.docErr === 1 || wasted > 0)
+              grade = "Gut gelöst, mit kleinen Umwegen.";
+            document.getElementById("m-final").innerHTML =
+              '<div class="m-score"><strong>Mission abgeschlossen.</strong> ' +
+              esc(mCur.docExplain) +
+              "<br><br>Bewertung: " +
+              st.steps +
+              " Arbeitsschritte (optimal: " +
+              mCur.optimal +
+              ", unnötig: " +
+              wasted +
+              ") · Fehlversuche Ursache: " +
+              st.causeErr +
+              " · Doku: " +
+              st.docErr +
+              "<br><strong>" +
+              grade +
+              "</strong></div>";
+            if (!mDone.has(mCur.id)) {
+              mDone.add(mCur.id);
+              Store.set("missDone", [...mDone]);
+              Gami.addXp(25, "Support-Mission gelöst");
+              mDraw();
+            }
+          }
+        }
+        mStart();
+      };
+    </script>
+  </body>
+</html>

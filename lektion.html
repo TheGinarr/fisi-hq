@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Lektion – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Ausgearbeitete Lektion mit einfacher Erklärung, technischer Vertiefung, Praxisbeispiel und Mini-Quiz."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/data-vertiefung.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/diagramme.js"></script>
+    <script defer src="assets/js/commons-bilder.js"></script>
+    <script defer src="assets/js/videos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="shorts.html">Lern-Snacks</a><a href="lernkarten.html">Lernkarten</a
+          ><a href="formeln.html">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="lernstand.html">Erfolge</a><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <article id="lesson-host">
+        <p class="empty">Lektion wird geladen…</p>
+      </article>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        const id = qs("id") || "l101";
+        const l = DATA.lessons.find((x) => x.id === id);
+        const host = document.getElementById("lesson-host");
+        if (!l) {
+          breadcrumbs([{ label: "Lektion" }]);
+          host.innerHTML = `<div class="card"><h1>Lektion nicht gefunden</h1><p>Die angeforderte Lektion existiert nicht. <a href="index.html">Zurück zur Startseite</a> oder über die Lernpfade einsteigen: <a href="jahr1.html">Jahr 1</a>, <a href="jahr2.html">Jahr 2</a>, <a href="jahr3.html">Jahr 3</a>.</p></div>`;
+          return;
+        }
+        document.title = l.title + " – FISI-HQ";
+        breadcrumbs([
+          { label: "Jahr " + l.year, href: "jahr" + l.year + ".html" },
+          { label: l.title },
+        ]);
+        Progress.setLast(l.id);
+        const idx = DATA.lessons.indexOf(l);
+        const prev = DATA.lessons[idx - 1],
+          next = DATA.lessons[idx + 1];
+        const done = Progress.isDone(l.id);
+        const relBadge =
+          l.rel === "high"
+            ? '<span class="badge hot">Sehr prüfungsrelevant</span>'
+            : '<span class="badge ap">Prüfungsrelevant</span>';
+
+        host.innerHTML = `
+    <div class="page-head">
+      <div class="chip-row" style="margin:0 0 8px">
+        <span class="badge">Ausbildungsjahr ${l.year}</span> ${relBadge}
+        <span class="badge">ca. ${l.minutes} Min</span>
+        ${l.tags.map((t) => `<span class="badge">${t}</span>`).join("")}
+      </div>
+      <h1>${l.title}</h1>
+    </div>
+    <div class="card mb-16">
+      <div class="callout simple"><span class="ct">Einfach erklärt</span>${l.simple}</div>
+      <div class="callout deep"><span class="ct">Technische Vertiefung</span>${l.deep}</div>
+      ${l.example}
+      ${(window.merkFuer ? merkFuer({ lesson: l.id }) : []).map((m) => `<div class="callout merk"><span class="ct">Merkhilfe: ${m.t}</span>${m.txt}</div>`).join("")}
+      ${l.project ? `<p class="hint">${l.project}</p>` : ""}
+      ${window.LESSON_VIZ && LESSON_VIZ[l.id] ? '<h2 style="font-size:1.1rem;margin-top:16px">Diagramme zum Thema</h2>' + LESSON_VIZ[l.id].map(renderTopicViz).join("") : ""}
+    </div>
+    ${
+      window.LESSON_DETAIL && LESSON_DETAIL[l.id]
+        ? LESSON_DETAIL[l.id]
+            .map(
+              (d) => `
+    <div class="card mb-16">
+      <h2 style="font-size:1.1rem">${d.h}</h2>
+      <div class="lesson-detail hat-tts">${window.Vorlesen ? '<button type="button" class="tts-btn tts-ecke" aria-pressed="false" aria-label="Vertiefung mit der Browser-Stimme vorlesen lassen" title="Abschnitt vorlesen (nochmal klicken = Stopp)">▶</button>' : ""}${d.html}</div>
+    </div>`
+            )
+            .join("")
+        : ""
+    }
+    <div class="card mb-16">
+      <h2 style="font-size:1.1rem">Meine Notizen</h2>
+      <p style="font-size:.82rem;color:var(--tx3);margin:0 0 6px">Bleiben lokal gespeichert und wandern mit in den Fortschritts-Export.</p>
+      <textarea id="lesson-note" rows="4" style="width:100%;background:var(--bg2);color:var(--tx);border:1px solid var(--line-strong);border-radius:3px;padding:8px;font-family:var(--font);font-size:.92rem" placeholder="Eigene Merksätze, Fragen an den Ausbilder, Prüfungsnotizen …"></textarea>
+      <p id="note-state" style="font-size:.78rem;color:var(--tx3);margin:4px 0 0" aria-live="polite"></p>
+    </div>
+    <div class="card mb-16">
+      <h2>Wissens-Check</h2>
+      <p style="color:var(--tx3);font-size:.9rem">Direkt anwenden – mit Erklärung zu jeder Antwort.</p>
+      <div id="mini-quiz"></div>
+    </div>
+    <div class="q-actions">
+      <button class="btn" id="btn-done" ${done ? "disabled" : ""}>${done ? "✓ Lektion abgeschlossen" : "Lektion als abgeschlossen markieren"}</button>
+      <span class="selfcheck" data-sid="${l.id}" role="group" aria-label="Selbsteinschätzung">
+        <span>Selbstcheck:</span>
+        <button type="button" data-v="1">Sicher</button><button type="button" data-v="2">Unsicher</button><button type="button" data-v="3">Nochmal</button>
+      </span>
+    </div>
+    <nav class="pager" aria-label="Lektionsnavigation">
+      ${prev ? `<a class="btn ghost" href="lektion.html?id=${prev.id}">← Vorherige: ${prev.title}</a>` : "<span></span>"}
+      ${next ? `<a class="btn ghost" href="lektion.html?id=${next.id}">Nächste: ${next.title} →</a>` : `<a class="btn ghost" href="dashboard.html">Zum Dashboard →</a>`}
+    </nav>`;
+
+        // Mini-Quiz: an Lektion gekoppelte Fragen nacheinander
+        const qs_ = l.quiz.map((qid) => DATA.quiz.find((q) => q.id === qid)).filter(Boolean);
+        if (qs_.length) runQuiz(qs_, document.getElementById("mini-quiz"));
+
+        if (window.renderVideoSlot && window.VIDEO_SLOTS && VIDEO_SLOTS.lessons[l.id]) {
+          const dv = document.createElement("div");
+          dv.id = "video-slot-lesson";
+          document.getElementById("mini-quiz").parentElement.before(dv);
+          renderVideoSlot(dv, VIDEO_SLOTS.lessons[l.id]);
+        }
+        if (window.linkifyThemen) linkifyThemen(".page-head .chip-row");
+        if (window.initVizCommons) initVizCommons();
+
+        if (window.renderWikiSlot) {
+          let slot = (window.WIKI_SLOTS && WIKI_SLOTS.lessons[l.id]) || null;
+          if (!slot && window.lessonSearchTerm) {
+            const term = lessonSearchTerm(l.title, l.tags.join(" "));
+            if (term)
+              slot = {
+                label: "Passendes Bild: " + l.title,
+                search: term,
+                alt: "Foto zum Thema " + l.title,
+              };
+          }
+          if (slot) {
+            // kein passendes Bild bekannt -> Kachel weglassen
+            const d = document.createElement("div");
+            d.id = "wiki-slot-lesson";
+            document.getElementById("mini-quiz").parentElement.before(d);
+            renderWikiSlot(d, slot);
+          }
+        }
+
+        // Notizen: laden + mit Verzoegerung speichern
+        const noteEl = document.getElementById("lesson-note"),
+          noteState = document.getElementById("note-state");
+        noteEl.value = Store.get("note_" + l.id, "");
+        let noteT = null;
+        noteEl.addEventListener("input", () => {
+          clearTimeout(noteT);
+          noteT = setTimeout(() => {
+            Store.set("note_" + l.id, noteEl.value.slice(0, 4000));
+            noteState.textContent = "Gespeichert.";
+            setTimeout(() => (noteState.textContent = ""), 1500);
+          }, 500);
+        });
+
+        // Selbstcheck (persistiert)
+        (function () {
+          const sc = document.querySelector(".selfcheck");
+          if (!sc) return;
+          const paint = () => {
+            const v = Store.get("rate_" + l.id, 0);
+            sc.querySelectorAll("button").forEach((x) =>
+              x.setAttribute("aria-pressed", +x.dataset.v === v)
+            );
+          };
+          sc.querySelectorAll("button").forEach((x) =>
+            x.addEventListener("click", () => {
+              Store.set("rate_" + l.id, +x.dataset.v);
+              paint();
+            })
+          );
+          paint();
+        })();
+
+        document.getElementById("btn-done").addEventListener("click", function () {
+          Progress.markDone(l.id);
+          this.disabled = true;
+          this.textContent = "✓ Lektion abgeschlossen";
+        });
+      };
+    </script>
+  </body>
+</html>

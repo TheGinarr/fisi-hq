@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Quiz & Challenges – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Quizfragen mit Erklärungen, Lernfeld-Filter, Zeitdruck-Challenges, adaptiver Wiederholung, Fehlersuche-Szenarien, simulierter Kommandozeile und Lernmissionen."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="shorts.html">Lern-Snacks</a><a href="lernkarten.html">Lernkarten</a
+          ><a href="formeln.html">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="lernstand.html">Erfolge</a><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Quiz- &amp; Challenge-Bereich</h1>
+        <p class="sub">
+          58 Kernfragen plus alle importierten Lernfeld-Fragen – mit fachlicher Erklärung zu jeder
+          Antwort. Falsche Antworten wandern automatisch in die adaptive Wiederholung.
+        </p>
+      </div>
+
+      <div class="chip-row" role="group" aria-label="Modus wählen" id="tabs">
+        <button class="chip" data-tab="ueben" aria-pressed="true">Üben</button>
+        <button class="chip" data-tab="challenge" aria-pressed="false">Challenge</button>
+        <button class="chip" data-tab="repeat" aria-pressed="false">Wiederholung</button>
+        <button class="chip" data-tab="fehlersuche" aria-pressed="false">Fehlersuche</button>
+        <button class="chip" data-tab="terminal" aria-pressed="false">Terminal</button>
+        <button class="chip" data-tab="missionen" aria-pressed="false">Missionen</button>
+      </div>
+
+      <section id="tab-ueben" class="card">
+        <h2>Freies Üben mit Filtern</h2>
+        <div class="grid c3" style="gap: 10px; max-width: 900px">
+          <label
+            >Ausbildungsjahr<br /><select class="gap-input" id="f-year" class="w-100">
+              <option value="">alle</option>
+              <option value="1">Jahr 1</option>
+              <option value="2">Jahr 2</option>
+              <option value="3">Jahr 3</option>
+            </select></label
+          >
+          <label
+            >Lernfeld<br /><select class="gap-input" id="f-lf" class="w-100">
+              <option value="">alle (Kernfragen)</option>
+            </select></label
+          >
+          <label
+            >Themengebiet<br /><select class="gap-input" id="f-topic" class="w-100">
+              <option value="">alle</option>
+            </select></label
+          >
+          <label
+            >Prüfungsrelevanz<br /><select class="gap-input" id="f-rel" class="w-100">
+              <option value="">alle</option>
+              <option value="high">sehr hoch</option>
+              <option value="med">hoch</option>
+            </select></label
+          >
+          <label
+            >Schwierigkeit<br /><select class="gap-input" id="f-diff" class="w-100">
+              <option value="">alle</option>
+              <option value="leicht">leicht</option>
+              <option value="mittel">mittel</option>
+              <option value="schwer">schwer</option>
+            </select></label
+          >
+          <label
+            >Quelle / Status<br /><select class="gap-input" id="f-status" class="w-100">
+              <option value="">alle Fragen</option>
+              <option value="basis">nur Kernfragen</option>
+              <option value="import">nur Import (Lernfeld wählen)</option>
+              <option value="neu">noch nie beantwortet</option>
+              <option value="offen">falsch beantwortet (offen)</option>
+            </select></label
+          >
+        </div>
+        <p style="font-size: 0.8rem; color: var(--tx3); margin: 8px 0 0">
+          Bei gewähltem Lernfeld werden alle importierten Lernfeld-Fragen mit einbezogen.
+        </p>
+        <div class="q-actions">
+          <button class="btn" id="start-practice">Übung starten</button
+          ><span class="q-progress" id="pool-info"></span>
+        </div>
+        <div id="practice-host" class="mt-16"></div>
+      </section>
+
+      <section id="tab-challenge" class="card" hidden>
+        <h2>Challenge: 10 Fragen, 5 Minuten</h2>
+        <p>
+          Zufällige Fragen quer durch alle Jahre unter Zeitdruck – die kleine Generalprobe
+          zwischendurch. Bestanden ab 80 %.
+        </p>
+        <div class="q-actions">
+          <button class="btn" id="start-challenge">Challenge starten</button>
+        </div>
+        <div id="challenge-host" class="mt-16"></div>
+      </section>
+
+      <section id="tab-repeat" class="card" hidden>
+        <h2>Fällige Wiederholungen</h2>
+        <p>
+          Wiederholung nach System: Falsch beantwortete Fragen sind sofort fällig, richtig
+          beantwortete kommen in wachsenden Abständen wieder (1 → 3 → 7 → 14 → 30 → 60 → 120 Tage).
+          Ergänzt um ähnliche Fragen aus denselben Lernfeldern.
+        </p>
+        <div id="repeat-info"></div>
+        <div class="q-actions">
+          <button class="btn" id="start-repeat">Wiederholung starten</button>
+        </div>
+        <div id="repeat-host" class="mt-16"></div>
+      </section>
+
+      <section id="tab-fehlersuche" class="card" hidden>
+        <h2>Fehlersuche-Szenarien</h2>
+        <p>
+          Drei realistische Störungen – arbeite dich wie im Betrieb Schritt für Schritt zur Ursache
+          vor.
+        </p>
+        <div class="chip-row" id="trouble-picker"></div>
+        <div id="trouble-brief" class="callout" style="display: none"></div>
+        <div id="trouble-host"></div>
+      </section>
+
+      <section id="tab-terminal" class="card" hidden>
+        <h2>Simulierte Kommandozeile</h2>
+        <p>
+          Diagnostiziere echte Fehlerbilder mit den richtigen Befehlen – Linux und
+          Windows/PowerShell.
+        </p>
+        <div class="chip-row" id="cli-picker"></div>
+        <div id="cli-area" style="display: none">
+          <p id="cli-intro"></p>
+          <div class="callout">
+            <span class="ct">Aktuelle Aufgabe</span><span id="cli-task"></span>
+          </div>
+          <div class="term" id="cli-out" role="log" aria-label="Terminalausgabe"></div>
+          <div class="term-input-row">
+            <label class="visually-hidden" for="cli-in">Befehl eingeben</label>
+            <input
+              id="cli-in"
+              placeholder="Befehl eingeben und Enter…"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button class="btn small ghost" id="cli-hint">Hinweis</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-missionen" class="card" hidden>
+        <h2>Lernmissionen</h2>
+        <p>Größere Aufgaben mit rotem Faden – ideal, um mehrere Themen zu verbinden.</p>
+        <div id="mission-list" class="grid c3"></div>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Quiz & Challenges" }]);
+        /* Tabs */
+        const tabs = document.getElementById("tabs");
+        function showTab(name) {
+          tabs
+            .querySelectorAll(".chip")
+            .forEach((c) => c.setAttribute("aria-pressed", c.dataset.tab === name));
+          ["ueben", "challenge", "repeat", "fehlersuche", "terminal", "missionen"].forEach((t) => {
+            document.getElementById("tab-" + t).hidden = t !== name;
+          });
+        }
+        tabs
+          .querySelectorAll(".chip")
+          .forEach((c) => c.addEventListener("click", () => showTab(c.dataset.tab)));
+
+        /* Üben */
+        const topics = [...new Set(DATA.quiz.map((q) => q.topic))];
+        document.getElementById("f-topic").innerHTML += topics
+          .map((t) => `<option>${t}</option>`)
+          .join("");
+        if (window.LF_INDEX)
+          document.getElementById("f-lf").innerHTML += (
+            window.trackFields ? trackFields(LF_INDEX.fields) : LF_INDEX.fields
+          )
+            .filter((f) => !f.placeholder)
+            .map(
+              (f) =>
+                `<option value="${f.id}">${f.nr} – ${f.name.length > 38 ? f.name.slice(0, 36) + "…" : f.name}</option>`
+            )
+            .join("");
+        let importPool = [],
+          importFor = "";
+        function pool() {
+          const y = document.getElementById("f-year").value,
+            t = document.getElementById("f-topic").value,
+            r = document.getElementById("f-rel").value,
+            lf = document.getElementById("f-lf").value,
+            di = document.getElementById("f-diff").value,
+            st = document.getElementById("f-status").value;
+          let p = DATA.quiz.slice();
+          if (lf)
+            p = p
+              .filter((q) => (q.lf || []).includes(lf))
+              .concat(importFor === lf ? importPool : []);
+          p = p.filter(
+            (q) =>
+              (!y || q.year === +y || q.srcType === "import") &&
+              (!t || q.topic === t) &&
+              (!r || q.rel === r) &&
+              (!di || q.diff === di)
+          );
+          if (st === "basis") p = p.filter((q) => q.srcType === "basis");
+          if (st === "import") p = p.filter((q) => q.srcType === "import");
+          if (st === "neu" || st === "offen") {
+            const qs_ = QStats.all();
+            p = p.filter((q) =>
+              st === "neu" ? !qs_[q.id] : qs_[q.id] && qs_[q.id].status === "offen"
+            );
+          }
+          return p;
+        }
+        function updateInfo() {
+          document.getElementById("pool-info").textContent = pool().length + " Fragen im Pool";
+        }
+        ["f-year", "f-topic", "f-rel", "f-diff", "f-status"].forEach((id) =>
+          document.getElementById(id).addEventListener("change", updateInfo)
+        );
+        document.getElementById("f-lf").addEventListener("change", function () {
+          const lf = this.value;
+          if (!lf) {
+            importPool = [];
+            importFor = "";
+            updateInfo();
+            return;
+          }
+          document.getElementById("pool-info").textContent = "Lade Lernfeld-Fragen…";
+          LF.load(lf)
+            .then((c) => {
+              importPool = LF.questions(lf, c);
+              importFor = lf;
+              updateInfo();
+            })
+            .catch(() => {
+              importPool = [];
+              importFor = "";
+              toast("Import-Fragen nicht ladbar – nutze Kernfragen.");
+              updateInfo();
+            });
+        });
+        updateInfo();
+        document.getElementById("start-practice").addEventListener("click", () => {
+          const p = shuffle(pool());
+          if (!p.length) {
+            toast("Keine Fragen für diese Filter.");
+            return;
+          }
+          runQuiz(p.slice(0, 20), document.getElementById("practice-host"));
+        });
+
+        /* Lernaufgabe des Tages: deterministisch aus dem Datum -> fuer alle Lernenden identisch */
+        if (qs("mode") === "daily") {
+          showTab("ueben");
+          const lfDay = window.DailyTask ? DailyTask.lf() : null;
+          const startDaily = (pool, lfName) => {
+            document.getElementById("pool-info").textContent =
+              "Lernaufgabe des Tages (" +
+              DailyTask.date() +
+              "): 5 Fragen" +
+              (lfName ? " · Lernfeld des Tages: " + lfName : "") +
+              " · identisch für alle Lernenden";
+            runQuiz(pool, document.getElementById("practice-host"), {
+              onDone(r) {
+                Store.set("dailyDone", DailyTask.date());
+                Gami.addXp(20, "Lernaufgabe des Tages erledigt");
+              },
+            });
+          };
+          if (Track.isSpec()) {
+            // Nur Themen der eigenen Ausbildung: alle 5 Fragen aus dem Lernbereich des Tages
+            if (lfDay) {
+              LF.load(lfDay.id)
+                .then((content) => {
+                  startDaily(
+                    dailySeedShuffle(LF.questions(lfDay.id, content)).slice(0, 5),
+                    lfDay.nr + " – " + lfDay.name
+                  );
+                })
+                .catch(() => startDaily([], null));
+            } else startDaily([], null);
+            return;
+          }
+          const core3 = dailySeedShuffle(DATA.quiz).slice(0, 3);
+          if (lfDay) {
+            LF.load(lfDay.id)
+              .then((content) => {
+                const imp = dailySeedShuffle(LF.questions(lfDay.id, content)).slice(0, 2);
+                startDaily(dailySeedShuffle(core3.concat(imp)), lfDay.nr + " – " + lfDay.name);
+              })
+              .catch(() => startDaily(dailySeedShuffle(DATA.quiz).slice(0, 5), null));
+          } else startDaily(dailySeedShuffle(DATA.quiz).slice(0, 5), null);
+        }
+
+        /* Challenge */
+        document.getElementById("start-challenge").addEventListener("click", function () {
+          this.disabled = true;
+          runQuiz(shuffle(DATA.quiz).slice(0, 10), document.getElementById("challenge-host"), {
+            timed: 5 * 60,
+            onDone: (r) => {
+              if (r.pct >= 80) Gami.addXp(50, "Challenge gemeistert!");
+              document.getElementById("start-challenge").disabled = false;
+            },
+          });
+        });
+
+        /* Adaptive Wiederholung: gleiche Lernfelder/Themen, aber nicht immer dieselbe Frage */
+        function allQuestions() {
+          return DATA.quiz.concat(DATA.ap1exam, DATA.ap2exam);
+        }
+        function refreshRepeat() {
+          const w = QStats.faelligeMitQueue();
+          const offen = Progress.wrongQueue().length;
+          document.getElementById("repeat-info").innerHTML = w.length
+            ? `<p><strong>${w.length}</strong> Frage(n) heute fällig${offen ? ` (davon ${offen} aus falschen Antworten)` : ""}. Die Runde mischt ähnliche Fragen aus denselben Lernfeldern dazu.</p>`
+            : `<p class="empty">Für heute ist nichts fällig. Falsch beantwortete Fragen erscheinen sofort, richtige nach System wieder.</p>`;
+          document.getElementById("start-repeat").disabled = !w.length;
+        }
+        refreshRepeat();
+        document.getElementById("start-repeat").addEventListener("click", async () => {
+          const w = QStats.faelligeMitQueue().slice(0, 40); // Tagesration deckeln
+          const stats = QStats.all();
+          const lfNeeded = [
+            ...new Set(
+              w
+                .filter((id) => id.startsWith("imp_"))
+                .map((id) => (stats[id] && stats[id].lf && stats[id].lf[0]) || null)
+                .filter(Boolean)
+            ),
+          ];
+          const loaded = {};
+          for (const f of lfNeeded) {
+            try {
+              loaded[f] = LF.questions(f, await LF.load(f));
+            } catch (e) {}
+          }
+          const lookup = (id) => {
+            const base = allQuestions().find((q) => q.id === id);
+            if (base) return base;
+            for (const f in loaded) {
+              const hit = loaded[f].find((q) => q.id === id);
+              if (hit) return hit;
+            }
+            return null;
+          };
+          let set = w.map(lookup).filter(Boolean);
+          const extra = [];
+          set.forEach((q) => {
+            const cand = (
+              q.srcType === "import" && loaded[q.lf[0]] ? loaded[q.lf[0]] : allQuestions()
+            ).filter(
+              (x) =>
+                x.id !== q.id &&
+                !w.includes(x.id) &&
+                (x.topic === q.topic || (x.lf || []).some((f) => (q.lf || []).includes(f)))
+            );
+            if (cand.length) extra.push(cand[Math.floor(Math.random() * cand.length)]);
+          });
+          set = shuffle(set.concat(extra.slice(0, set.length)));
+          runQuiz(set, document.getElementById("repeat-host"), { onDone: refreshRepeat });
+        });
+
+        /* Fehlersuche */
+        const tp = document.getElementById("trouble-picker");
+        tp.innerHTML = DATA.trouble
+          .map((t) => {
+            const done = Store.get("trouble_" + t.id, false);
+            return `<button class="chip" data-id="${t.id}" aria-pressed="false">${done ? "✓ " : ""}${t.title}</button>`;
+          })
+          .join("");
+        tp.querySelectorAll(".chip").forEach((c) =>
+          c.addEventListener("click", () => {
+            tp.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", x === c));
+            const t = DATA.trouble.find((x) => x.id === c.dataset.id);
+            const brief = document.getElementById("trouble-brief");
+            brief.style.display = "block";
+            brief.innerHTML = `<span class="ct">Ticket · ${t.tag}</span>${t.intro}`;
+            const qs_ = t.steps.map((s, i) => ({
+              id: t.id + "_" + i,
+              topic: "Fehleranalyse",
+              rel: "high",
+              type: "single",
+              q: "Schritt " + (i + 1) + ": " + s.text,
+              options: s.options,
+              correct: s.correct,
+              explain: s.explain,
+              xp: 15,
+              lf: ["lf6"],
+            }));
+            runQuiz(qs_, document.getElementById("trouble-host"), {
+              onDone(r) {
+                if (r.pct === 100 && !Store.get("trouble_" + t.id, false)) {
+                  Store.set("trouble_" + t.id, true);
+                  Gami.addXp(t.reward, "Szenario gelöst: " + t.title);
+                }
+              },
+            });
+          })
+        );
+
+        /* Terminal */
+        let cli = null,
+          step = 0;
+        const out = document.getElementById("cli-out"),
+          input = document.getElementById("cli-in");
+        const cp = document.getElementById("cli-picker");
+        cp.innerHTML = DATA.cli
+          .map(
+            (c) => `<button class="chip" data-id="${c.id}" aria-pressed="false">${c.title}</button>`
+          )
+          .join("");
+        function print(txt, cls) {
+          const d = document.createElement("div");
+          if (cls) d.className = cls;
+          d.textContent = txt;
+          out.appendChild(d);
+          out.scrollTop = out.scrollHeight;
+        }
+        function setTask() {
+          document.getElementById("cli-task").textContent =
+            step + 1 + "/" + cli.tasks.length + " – " + cli.tasks[step].say;
+        }
+        cp.querySelectorAll(".chip").forEach((c) =>
+          c.addEventListener("click", () => {
+            cp.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", x === c));
+            cli = DATA.cli.find((x) => x.id === c.dataset.id);
+            step = 0;
+            document.getElementById("cli-area").style.display = "block";
+            document.getElementById("cli-intro").textContent = cli.intro;
+            out.innerHTML = "";
+            print("=== " + cli.title + " ===");
+            setTask();
+            input.focus();
+          })
+        );
+        input.addEventListener("keydown", (e) => {
+          if (e.key !== "Enter" || !cli) return;
+          const cmd = input.value.trim();
+          input.value = "";
+          if (!cmd) return;
+          const p = document.createElement("div");
+          p.innerHTML = `<span class="ps1">${esc(cli.ps1)}</span> ${esc(cmd)}`;
+          out.appendChild(p);
+          if (cmd === "help") {
+            print(
+              "Verfügbar sind die Befehle, die zur jeweiligen Aufgabe passen. Hinweis-Knopf nutzen, wenn du feststeckst."
+            );
+            return;
+          }
+          const t = cli.tasks[step];
+          if (t.accept.some((rx) => rx.test(cmd))) {
+            if (t.out) print(t.out);
+            print("✓ Aufgabe erledigt.", "ps1");
+            step++;
+            if (step >= cli.tasks.length) {
+              print("");
+              print(cli.done);
+              Gami.addXp(40, "Terminal-Übung abgeschlossen");
+              Store.set("cli_" + cli.id, true);
+              document.getElementById("cli-task").textContent = "Übung abgeschlossen! ";
+              cli = null;
+            } else setTask();
+          } else {
+            print(
+              "Befehl nicht erkannt oder für diese Aufgabe nicht passend. Tipp anzeigen mit dem Hinweis-Knopf.",
+              "err-line"
+            );
+          }
+        });
+        document.getElementById("cli-hint").addEventListener("click", () => {
+          if (cli) print("Hinweis: " + cli.tasks[step].hint, "ps1");
+        });
+
+        /* Missionen */
+        document.getElementById("mission-list").innerHTML = DATA.missions
+          .map((m) => {
+            const done = !!Store.get(m.doneKey, false);
+            return `<div class="card"><div class="mission"><div class="mi">${m.nr}</div><div><h3 class="fs-100">${m.title}</h3><p style="font-size:.88rem">${m.desc}</p>${done ? '<span class="badge ok">Abgeschlossen</span>' : `<a class="btn small" href="${m.link}">Mission annehmen</a>`}</div></div></div>`;
+          })
+          .join("");
+
+        /* Deep-Links */
+        const tab = qs("tab");
+        const mode = qs("mode");
+        const year = qs("year");
+        if (tab) showTab(tab);
+        else if (mode === "repeat") showTab("repeat");
+        else if (mode !== "daily") showTab("ueben");
+        if (year) {
+          document.getElementById("f-year").value = year;
+          updateInfo();
+        }
+      };
+    </script>
+  </body>
+</html>

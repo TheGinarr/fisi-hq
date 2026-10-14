@@ -1,0 +1,1444 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Lern-Dashboard – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Dein persönliches Lern-Dashboard: Fortschritt, Lernfelder, Stärken, Schwächen, Wiederholungen und Empfehlungen."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html" aria-current="page">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="shorts.html">Lern-Snacks</a><a href="lernkarten.html">Lernkarten</a
+          ><a href="formeln.html">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="lernstand.html">Erfolge</a><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Dein Lern-Dashboard</h1>
+        <p class="sub">
+          Alles auf einen Blick: Fortschritt, Empfehlungen, Stärken und offene Wiederholungen.
+          <span class="badge"
+            >Beispieldaten möglich – dein echter Fortschritt wird lokal gespeichert</span
+          >
+        </p>
+      </div>
+
+      <section class="section">
+        <div
+          class="track-note"
+          style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px"
+        >
+          <div style="flex: 1; min-width: 240px">
+            <strong>Lernaufgabe des Tages</strong> · <span id="daily-hero-info">wird geladen…</span>
+            <div id="wdh-plan" class="small-dim mt-10" hidden>
+              Wiederholungsplaner: <strong id="wdh-heute">0</strong> Fragen heute fällig · morgen
+              <span id="wdh-morgen">0</span> · nächste 7 Tage <span id="wdh-woche">0</span>
+            </div>
+          </div>
+          <div class="btn-stack q-actions">
+            <a class="btn" href="quiz.html?mode=daily" id="daily-hero-btn">Jetzt starten</a
+            ><a class="btn ghost" href="quiz.html?mode=repeat" id="wdh-btn" hidden
+              >Wiederholen (<span id="wdh-btn-n">0</span>)</a
+            ><a class="btn ghost" href="lernkarten.html" id="sr-btn" hidden
+              >Lernkarten (<span id="sr-btn-n">0</span> fällig)</a
+            >
+          </div>
+        </div>
+      </section>
+      <section class="grid c4" aria-label="Kennzahlen">
+        <div class="card stat">
+          <span class="v" id="d-xp">0</span><span class="l">Fragen richtig beantwortet</span>
+        </div>
+        <div class="card stat fisi-only">
+          <span class="v" id="d-level">0</span
+          ><span class="l">Lektionen abgeschlossen (von <span id="d-nextxp">14</span>)</span>
+        </div>
+        <div class="card stat ae-only">
+          <span class="v" id="d-level-ae">0</span><span class="l">Gelesene Bonus-Lektionen</span>
+        </div>
+        <div class="card stat">
+          <span class="v" id="d-streak">0</span><span class="l">Tage in Folge gelernt</span>
+        </div>
+        <div class="card stat">
+          <span class="v" id="d-week">0</span
+          ><span class="l">Aktivität diese Woche (Richtwert: 300)</span>
+        </div>
+      </section>
+
+      <section class="section grid c2">
+        <div class="card">
+          <h2>Gesamtfortschritt</h2>
+          <div id="d-total"></div>
+          <h3 style="margin-top: 18px">Fortschritt je Ausbildungsjahr</h3>
+          <div id="d-years"></div>
+          <h3 style="margin-top: 18px">Prüfungsbereitschaft</h3>
+          <div id="d-ap"></div>
+        </div>
+        <div>
+          <div class="card mb-16">
+            <h2>Empfohlener nächster Schritt</h2>
+            <div id="d-next"></div>
+          </div>
+          <div class="card">
+            <h2>Zuletzt bearbeitet</h2>
+            <div id="d-last"><p class="empty">Noch keine Lektion begonnen.</p></div>
+            <h3 class="mt-14">Offene Wiederholungen</h3>
+            <div id="d-wrong"></div>
+            <h3 class="mt-14">Anstehende Simulationen</h3>
+            <ul style="margin: 6px 0; padding-left: 20px">
+              <li id="d-sim1">
+                <a href="ap1.html#muster">AP1-Musterprüfung</a> (25 Min, 12 Aufgaben)
+              </li>
+              <li id="d-sim2">
+                <a href="ap2.html#muster">AP2-Musterprüfung</a> (25 Min, 10 Aufgaben)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section card" aria-labelledby="h-lf">
+        <h2 id="h-lf">
+          <span class="fisi-only">Lernfelder im Überblick</span
+          ><span class="ae-only">Lernbereiche im Überblick</span>
+        </h2>
+        <div class="grid c4" style="margin-bottom: 12px">
+          <div class="stat">
+            <span class="v" id="lf-strong">–</span><span class="l">Stärkster Bereich</span>
+          </div>
+          <div class="stat">
+            <span class="v" id="lf-weak">–</span><span class="l">Schwächster Bereich</span>
+          </div>
+          <div class="stat">
+            <span class="v" id="lf-last">–</span><span class="l">Zuletzt bearbeitet</span>
+          </div>
+          <div class="stat">
+            <span class="v" id="lf-openwdh">0</span
+            ><span class="l">Offene Wiederholungen gesamt</span>
+          </div>
+        </div>
+        <div class="grid c2">
+          <div>
+            <h3 class="fs-100">
+              <span class="fisi-only">Empfohlenes nächstes Lernfeld</span
+              ><span class="ae-only">Empfohlener nächster Bereich</span>
+            </h3>
+            <div id="lf-reco"></div>
+            <h3 style="font-size: 1rem; margin-top: 12px">Lernaufgabe des Tages</h3>
+            <p style="font-size: 0.88rem; margin: 4px 0">
+              5 Fragen, jeden Tag neu zusammengestellt.
+            </p>
+            <p
+              style="font-size: 0.82rem; color: var(--tx3); margin: 2px 0 6px"
+              id="daily-lf-hint"
+            ></p>
+            <a class="btn small" href="quiz.html?mode=daily">Lernaufgabe starten</a>
+            <span class="q-progress" id="daily-state" style="margin-left: 8px"></span>
+            <h3 style="font-size: 1rem; margin-top: 12px">Prüfungs-Countdown</h3>
+            <div id="ap-countdown" class="fs-90">
+              <p style="margin: 4px 0">
+                AP1:
+                <input
+                  type="date"
+                  class="gap-input"
+                  id="cd-ap1"
+                  style="width: auto"
+                  aria-label="Prüfungsdatum AP1"
+                />
+                <strong id="cd-ap1-out"></strong>
+              </p>
+              <p style="margin: 4px 0">
+                AP2:
+                <input
+                  type="date"
+                  class="gap-input"
+                  id="cd-ap2"
+                  style="width: auto"
+                  aria-label="Prüfungsdatum AP2"
+                />
+                <strong id="cd-ap2-out"></strong>
+              </p>
+            </div>
+            <h3 style="font-size: 1rem; margin-top: 12px">Nächste Boss-Challenge</h3>
+            <div id="lf-boss" class="fs-90"></div>
+          </div>
+          <div>
+            <details>
+              <summary style="cursor: pointer; font-weight: 600">
+                <span class="fisi-only">Fortschritt LF1–LF12a (aufklappen)</span
+                ><span class="ae-only">Fortschritt je Lernbereich (aufklappen)</span>
+              </summary>
+              <div id="lf-bars" class="mt-10"></div>
+            </details>
+            <details class="mt-10">
+              <summary style="cursor: pointer; font-weight: 600">
+                AP1-/AP2-relevante Wissenslücken
+              </summary>
+              <div id="lf-gaps" style="margin-top: 10px; font-size: 0.9rem"></div>
+            </details>
+            <details class="mt-10">
+              <summary style="cursor: pointer; font-weight: 600">Lernfeld-Skilltree</summary>
+              <div
+                id="lf-tree"
+                style="
+                  margin-top: 10px;
+                  display: flex;
+                  flex-wrap: wrap;
+                  gap: 6px;
+                  align-items: center;
+                "
+              ></div>
+            </details>
+          </div>
+        </div>
+        <p class="mt-10">
+          <a href="lernfelder.html"
+            >Zur vollständigen Lernfeld-Übersicht mit Fortschrittsmatrix →</a
+          >
+        </p>
+      </section>
+
+      <section class="section card" aria-labelledby="h-matrix">
+        <h2 id="h-matrix">Fortschritt &amp; Schwächen je Lernbereich</h2>
+        <p style="font-size: 0.88rem; color: var(--tx3); margin: 0 0 8px">
+          Alles in einer Tabelle: Wissensstand (richtig beantwortete Fragen bezogen auf alle Fragen
+          des Bereichs) und Trefferquote deiner Antworten als Schwächen-Ampel – rot = unter 50 %,
+          gelb = 50–79 %, grün = ab 80 %, grau = noch zu wenig Daten (unter 10 Antworten). Klick auf
+          den Bereich führt direkt hinein. Auf dem Smartphone als Kartenliste.
+        </p>
+        <div class="matrix-wrap">
+          <table class="matrix" id="matrix-table">
+            <thead>
+              <tr>
+                <th scope="col">Lernbereich</th>
+                <th scope="col">Jahr</th>
+                <th scope="col">AP</th>
+                <th scope="col">Lektionen</th>
+                <th scope="col">Fragen</th>
+                <th scope="col">Wissensstand</th>
+                <th scope="col">Trefferquote</th>
+                <th scope="col">Offene Wdh.</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="matrix-cards" id="matrix-cards"></div>
+      </section>
+
+      <details class="section card collapse-card" id="bereich-aktivitaet">
+        <summary>
+          <h2>Aktivität: Kalender &amp; Wochenverlauf</h2>
+          <span class="sum-hint">zum Aufklappen</span>
+        </summary>
+        <div class="grid c2 mt-10">
+          <div class="card">
+            <h2 id="h-cal" class="fs-105">Kalender: Aktivität &amp; Termine</h2>
+            <p class="small-dim">
+              Farbpunkt = Lernaktivität des Tages. Tag anklicken, um eine Klassenarbeit, Prüfung
+              oder Abgabe einzutragen – AP1/AP2-Termine speisen automatisch den Countdown.
+            </p>
+            <div class="kal-kopf">
+              <button
+                type="button"
+                class="btn small ghost"
+                id="kal-prev"
+                aria-label="Voriger Monat"
+              >
+                ◀
+              </button>
+              <strong id="kal-titel" aria-live="polite"></strong>
+              <button
+                type="button"
+                class="btn small ghost"
+                id="kal-next"
+                aria-label="Nächster Monat"
+              >
+                ▶
+              </button>
+            </div>
+            <div
+              class="kal-grid"
+              id="kal-grid"
+              aria-label="Monatskalender – Tag anklicken zum Eintragen"
+            ></div>
+            <form id="kal-form" class="kal-form" hidden>
+              <strong id="kal-form-datum"></strong>
+              <input
+                id="kal-in-titel"
+                class="gap-input"
+                maxlength="60"
+                placeholder="Titel (z. B. LF9-Klassenarbeit)"
+                aria-label="Termin-Titel"
+              />
+              <select id="kal-in-typ" class="gap-input" aria-label="Termin-Art">
+                <option value="arbeit">Klassenarbeit / Test</option>
+                <option value="ap1">Prüfung AP1</option>
+                <option value="ap2">Prüfung AP2</option>
+                <option value="abgabe">Abgabe / Projekt</option>
+                <option value="sonst">Sonstiges</option>
+              </select>
+              <button class="btn small" type="submit">Speichern</button>
+              <button class="btn small ghost" type="button" id="kal-abbruch">Abbrechen</button>
+            </form>
+            <div id="kal-liste" class="mt-10"></div>
+          </div>
+          <div class="card">
+            <h2 id="h-verlauf" class="fs-105">Aktivität je Woche</h2>
+            <p style="font-size: 0.88rem; color: var(--tx3); margin: 0 0 8px">
+              Die letzten 8 Wochen im Vergleich (Aktivitätspunkte aus Lektionen, Quiz und Übungen) –
+              die aktuelle Woche ist hervorgehoben, die Linie markiert den Richtwert 300.
+            </p>
+            <div
+              id="week-chart"
+              role="img"
+              aria-label="Balkendiagramm der Lernaktivität der letzten acht Wochen"
+            ></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="section card collapse-card" id="bereich-noten">
+        <summary>
+          <h2 id="h-noten">Notentracker</h2>
+          <span class="sum-hint">Schulnoten eintragen &amp; Schnitt sehen</span>
+        </summary>
+        <div class="mt-10">
+          <p style="font-size: 0.88rem; color: var(--tx3); margin: 0 0 4px">
+            Trage deine Einzelnoten als IHK-Punkte (0–100) ein – Schnitt, IHK-Note und Notenpunkte
+            (0–15, mit Tendenz) werden automatisch berechnet. Die Zeugnisnote kannst du zusätzlich
+            von Hand festhalten, falls die Schule anders rundet. Klick auf eine Note entfernt sie.
+            Alles bleibt lokal gespeichert und ist im Fortschritts-Export enthalten.
+          </p>
+          <p style="font-size: 0.8rem; color: var(--tx3); margin: 0 0 10px">
+            IHK-Schlüssel: 100–92 = 1 · 91–81 = 2 · 80–67 = 3 · 66–50 = 4 · 49–30 = 5 · 29–0 = 6.
+            Notenpunkte nach Tendenz-Dritteln innerhalb der Notenstufe (z.&nbsp;B. 85 → 11 Punkte =
+            „2“). Deutsch, Englisch, Politik und WISO werden je Lehrjahr getrennt geführt.
+          </p>
+          <div
+            class="chip-row"
+            id="noten-jahre"
+            role="group"
+            aria-label="Lehrjahr wählen"
+            style="margin-bottom: 8px"
+          >
+            <button class="chip" data-nj="1" aria-pressed="true">1. Lehrjahr</button>
+            <button class="chip" data-nj="2" aria-pressed="false">2. Lehrjahr</button>
+            <button class="chip" data-nj="3" aria-pressed="false">3. Lehrjahr</button>
+          </div>
+          <p
+            id="noten-overview"
+            style="font-size: 0.85rem; font-weight: 600; color: var(--tx2); margin: 0 0 8px"
+          ></p>
+          <div class="noten-wrap">
+            <table class="matrix" id="noten-table">
+              <thead>
+                <tr>
+                  <th scope="col">Fach</th>
+                  <th scope="col">Einzelnoten (IHK-Punkte)</th>
+                  <th scope="col">Neue Note</th>
+                  <th scope="col">IHK Ø</th>
+                  <th scope="col">IHK-Note</th>
+                  <th scope="col">Punkte (0–15)</th>
+                  <th scope="col">Zeugnisnote</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="q-actions mt-10">
+            <input
+              id="noten-newfach"
+              class="gap-input"
+              aria-label="Eigenes Fach hinzufügen"
+              placeholder="Eigenes Fach (z. B. LF10b)"
+              maxlength="24"
+              style="min-width: 180px"
+            />
+            <button class="btn small ghost" id="noten-addfach">Fach hinzufügen</button>
+            <span class="q-progress" id="noten-state"></span>
+          </div>
+        </div>
+      </details>
+
+      <details class="section card collapse-card" id="bereich-auswertung">
+        <summary>
+          <h2>Stärken &amp; Schwächen</h2>
+          <span class="sum-hint">deine Themen-Auswertung</span>
+        </summary>
+        <div class="mt-10">
+          <div class="card">
+            <h2>Stärken &amp; Schwächen</h2>
+            <p class="note-dim">Basierend auf deinen Quiz-Antworten je Themengebiet.</p>
+            <div id="d-topics">
+              <p class="empty">
+                Beantworte ein paar Quizfragen, dann erscheint hier deine Auswertung.
+              </p>
+            </div>
+          </div>
+        </div>
+      </details>
+      <section class="section">
+        <div class="card split-card">
+          <div>
+            <strong>Deine Daten: sichern &amp; übertragen</strong>
+            <p class="sub-note">
+              Fortschritt, Noten und Einstellungen liegen nur in diesem Browser. Als Datei
+              exportieren und auf einem anderen Rechner wieder einspielen.
+            </p>
+          </div>
+          <a class="btn ghost" href="lernstand.html#h-backup">Export / Import öffnen</a>
+        </div>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Dashboard" }]);
+
+        // ---------- Kalender: Aktivität + eigene Termine (Store "termine") ----------
+        window.KAL = (function () {
+          const grid = document.getElementById("kal-grid");
+          if (!grid) return null;
+          const titel = document.getElementById("kal-titel"),
+            form = document.getElementById("kal-form");
+          const inTitel = document.getElementById("kal-in-titel"),
+            inTyp = document.getElementById("kal-in-typ");
+          const fDatum = document.getElementById("kal-form-datum"),
+            liste = document.getElementById("kal-liste");
+          const TYP = {
+            arbeit: "Klassenarbeit",
+            ap1: "Prüfung AP1",
+            ap2: "Prüfung AP2",
+            abgabe: "Abgabe",
+            sonst: "Termin",
+          };
+          let anzeige = new Date();
+          anzeige.setDate(1);
+          let gewaehlt = null;
+          const iso = (d) => d.toISOString().slice(0, 10);
+          const termine = () => Store.get("termine", []);
+          const heute = () => iso(new Date());
+
+          function speichereTermin(datum, titelTxt, typ) {
+            const t = termine().filter(
+              (x) => !(x.d === datum && (typ === "ap1" || typ === "ap2") && x.typ === typ)
+            );
+            // AP1/AP2: nur EIN Termin je Prüfung – alte gleichen Typs ersetzen
+            const rest = typ === "ap1" || typ === "ap2" ? t.filter((x) => x.typ !== typ) : t;
+            rest.push({ d: datum, t: titelTxt || TYP[typ], typ });
+            rest.sort((a, b) => a.d.localeCompare(b.d));
+            Store.set("termine", rest);
+            if (typ === "ap1" || typ === "ap2") setApDatum(typ, datum); // Countdown mitziehen
+            render();
+          }
+          function loescheTermin(i) {
+            const t = termine();
+            t.splice(i, 1);
+            Store.set("termine", t);
+            render();
+          }
+          function setApDatum(key, datum) {
+            Store.set(key + "Date", datum);
+            const inp = document.getElementById("cd-" + key);
+            if (inp) {
+              inp.value = datum;
+              inp.dispatchEvent(new Event("change"));
+            }
+          }
+
+          function render() {
+            const days = Store.get("days", {});
+            const y = anzeige.getFullYear(),
+              m = anzeige.getMonth();
+            titel.textContent = anzeige.toLocaleDateString("de-DE", {
+              month: "long",
+              year: "numeric",
+            });
+            const erster = new Date(y, m, 1),
+              start = (erster.getDay() + 6) % 7; // Montag = 0
+            const tage = new Date(y, m + 1, 0).getDate();
+            let html = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+              .map((w) => '<div class="kal-wt">' + w + "</div>")
+              .join("");
+            for (let i = 0; i < start; i++)
+              html += '<div class="kal-zelle fremd" aria-hidden="true"></div>';
+            for (let t = 1; t <= tage; t++) {
+              const k = iso(new Date(Date.UTC(y, m, t)));
+              const akt = days[k] || 0;
+              const punkte = akt
+                ? '<span class="kal-akt" title="' +
+                  akt +
+                  ' Aktivitätspunkte" style="background:' +
+                  (akt < 30
+                    ? "var(--ac-soft)"
+                    : akt < 80
+                      ? "color-mix(in srgb,var(--ac) 55%,transparent)"
+                      : "var(--ac)") +
+                  '"></span>'
+                : "";
+              const ts = termine().filter((x) => x.d === k);
+              const marker =
+                ts
+                  .slice(0, 2)
+                  .map(
+                    (x) =>
+                      '<span class="kal-termin" title="' +
+                      escHtml(x.t) +
+                      '">' +
+                      escHtml(x.t) +
+                      "</span>"
+                  )
+                  .join("") +
+                (ts.length > 2 ? '<span class="kal-termin">+' + (ts.length - 2) + "</span>" : "");
+              html +=
+                '<button type="button" class="kal-zelle' +
+                (k === heute() ? " heute" : "") +
+                '" data-d="' +
+                k +
+                '" aria-label="' +
+                k +
+                (ts.length ? ", " + ts.length + " Termin(e)" : "") +
+                '"><span class="kal-nr">' +
+                t +
+                "</span>" +
+                punkte +
+                marker +
+                "</button>";
+            }
+            grid.innerHTML = html;
+            // Anstehende Termine
+            const alleTermine = termine();
+            const kommend = alleTermine.filter((x) => x.d >= heute()).slice(0, 6);
+            liste.innerHTML = kommend.length
+              ? '<strong class="fs-90">Anstehend:</strong> ' +
+                kommend
+                  .map((x) => {
+                    const i = alleTermine.indexOf(x);
+                    const tage2 = Math.ceil((new Date(x.d) - new Date()) / 864e5);
+                    return (
+                      '<span class="chip" style="cursor:default">' +
+                      escHtml(x.t) +
+                      " · " +
+                      (tage2 <= 0 ? "heute" : "in " + tage2 + " Tg.") +
+                      ' <button type="button" class="kal-del" data-i="' +
+                      i +
+                      '" aria-label="Termin löschen: ' +
+                      escHtml(x.t) +
+                      '">✗</button></span>'
+                    );
+                  })
+                  .join(" ")
+              : '<span class="small-dim">Noch keine anstehenden Termine – Tag im Kalender anklicken.</span>';
+          }
+
+          grid.addEventListener("click", (e) => {
+            const z = e.target.closest(".kal-zelle[data-d]");
+            if (!z) return;
+            gewaehlt = z.dataset.d;
+            fDatum.textContent = new Date(gewaehlt).toLocaleDateString("de-DE", {
+              weekday: "short",
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            });
+            form.hidden = false;
+            inTitel.value = "";
+            inTitel.focus();
+          });
+          form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            if (gewaehlt) speichereTermin(gewaehlt, inTitel.value.trim(), inTyp.value);
+            form.hidden = true;
+          });
+          document.getElementById("kal-abbruch").addEventListener("click", () => {
+            form.hidden = true;
+          });
+          liste.addEventListener("click", (e) => {
+            const b = e.target.closest(".kal-del");
+            if (b) loescheTermin(+b.dataset.i);
+          });
+          document.getElementById("kal-prev").addEventListener("click", () => {
+            anzeige.setMonth(anzeige.getMonth() - 1);
+            render();
+          });
+          document.getElementById("kal-next").addEventListener("click", () => {
+            anzeige.setMonth(anzeige.getMonth() + 1);
+            render();
+          });
+          render();
+          return {
+            render,
+            uebernimmApDatum(key, datum) {
+              // Countdown-Feld -> Kalender-Termin
+              if (!datum) return;
+              const rest = termine().filter((x) => x.typ !== key);
+              rest.push({ d: datum, t: TYP[key], typ: key });
+              rest.sort((a, b) => a.d.localeCompare(b.d));
+              Store.set("termine", rest);
+              render();
+            },
+          };
+        })();
+
+        // ---------- Notentracker (je Lehrjahr) ----------
+        (function () {
+          const tbody = document.querySelector("#noten-table tbody");
+          if (!tbody) return;
+          const escN = window.escHtml;
+          const SCHULE = ["Deutsch", "Englisch", "Politik", "WISO"];
+          const DEFAULT_JAHR = {
+            1: ["LF1", "LF2", "LF3", "LF4", "LF5"].concat(SCHULE),
+            2: ["LF6", "LF7", "LF8", "LF9"].concat(SCHULE),
+            3: ["LF10a", "LF11a", "LF12a"].concat(SCHULE),
+          };
+          const NOTE_TXT = {
+            1: "sehr gut",
+            2: "gut",
+            3: "befriedigend",
+            4: "ausreichend",
+            5: "mangelhaft",
+            6: "ungenügend",
+          };
+          const BANDS = { 1: [92, 100], 2: [81, 91], 3: [67, 80], 4: [50, 66], 5: [30, 49] };
+          function ihkNote(p) {
+            if (p >= 92) return 1;
+            if (p >= 81) return 2;
+            if (p >= 67) return 3;
+            if (p >= 50) return 4;
+            if (p >= 30) return 5;
+            return 6;
+          }
+          function punkte(p) {
+            // Notenpunkte 0-15 mit Tendenz-Dritteln innerhalb der Notenstufe
+            const n = ihkNote(p);
+            if (n === 6) return { pts: 0, tend: "6" };
+            const [lo, hi] = BANDS[n],
+              pos = (p - lo) / (hi - lo);
+            const third = pos >= 2 / 3 ? "+" : pos >= 1 / 3 ? "" : "-";
+            return {
+              pts: 16 - 3 * n + (third === "+" ? 2 : third === "" ? 1 : 0),
+              tend: n + third,
+            };
+          }
+          function emptyYear(j) {
+            return { order: DEFAULT_JAHR[j].slice(), marks: {}, final: {} };
+          }
+          function load() {
+            let d = Store.get("noten", null);
+            if (d && d.v === 2 && d.years) {
+              // Politik und WISO sind getrennte Noten: altes Sammelfach je Jahr aufloesen
+              let changed = false;
+              for (const k of [1, 2, 3]) {
+                const y = d.years[k];
+                if (!y) continue;
+                const i = y.order.indexOf("Politik/WISO");
+                if (i > -1) {
+                  y.order.splice(i, 1, "Politik", "WISO");
+                  if (y.marks["Politik/WISO"]) {
+                    y.marks["Politik"] = y.marks["Politik/WISO"];
+                    delete y.marks["Politik/WISO"];
+                  }
+                  if (y.final["Politik/WISO"]) {
+                    y.final["Politik"] = y.final["Politik/WISO"];
+                    delete y.final["Politik/WISO"];
+                  }
+                  changed = true;
+                }
+              }
+              if (changed) Store.set("noten", d);
+              return d;
+            }
+            const v2 = {
+              v: 2,
+              active: 1,
+              years: { 1: emptyYear(1), 2: emptyYear(2), 3: emptyYear(3) },
+            };
+            if (d && d.order) {
+              // Migration vom flachen Format: Faecher nach Lehrjahr einsortieren
+              const yearOf = (f) =>
+                /^LF([1-5])$/.test(f) ? 1 : /^LF([6-9])$/.test(f) ? 2 : /^LF1[012]/.test(f) ? 3 : 1;
+              d.order.forEach((f) => {
+                const y = v2.years[yearOf(f)];
+                if (!y.order.includes(f)) y.order.push(f);
+                if (d.marks[f] && d.marks[f].length) y.marks[f] = d.marks[f];
+                if (d.final[f]) y.final[f] = d.final[f];
+              });
+              Store.set("noten", v2);
+            }
+            return v2;
+          }
+          function save(d) {
+            Store.set("noten", d);
+          }
+          function fmt(x) {
+            return (Math.round(x * 10) / 10).toLocaleString("de-DE");
+          }
+          function yearAvg(y) {
+            let all = [];
+            for (const f of y.order) all = all.concat(y.marks[f] || []);
+            return all;
+          }
+          function draw() {
+            const d = load(),
+              j = d.active,
+              Y = d.years[j];
+            // Jahr-Tabs + Uebersicht
+            document
+              .querySelectorAll("#noten-jahre .chip")
+              .forEach((c) => c.setAttribute("aria-pressed", +c.dataset.nj === j));
+            let ov = [];
+            for (const k of [1, 2, 3]) {
+              const m = yearAvg(d.years[k]);
+              ov.push(
+                k +
+                  ". Lj: " +
+                  (m.length
+                    ? fmt(m.reduce((a, b) => a + b, 0) / m.length) +
+                      " (" +
+                      ihkNote(m.reduce((a, b) => a + b, 0) / m.length) +
+                      ")"
+                    : "–")
+              );
+            }
+            const allY = [1, 2, 3].map((k) => yearAvg(d.years[k])).flat();
+            ov.push(
+              "Gesamt: " +
+                (allY.length
+                  ? fmt(allY.reduce((a, b) => a + b, 0) / allY.length) +
+                    " (" +
+                    ihkNote(allY.reduce((a, b) => a + b, 0) / allY.length) +
+                    ", " +
+                    NOTE_TXT[ihkNote(allY.reduce((a, b) => a + b, 0) / allY.length)] +
+                    ")"
+                  : "–")
+            );
+            document.getElementById("noten-overview").textContent = ov.join("  ·  ");
+            // Tabelle des aktiven Jahres
+            let all = [];
+            const row = (name) => {
+              const custom = !DEFAULT_JAHR[j].includes(name);
+              const marks = Y.marks[name] || [];
+              all = all.concat(marks);
+              let avgC = "–",
+                noteC = "–",
+                ptsC = "–";
+              if (marks.length) {
+                const avg = marks.reduce((a, b) => a + b, 0) / marks.length;
+                const n = ihkNote(avg),
+                  pk = punkte(avg);
+                avgC = fmt(avg);
+                noteC = n + " (" + NOTE_TXT[n] + ")";
+                ptsC = pk.pts + " („" + pk.tend + "“)";
+              }
+              return (
+                '<tr data-fach="' +
+                escN(name) +
+                '"><td data-label="Fach"><strong>' +
+                escN(name) +
+                "</strong>" +
+                (custom
+                  ? ' <button type="button" class="noten-delfach" title="Fach entfernen" aria-label="Fach ' +
+                    escN(name) +
+                    ' entfernen" style="border:0;background:none;color:var(--err);cursor:pointer">✗</button>'
+                  : "") +
+                "</td>" +
+                '<td data-label="Einzelnoten">' +
+                (marks.length
+                  ? marks
+                      .map(
+                        (m, i) =>
+                          '<button type="button" class="badge noten-del" data-i="' +
+                          i +
+                          '" title="Note entfernen" style="cursor:pointer;margin:1px">' +
+                          fmt(m) +
+                          "</button>"
+                      )
+                      .join(" ")
+                  : '<span style="color:var(--tx3)">–</span>') +
+                "</td>" +
+                '<td data-label="Neue Note"><input class="gap-input noten-in" inputmode="decimal" placeholder="0–100" aria-label="Neue Note für ' +
+                escN(name) +
+                " (" +
+                j +
+                '. Lehrjahr)" style="width:84px"></td>' +
+                '<td data-label="IHK Ø">' +
+                avgC +
+                '</td><td data-label="IHK-Note">' +
+                noteC +
+                '</td><td data-label="Punkte">' +
+                ptsC +
+                "</td>" +
+                '<td data-label="Zeugnisnote"><input class="gap-input noten-final" value="' +
+                escN(Y.final[name] || "") +
+                '" placeholder="z. B. 2" maxlength="12" aria-label="Zeugnisnote für ' +
+                escN(name) +
+                '" style="width:84px"></td></tr>'
+              );
+            };
+            let html = Y.order.map(row).join("");
+            let g =
+              '<tr class="noten-gesamt" style="border-top:2px solid var(--line-strong)"><td data-label="Fach"><strong>Gesamt ' +
+              j +
+              '. Lehrjahr</strong></td><td data-label="Einzelnoten">' +
+              (all.length ? all.length + " Noten" : '<span style="color:var(--tx3)">–</span>') +
+              '</td><td class="noten-leer"></td>';
+            if (all.length) {
+              const avg = all.reduce((a, b) => a + b, 0) / all.length,
+                n = ihkNote(avg),
+                pk = punkte(avg);
+              g +=
+                '<td data-label="IHK Ø"><strong>' +
+                fmt(avg) +
+                '</strong></td><td data-label="IHK-Note"><strong>' +
+                n +
+                " (" +
+                NOTE_TXT[n] +
+                ')</strong></td><td data-label="Punkte"><strong>' +
+                pk.pts +
+                " („" +
+                pk.tend +
+                "“)</strong></td>";
+            } else
+              g +=
+                '<td data-label="IHK Ø">–</td><td data-label="IHK-Note">–</td><td data-label="Punkte">–</td>';
+            g += '<td class="noten-leer"></td></tr>';
+            tbody.innerHTML = html + g;
+            // Events
+            tbody.querySelectorAll(".noten-in").forEach((inp) =>
+              inp.addEventListener("keydown", (e) => {
+                if (e.key !== "Enter") return;
+                const fach = inp.closest("tr").dataset.fach,
+                  d2 = load(),
+                  Y2 = d2.years[d2.active];
+                const vals = inp.value
+                  .split(/[;,]\s*|\s+/)
+                  .map((x) => parseFloat(String(x).replace(",", ".")))
+                  .filter((v) => isFinite(v) && v >= 0 && v <= 100);
+                if (!vals.length) {
+                  inp.value = "";
+                  inp.placeholder = "0–100!";
+                  return;
+                }
+                Y2.marks[fach] = (Y2.marks[fach] || [])
+                  .concat(vals.map((v) => Math.round(v * 10) / 10))
+                  .slice(0, 40);
+                save(d2);
+                draw();
+                const el = document.querySelector(
+                  'tr[data-fach="' + fach.replace(/"/g, '\\"') + '"] .noten-in'
+                );
+                if (el) el.focus();
+              })
+            );
+            tbody.querySelectorAll(".noten-del").forEach((b) =>
+              b.addEventListener("click", () => {
+                const fach = b.closest("tr").dataset.fach,
+                  d2 = load();
+                d2.years[d2.active].marks[fach].splice(+b.dataset.i, 1);
+                save(d2);
+                draw();
+              })
+            );
+            tbody.querySelectorAll(".noten-final").forEach((inp) =>
+              inp.addEventListener("change", () => {
+                const fach = inp.closest("tr").dataset.fach,
+                  d2 = load();
+                d2.years[d2.active].final[fach] = inp.value.slice(0, 12);
+                save(d2);
+              })
+            );
+            tbody.querySelectorAll(".noten-delfach").forEach((b) =>
+              b.addEventListener("click", () => {
+                const fach = b.closest("tr").dataset.fach,
+                  d2 = load(),
+                  Y2 = d2.years[d2.active];
+                Y2.order = Y2.order.filter((x) => x !== fach);
+                delete Y2.marks[fach];
+                delete Y2.final[fach];
+                save(d2);
+                draw();
+              })
+            );
+          }
+          document.querySelectorAll("#noten-jahre .chip").forEach((c) =>
+            c.addEventListener("click", () => {
+              const d = load();
+              d.active = +c.dataset.nj;
+              save(d);
+              draw();
+            })
+          );
+          document.getElementById("noten-addfach").addEventListener("click", () => {
+            const inp = document.getElementById("noten-newfach");
+            const name = inp.value.trim().replace(/[<>]/g, "").slice(0, 24);
+            if (!name) return;
+            const d = load(),
+              Y = d.years[d.active];
+            if (Y.order.includes(name)) {
+              document.getElementById("noten-state").textContent =
+                "Fach existiert in diesem Lehrjahr schon.";
+              return;
+            }
+            Y.order.push(name);
+            save(d);
+            inp.value = "";
+            document.getElementById("noten-state").textContent = "";
+            draw();
+          });
+          draw();
+        })();
+
+        // Fortschritts- & Schwaechen-Matrix (zusammengelegt aus Heatmap + Lernfelder-Matrix)
+        (function () {
+          const tbody = document.querySelector("#matrix-table tbody");
+          if (!tbody || !window.LF_INDEX) return;
+          const STATUS_CLS = {
+            "noch nicht begonnen": "s0",
+            begonnen: "s1",
+            "in Wiederholung": "s2",
+            prüfungsbereit: "s3",
+            abgeschlossen: "s4",
+          };
+          const aeMode = window.Track && Track.isSpec();
+          const basis = window.trackFields ? trackFields(LF_INDEX.fields) : LF_INDEX.fields; // filtert fremde Fachrichtungs-Bereiche
+          let fields = basis.filter((f) => f.type === "lf" && !f.placeholder);
+          let extras = basis.filter((f) => f.type !== "lf");
+          if (aeMode) {
+            const tr = Track.get();
+            const own =
+              tr === "ae" ? ["ae", "aeap"] : Track.info().bonus ? [Track.info().bonus] : [];
+            const commons = LF_INDEX.fields.filter(
+              (f) => Track.fieldsFor[tr].includes(f.id) && /^lf[1-9]$/.test(f.id)
+            );
+            fields = extras
+              .filter((f) => own.includes(f.id))
+              .concat(commons)
+              .concat(
+                LF_INDEX.fields.filter((f) => f.placeholder && Track.fieldsFor[tr].includes(f.id))
+              );
+            extras = extras.filter((f) =>
+              ["komm", "wiso", "allgemein", "zert", "prap1"].includes(f.id)
+            );
+          } else {
+            const aeBonus = LF_INDEX.fields.find((f) => f.id === "ae"); // AE-Bonus ist FISI-Zusatzstoff (AP1 enthält AE-Themen)
+            if (aeBonus && !extras.includes(aeBonus)) extras.push(aeBonus);
+          }
+          const all = fields.concat(extras);
+          const MIN = 10; // erst ab 10 Antworten ist die Trefferquote aussagekräftig
+          const quote = (s) => {
+            if (!s.answered) return { txt: "–", col: "var(--tx3)", bg: "transparent" };
+            if (s.answered < MIN)
+              return {
+                txt: s.pct + " % (erst " + s.answered + "/" + MIN + " Antw.)",
+                col: "var(--tx3)",
+                bg: "transparent",
+              };
+            if (s.pct >= 80)
+              return {
+                txt: s.pct + " % (" + s.answered + " Antw.)",
+                col: "var(--ok)",
+                bg: "rgba(26,154,82,.18)",
+              };
+            if (s.pct >= 50)
+              return {
+                txt: s.pct + " % (" + s.answered + " Antw.)",
+                col: "var(--warn)",
+                bg: "rgba(201,119,0,.16)",
+              };
+            return {
+              txt: s.pct + " % (" + s.answered + " Antw.)",
+              col: "var(--err)",
+              bg: "rgba(210,59,59,.16)",
+            };
+          };
+          const wissen = (s, f) =>
+            s.answered && f.quiz
+              ? (s.okQ && Math.round((s.okQ / f.quiz) * 100) === 0
+                  ? "<1"
+                  : Math.round(((s.okQ || 0) / f.quiz) * 100)) +
+                " % (" +
+                (s.okQ || 0) +
+                " von " +
+                f.quiz +
+                ")"
+              : "–";
+          tbody.innerHTML = all
+            .map((f) => {
+              const st = LF.status(f.id),
+                s = LF.stats(f.id),
+                q = quote(s);
+              return `<tr><td>${f.placeholder ? f.nr : `<a href="lernfeld.html?id=${f.id}">${f.nr}</a>`} – ${f.name.length > 42 ? f.name.slice(0, 40) + "…" : f.name}</td>
+        <td>${f.year || "–"}</td><td>${f.ap}</td><td>${f.lessons}</td><td>${f.quiz}</td>
+        <td>${wissen(s, f)}</td>
+        <td style="background:${q.bg};color:${q.col};font-weight:600;white-space:nowrap">${q.txt}</td>
+        <td>${s.openWrong || 0}</td><td><span class="status-pill ${STATUS_CLS[st]}">${st}</span></td></tr>`;
+            })
+            .join("");
+          document.getElementById("matrix-cards").innerHTML = all
+            .map((f) => {
+              const st = LF.status(f.id),
+                s = LF.stats(f.id),
+                q = quote(s);
+              return `<div class="card"><div class="lfnr">${f.nr} · ${f.year ? "Jahr " + f.year : "übergreifend"} · ${f.ap}</div>
+        <strong>${f.placeholder ? f.name : `<a href="lernfeld.html?id=${f.id}">${f.name}</a>`}</strong>
+        <p style="font-size:.85rem;margin:6px 0">${f.lessons} Lektionen · ${f.quiz} Fragen · Wissensstand: ${wissen(s, f)} · offene Wdh.: ${s.openWrong || 0}</p>
+        <p style="font-size:.85rem;margin:6px 0">Trefferquote: <span style="color:${q.col};font-weight:600">${q.txt}</span></p>
+        <span class="status-pill ${STATUS_CLS[st]}">${st}</span></div>`;
+            })
+            .join("");
+        })();
+
+        // Aktivitäts-Wochenverlauf: letzte 8 Wochen aus dem Store (gleiche Wochenlogik wie app.js)
+        (function () {
+          const host = document.getElementById("week-chart");
+          if (!host) return;
+          const wk = (d) => {
+            const oj = new Date(d.getFullYear(), 0, 1);
+            return d.getFullYear() + "-W" + Math.ceil(((d - oj) / 864e5 + oj.getDay() + 1) / 7);
+          };
+          const data = Store.get("week", {});
+          const weeks = [];
+          for (let i = 7; i >= 0; i--) {
+            const d = new Date(Date.now() - i * 7 * 864e5);
+            weeks.push({ key: wk(d), label: "KW" + wk(d).split("W")[1], xp: data[wk(d)] || 0 });
+          }
+          const max = Math.max(300, ...weeks.map((w) => w.xp));
+          const W = 760,
+            H = 210,
+            pad = 34,
+            bw = (W - pad * 2) / 8;
+          const yOf = (v) => H - 30 - (v / max) * (H - 70);
+          let svg = "";
+          const gy = yOf(300);
+          svg +=
+            '<line x1="' +
+            pad +
+            '" y1="' +
+            gy +
+            '" x2="' +
+            (W - pad) +
+            '" y2="' +
+            gy +
+            '" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="6 4"/>' +
+            '<text x="' +
+            (W - pad) +
+            '" y="' +
+            (gy - 6) +
+            '" text-anchor="end" font-size="10" fill="var(--warn)" font-family="IBM Plex Sans,sans-serif">Richtwert 300</text>';
+          weeks.forEach((w, i) => {
+            const x = pad + i * bw + bw * 0.18,
+              wid = bw * 0.64,
+              y = yOf(w.xp),
+              cur = i === 7;
+            svg +=
+              '<rect x="' +
+              x +
+              '" y="' +
+              y +
+              '" width="' +
+              wid +
+              '" height="' +
+              (H - 30 - y) +
+              '" rx="2" fill="' +
+              (cur ? "var(--ac)" : "var(--bg3)") +
+              '" stroke="' +
+              (cur ? "var(--ac-strong)" : "var(--line-strong)") +
+              '" stroke-width="1"><title>' +
+              w.label +
+              ": " +
+              w.xp +
+              " Punkte</title></rect>" +
+              '<text x="' +
+              (x + wid / 2) +
+              '" y="' +
+              (H - 14) +
+              '" text-anchor="middle" font-size="10" fill="var(--tx3)" font-family="IBM Plex Sans,sans-serif">' +
+              w.label +
+              "</text>" +
+              (w.xp
+                ? '<text x="' +
+                  (x + wid / 2) +
+                  '" y="' +
+                  (y - 5) +
+                  '" text-anchor="middle" font-size="10" font-weight="600" fill="' +
+                  (cur ? "var(--ac-strong)" : "var(--tx2)") +
+                  '" font-family="IBM Plex Sans,sans-serif">' +
+                  w.xp +
+                  "</text>"
+                : "");
+          });
+          host.innerHTML =
+            '<svg viewBox="0 0 ' +
+            W +
+            " " +
+            H +
+            '" style="width:100%;height:auto">' +
+            svg +
+            "</svg>";
+        })();
+        const st_ = Progress.stats();
+        let ok_ = 0;
+        Object.values(st_).forEach((x) => (ok_ += x.ok));
+        document.getElementById("d-xp").textContent = ok_;
+        document.getElementById("d-level").textContent = DATA.lessons.filter((l) =>
+          Progress.isDone(l.id)
+        ).length;
+        document.getElementById("d-nextxp").textContent = DATA.lessons.length;
+        const dlae = document.getElementById("d-level-ae");
+        if (dlae && window.LF && Track.isSpec())
+          dlae.textContent =
+            Track.get() === "ae"
+              ? LF.read("ae").length + LF.read("aeap").length
+              : Track.info().bonus
+                ? LF.read(Track.info().bonus).length
+                : LF.read("wiso").length;
+        document.getElementById("d-streak").textContent = Gami.streak();
+        document.getElementById("d-week").textContent = Gami.weekXp();
+
+        const bar = (label, pct, extra = "") =>
+          `<div style="margin:8px 0"><div style="display:flex;justify-content:space-between;font-size:.9rem"><span>${label}</span><span>${pct}% ${extra}</span></div><div class="progress"><span style="width:${pct}%"></span></div></div>`;
+        const doneAll = DATA.lessons.filter((l) => Progress.isDone(l.id)).length;
+        document.getElementById("d-total").innerHTML = bar(
+          "Alle Lektionen",
+          Math.round((doneAll / DATA.lessons.length) * 100),
+          `(${doneAll}/${DATA.lessons.length})`
+        );
+        document.getElementById("d-years").innerHTML = [1, 2, 3]
+          .map((y) => {
+            const ls = DATA.lessons.filter((l) => l.year === y),
+              d = ls.filter((l) => Progress.isDone(l.id)).length;
+            return bar("Jahr " + y, Math.round((d / ls.length) * 100), `(${d}/${ls.length})`);
+          })
+          .join("");
+        const apScore = (key) => {
+          const r = Store.get(key, null);
+          return r
+            ? bar(key === "ap1Result" ? "AP1-Musterprüfung" : "AP2-Musterprüfung", r.pct)
+            : `<p style="font-size:.88rem" class="empty">${key === "ap1Result" ? "AP1" : "AP2"}-Musterprüfung noch nicht absolviert.</p>`;
+        };
+        document.getElementById("d-ap").innerHTML = apScore("ap1Result") + apScore("ap2Result");
+
+        const wrong = Progress.wrongQueue();
+        const next = DATA.lessons.find((l) => !Progress.isDone(l.id));
+        const dn = document.getElementById("d-next");
+        if (Track.isSpec() && wrong.length < 3) {
+          dn.innerHTML = Track.info().bonus
+            ? `<p>Weiter in deinem Fachpfad: Bonus-Lernbereich und Aufgabentraining im Prüfungsstil.</p><a class="btn small" href="lernfeld.html?id=${Track.info().bonus}">${Track.info().kurz}-Bonus</a>` +
+              (Track.info().ap
+                ? ` <a class="btn small ghost" href="${Track.info().ap}">Prüfungstraining</a>`
+                : "")
+            : `<p>Weiter in deiner Ausbildung: WISO und Berufsschule sind startklar, die Lernfelder deines Berufs sind bereits angelegt.</p><a class="btn small" href="lernfelder.html">Zu den Lernbereichen</a>`;
+        } else if (wrong.length >= 3) {
+          dn.innerHTML = `<p>Du hast <strong>${wrong.length} falsch beantwortete Fragen</strong> offen. Wiederholen festigt am stärksten!</p><a class="btn small" href="quiz.html?mode=repeat">Wiederholungsmodus starten</a>`;
+        } else if (next) {
+          dn.innerHTML = `<p><span class="badge">Jahr ${next.year}</span> <strong>${next.title}</strong> – ca. ${next.minutes} Min.<br><span style="color:var(--tx3);font-size:.86rem">Warum jetzt? Die Lektionen bauen aufeinander auf; das hier ist deine früheste offene Grundlage.</span></p><a class="btn small" href="lektion.html?id=${next.id}">Lektion starten</a>`;
+        } else {
+          dn.innerHTML = `<p>Alle Lektionen fertig! Empfehlung: <a href="ap2.html#muster">AP2-Musterprüfung</a> unter Zeitdruck.</p>`;
+        }
+        // Lernkarten-Fälligkeit (Spaced Repetition) in der Tagesleiste
+        try {
+          const srPool = (window.trackCards ? trackCards(DATA.cards) : DATA.cards).concat(
+            Store.get("eigeneKarten", []) || []
+          );
+          const srN = window.SR ? SR.faellige(srPool).length : 0;
+          if (srN > 0) {
+            document.getElementById("sr-btn").hidden = false;
+            document.getElementById("sr-btn-n").textContent = srN;
+          }
+        } catch (e) {}
+        // Kuratierte "Weiter lernen"-Vorschläge zur zuletzt geöffneten Lernfeld-Lektion
+        (function () {
+          const letzte = Store.get("lastLfLesson", null);
+          const VK = window.VERWANDT_KURATIERT || {};
+          const idx = (window.LF_INDEX && LF_INDEX.lessonsIdx) || [];
+          if (!letzte || !VK[letzte] || !idx.length) return;
+          const selbst = idx.find((x) => x.id === letzte);
+          const ziele = VK[letzte]
+            .map((id) => idx.find((x) => x.id === id))
+            .filter(Boolean)
+            .slice(0, 3);
+          if (!selbst || !ziele.length) return;
+          dn.innerHTML +=
+            `<p style="margin-top:10px;padding-top:8px;border-top:1px dashed var(--line);font-size:.86rem;color:var(--tx2)">Passend zu deiner letzten Lektion „${escHtml(selbst.t)}“: ` +
+            ziele
+              .map(
+                (z) =>
+                  `<a href="lernfeld.html?id=${encodeURIComponent(z.lf)}#${encodeURIComponent(z.id)}">${escHtml(z.t)}</a>`
+              )
+              .join(" · ") +
+            `</p>`;
+        })();
+
+        const last = Progress.last();
+        if (last) {
+          const l = DATA.lessons.find((x) => x.id === last);
+          if (l)
+            document.getElementById("d-last").innerHTML =
+              `<p><span class="badge">Jahr ${l.year}</span> <a href="lektion.html?id=${l.id}">${l.title}</a> ${Progress.isDone(l.id) ? '<span class="badge ok">abgeschlossen</span>' : '<span class="badge">offen</span>'}</p>`;
+        }
+        const faelligGesamt = QStats.faelligeMitQueue().length;
+        document.getElementById("d-wrong").innerHTML = faelligGesamt
+          ? `<p><strong>${faelligGesamt}</strong> Frage(n) heute fällig${wrong.length ? ` (${wrong.length} aus Fehlern)` : ""}. <a href="quiz.html?mode=repeat">Jetzt wiederholen →</a></p>`
+          : `<p class="empty">Keine fälligen Wiederholungen – sauber!</p>`;
+
+        const escT = window.escHtml;
+        const stats = Progress.stats();
+        const entries = Object.entries(stats)
+          .filter(([, s]) => s.total >= 1)
+          .map(([t, s]) => ({ t: escT(t), pct: Math.round((s.ok / s.total) * 100), n: s.total }))
+          .sort((a, b) => b.pct - a.pct);
+        if (entries.length) {
+          document.getElementById("d-topics").innerHTML = entries
+            .map((e) => {
+              const cls = e.pct >= 70 ? "ok" : e.pct >= 40 ? "" : "hot";
+              const tag = e.pct >= 70 ? "Stärke" : e.pct >= 40 ? "ausbaufähig" : "Schwäche";
+              return `<div style="margin:8px 0"><div style="display:flex;justify-content:space-between;font-size:.9rem"><span>${e.t} <span class="badge ${cls}">${tag}</span></span><span>${e.pct}% von ${e.n}</span></div><div class="progress"><span style="width:${e.pct}%"></span></div></div>`;
+            })
+            .join("");
+        }
+        if (Store.get("ap1Done", false))
+          document.getElementById("d-sim1").innerHTML +=
+            ' <span class="badge ok">absolviert</span>';
+        if (Store.get("ap2Done", false))
+          document.getElementById("d-sim2").innerHTML +=
+            ' <span class="badge ok">absolviert</span>';
+
+        /* ---- Lernfeld-Bereich ---- */
+        if (window.LF_INDEX) {
+          const fields = window.trackFields
+            ? trackFields(LF_INDEX.fields).filter((f) => f.type === "lf")
+            : LF_INDEX.fields.filter((f) => f.type === "lf"); // nur Lernfelder der eigenen Fachrichtung
+          const withStats = fields.map((f) => ({
+            f,
+            s: LF.stats(f.id),
+            pct: LF.progressPct(f.id),
+            st: LF.status(f.id),
+          }));
+          const answered = withStats.filter((x) => x.s.answered >= 10); // Quote erst ab 10 Antworten werten
+          const strong = answered.slice().sort((a, b) => b.s.pct - a.s.pct)[0];
+          const weak = answered.slice().sort((a, b) => a.s.pct - b.s.pct)[0];
+          document.getElementById("lf-strong").textContent = strong ? strong.f.nr : "–";
+          document.getElementById("lf-weak").textContent = weak ? weak.f.nr : "–";
+          document.getElementById("lf-openwdh").textContent = withStats.reduce(
+            (a, x) => a + x.s.openWrong,
+            0
+          );
+          let lastLf = null,
+            lastT = 0;
+          Object.values(QStats.all()).forEach((e) => {
+            if (e.last > lastT && e.lf && e.lf.length) {
+              lastT = e.last;
+              lastLf = e.lf[0];
+            }
+          });
+          const lastMeta = lastLf ? LF.meta(lastLf) : null;
+          document.getElementById("lf-last").textContent = lastMeta ? lastMeta.nr : "–";
+          const reco =
+            withStats.find((x) => x.s.openWrong > 0) ||
+            withStats.find((x) => x.st !== "abgeschlossen");
+          document.getElementById("lf-reco").innerHTML = reco
+            ? `<p style="font-size:.9rem;margin:4px 0"><a href="lernfeld.html?id=${reco.f.id}"><strong>${reco.f.nr}: ${reco.f.name}</strong></a><br><span style="color:var(--tx3)">${reco.s.openWrong ? reco.s.openWrong + " offene Wiederholung(en) – erst abbauen." : "Nächster Meilenstein: Status „prüfungsbereit“ (≥10 Antworten, ≥70 %)."}</span></p>`
+            : `<p class="empty">Alle Lernfelder abgeschlossen!</p>`;
+          if (Track.isSpec()) {
+            document.getElementById("lf-boss").innerHTML = Track.info().ap
+              ? `<a href="${Track.info().ap}">${Track.info().kurz}-Prüfungstraining fortsetzen</a>`
+              : `<a href="lernfelder.html">Deine Lernbereiche</a>`;
+          } else {
+            const bossYear =
+              [1, 2, 3].find((y) => {
+                const ls = DATA.lessons.filter((l) => l.year === y);
+                return ls.every((l) => Progress.isDone(l.id));
+              }) || 1;
+            document.getElementById("lf-boss").innerHTML =
+              `<a href="jahr${bossYear}.html">Boss-Challenge Jahr ${bossYear}</a>`;
+          }
+          document.getElementById("lf-bars").innerHTML = withStats
+            .map((x) => bar(x.f.nr, x.pct, `· ${x.st}`))
+            .join("");
+          const gaps = (ap) => {
+            const rel = withStats.filter((x) => x.f.ap.includes(ap));
+            const g = rel
+              .filter((x) => x.s.answered >= 3 && x.s.pct < 70)
+              .concat(rel.filter((x) => !x.s.answered));
+            return g.length
+              ? g
+                  .slice(0, 3)
+                  .map(
+                    (x) =>
+                      `<a href="lernfeld.html?id=${x.f.id}">${x.f.nr}</a> (${x.s.answered ? x.s.pct + " %" : "noch nicht geübt"})`
+                  )
+                  .join(" · ")
+              : "keine erkannten Lücken";
+          };
+          document.getElementById("lf-gaps").innerHTML =
+            `<p><strong>AP1:</strong> ${gaps("AP1")}</p><p><strong>AP2:</strong> ${gaps("AP2")}</p>`;
+          document.getElementById("lf-tree").innerHTML = withStats
+            .map(
+              (x, i) =>
+                (i ? '<span aria-hidden="true" style="color:var(--tx3)">→</span>' : "") +
+                `<a class="chip" href="lernfeld.html?id=${x.f.id}" style="${x.st === "abgeschlossen" ? "background:var(--ac);color:var(--ac-tx);border-color:var(--ac);" : ""}${x.st === "noch nicht begonnen" ? "opacity:.55;" : ""}" title="${x.f.name} – ${x.st}">${x.st === "abgeschlossen" ? "✓ " : ""}${x.f.nr}</a>`
+            )
+            .join("");
+          const today = new Date().toISOString().slice(0, 10);
+          if (Store.get("dailyDone", "") === today)
+            document.getElementById("daily-state").textContent = "Heute erledigt ✓";
+          if (window.DailyTask) {
+            const lf = DailyTask.lf();
+            if (lf)
+              document.getElementById("daily-lf-hint").textContent =
+                "Heute (" +
+                DailyTask.date() +
+                "): 3 Kernfragen + 2 Fragen aus " +
+                lf.nr +
+                " – identisch für alle Lernenden.";
+          }
+          // Wiederholungsplaner: heutige/kommende Fälligkeiten anzeigen
+          if (window.QStats && QStats.plan) {
+            const p = QStats.plan();
+            if (p.heute + p.morgen + p.woche > 0) {
+              document.getElementById("wdh-plan").hidden = false;
+              document.getElementById("wdh-heute").textContent = p.heute;
+              document.getElementById("wdh-morgen").textContent = p.morgen;
+              document.getElementById("wdh-woche").textContent = p.woche;
+            }
+            if (p.heute > 0) {
+              document.getElementById("wdh-btn").hidden = false;
+              document.getElementById("wdh-btn-n").textContent = p.heute;
+            }
+          }
+          if (window.DailyTask) {
+            const lf2 = DailyTask.lf();
+            document.getElementById("daily-hero-info").textContent =
+              DailyTask.date() +
+              " · 5 Fragen" +
+              (lf2 ? " · Lernfeld des Tages: " + lf2.nr : "") +
+              " · für alle gleich, täglich neu aus den Daten generiert";
+            if (DailyTask.done()) {
+              const hb = document.getElementById("daily-hero-btn");
+              hb.textContent = "Heute erledigt ✓";
+              hb.classList.add("ghost");
+            }
+          }
+          // Pruefungs-Countdown
+          [
+            ["ap1", "cd-ap1"],
+            ["ap2", "cd-ap2"],
+          ].forEach(([key, id]) => {
+            const inp = document.getElementById(id),
+              out = document.getElementById(id + "-out");
+            const saved = Store.get(key + "Date", "");
+            if (saved) inp.value = saved;
+            const show = () => {
+              if (!inp.value) {
+                out.textContent = "";
+                return;
+              }
+              const days = Math.ceil((new Date(inp.value) - new Date()) / 864e5);
+              out.textContent =
+                days >= 0 ? "noch " + days + " Tage" : "war vor " + Math.abs(days) + " Tagen";
+              out.style.color = days >= 0 && days <= 21 ? "var(--err)" : "var(--ac-strong)";
+            };
+            inp.addEventListener("change", () => {
+              Store.set(key + "Date", inp.value);
+              show();
+              if (window.KAL) KAL.uebernimmApDatum(key, inp.value);
+            });
+            show();
+          });
+        }
+      };
+    </script>
+  </body>
+</html>

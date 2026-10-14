@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Lern-Snacks – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Kurze, vertikale Lernsequenzen mit klarem Lernziel, Mini-Frage und direktem Feedback – ohne endloses Scrollen."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="shorts.html" aria-current="page">Lern-Snacks</a
+          ><a href="lernkarten.html">Lernkarten</a><a href="formeln.html">Formeln</a
+          ><a href="glossar.html">Glossar</a><a href="lernstand.html">Erfolge</a
+          ><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head" style="text-align: center">
+        <h1>Lern-Snacks</h1>
+        <p class="sub" style="margin: 0 auto">
+          Kurze Lernsequenzen im Hochformat – jede mit Lernziel, Beispiel und Mini-Frage. Kein
+          endloses Scrollen: <strong id="total-info"></strong> Einheiten, dann bist du fertig.
+        </p>
+      </div>
+      <div class="shorts-frame">
+        <div class="progress" style="margin-bottom: 12px" aria-hidden="true">
+          <span id="shorts-progress" style="width: 0%"></span>
+        </div>
+        <p class="q-progress" style="text-align: center" id="shorts-count" aria-live="polite"></p>
+        <div class="shorts-card" id="shorts-card"></div>
+        <div class="shorts-nav">
+          <button class="btn ghost" id="prev-short">← Zurück</button>
+          <button class="btn" id="next-short">Weiter →</button>
+        </div>
+      </div>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Lern-Snacks" }]);
+
+        const S = window.trackShorts ? trackShorts(DATA.shorts) : DATA.shorts;
+        document.getElementById("total-info").textContent = S.length;
+        let i = 0;
+        const doneSet = new Set();
+        const card = document.getElementById("shorts-card");
+        function render() {
+          document.getElementById("shorts-progress").style.width =
+            Math.round((doneSet.size / S.length) * 100) + "%";
+          document.getElementById("shorts-count").textContent =
+            `Einheit ${i + 1} von ${S.length} · noch ${S.length - (i + 1)} danach`;
+          document.getElementById("prev-short").disabled = i === 0;
+          document.getElementById("next-short").textContent =
+            i === S.length - 1 ? "Abschließen ✓" : "Weiter →";
+          const s = S[i];
+          // Erst die Frage (ehrlicher Wissens-Check), Erklaerung + Beispiel erst NACH der Antwort
+          card.innerHTML = `
+      <span class="badge ap" style="align-self:flex-start">Lernziel: ${s.goal}</span>
+      <h2 class="m-0">${s.topic}</h2>
+      <div id="short-q"></div>
+      <div id="short-explain" hidden>
+        <p>${s.explain}</p>
+        <div class="callout simple"><span class="ct">Beispiel</span>${s.example}</div>
+      </div>
+      ${s.lesson ? `<p style="margin-top:auto;font-size:.88rem"><a href="lektion.html?id=${s.lesson}">Zur ausführlichen Lektion</a></p>` : ""}`;
+          renderQuestion(
+            {
+              id: "sh" + i,
+              topic: s.topic,
+              rel: "low",
+              type: "single",
+              q: s.q.q,
+              options: s.q.options,
+              correct: s.q.correct,
+              explain: s.q.explain,
+              xp: 8,
+            },
+            document.getElementById("short-q"),
+            {
+              onAnswered() {
+                doneSet.add(i);
+                document.getElementById("short-explain").hidden = false; // jetzt kommt die Einordnung
+                document.getElementById("shorts-progress").style.width =
+                  Math.round((doneSet.size / S.length) * 100) + "%";
+              },
+            }
+          );
+        }
+        document.getElementById("prev-short").addEventListener("click", () => {
+          if (i > 0) {
+            i--;
+            render();
+          }
+        });
+        document.getElementById("next-short").addEventListener("click", () => {
+          if (i < S.length - 1) {
+            i++;
+            render();
+          } else {
+            card.innerHTML = `<h2>Geschafft! </h2><p>Du hast alle ${S.length} Lern-Snacks durchgearbeitet (${doneSet.size} Mini-Fragen beantwortet). Das war eine bewusst begrenzte Einheit – Pausen gehören zum Lernen.</p>
+      <p>Wie weiter?</p>
+      <div class="q-actions btn-stack">
+        <a class="btn" href="dashboard.html">Zum Dashboard</a>
+        <a class="btn ghost" href="quiz.html">Ins große Quiz wechseln</a>
+      </div>`;
+            document.getElementById("next-short").disabled = true;
+            Gami.addXp(20, "Lern-Snack-Session abgeschlossen");
+          }
+        });
+        render();
+      };
+    </script>
+  </body>
+</html>

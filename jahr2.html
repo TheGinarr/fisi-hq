@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Lernpfad Ausbildungsjahr 2 – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Lernpfad für das 2. Ausbildungsjahr der FISI-Ausbildung: Subnetting, Routing, VLAN, DHCP, DNS, Administration, Virtualisierung, RAID und Backup."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html" aria-current="page">Jahr 2</a><a href="jahr3.html">Jahr 3</a
+          ><a href="ap1.html">AP1</a><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="shorts.html">Lern-Snacks</a><a href="lernkarten.html">Lernkarten</a
+          ><a href="formeln.html">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="lernstand.html">Erfolge</a><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Lernpfad: Ausbildungsjahr 2</h1>
+        <p class="sub">
+          Jetzt wird vernetzt und administriert: Du planst Subnetze, verstehst DHCP und DNS, trennst
+          Netze mit VLANs und sicherst Daten professionell. Der Kern der Systemintegration.
+        </p>
+      </div>
+
+      <section class="card" style="margin-bottom: 20px">
+        <h2>Themenfelder in diesem Jahr</h2>
+        <p class="note-dim">
+          Rot markierte Themen sind erfahrungsgemäß besonders prüfungsrelevant.
+        </p>
+        <div class="chip-row">
+          <span class="badge hot">IPv4- & IPv6-Adressierung</span
+          ><span class="badge hot">Subnetting</span><span class="badge hot">Routing</span
+          ><span class="badge hot">Switching</span><span class="badge hot">VLAN</span
+          ><span class="badge hot">DHCP</span><span class="badge hot">DNS</span
+          ><span class="badge">NAT</span><span class="badge hot">Firewalls</span
+          ><span class="badge">VPN</span><span class="badge">Windows- & Linux-Administration</span
+          ><span class="badge">Active Directory</span><span class="badge">Gruppenrichtlinien</span
+          ><span class="badge">Benutzer- & Rechteverwaltung</span
+          ><span class="badge hot">Virtualisierung</span
+          ><span class="badge">Container-Grundlagen</span
+          ><span class="badge hot">Datensicherung</span><span class="badge">Monitoring</span
+          ><span class="badge hot">Storage & RAID</span><span class="badge">IT-Serviceprozesse</span
+          ><span class="badge hot">Fehleranalyse</span><span class="badge">Dokumentation</span
+          ><span class="badge">Kundenkommunikation</span>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="h-lfy">
+        <h2 id="h-lfy">Lernfelder in diesem Ausbildungsjahr</h2>
+        <p class="note-dim">
+          Dieselben Inhalte, sortiert nach dem offiziellen Rahmenlehrplan – mit allen importierten
+          Lektionen und Fragen.
+        </p>
+        <div class="grid c3" id="lf-year-cards"></div>
+      </section>
+
+      <section aria-labelledby="h-lek">
+        <h2 id="h-lek">Ausgearbeitete Lektionen</h2>
+        <div id="lesson-list"></div>
+      </section>
+
+      <section class="section card" aria-labelledby="h-boss">
+        <h2 id="h-boss">Boss-Challenge Jahr 2</h2>
+        <p>
+          Alle Fragen dieses Ausbildungsjahres am Stück – erst sinnvoll, wenn du die Lektionen
+          durchgearbeitet hast. Bestehst du mit mindestens 70&nbsp;%?
+        </p>
+        <div class="q-actions">
+          <button class="btn" id="boss-start">Boss-Challenge starten</button>
+          <a class="btn ghost" href="quiz.html?year=2">Einzelne Fragen üben</a>
+        </div>
+        <div id="boss-host" class="mt-16"></div>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Ausbildungsjahr 2" }]);
+        if (window.linkifyThemen) linkifyThemen("section.card .chip-row");
+        if (window.LF_INDEX) {
+          const yf = (window.trackFields ? trackFields(LF_INDEX.fields) : LF_INDEX.fields).filter(
+            (f) => f.type === "lf" && f.year === 2
+          ); // nur eigene Fachrichtung
+          document.getElementById("lf-year-cards").innerHTML = yf
+            .map(
+              (f) =>
+                `<div class="card link-card"><div class="lfnr">${f.nr} · ${f.ap}</div><h3 style="margin:4px 0 6px"><a href="lernfeld.html?id=${f.id}">${f.name}</a></h3><p style="font-size:.85rem;color:var(--tx3);margin:0">${f.lessons} Lektionen · ${f.quiz} Fragen</p></div>`
+            )
+            .join("");
+        }
+        const ls = DATA.lessons.filter((l) => l.year === 2);
+        document.getElementById("lesson-list").innerHTML = ls
+          .map((l) => {
+            const done = Progress.isDone(l.id);
+            return `<div class="lesson-row ${done ? "done" : ""}">
+      <span class="st" aria-hidden="true">${done ? "✓" : ""}</span>
+      <div class="grow"><h3><a href="lektion.html?id=${l.id}">${l.title}</a></h3>
+      <div class="meta">ca. ${l.minutes} Min · ${l.tags.join(", ")}</div></div>
+      ${l.rel === "high" ? '<span class="badge hot">Sehr prüfungsrelevant</span>' : '<span class="badge ap">Prüfungsrelevant</span>'}
+      <a class="btn small ${done ? "ghost" : ""}" href="lektion.html?id=${l.id}">${done ? "Wiederholen" : "Starten"}</a>
+    </div>`;
+          })
+          .join("");
+        document.getElementById("boss-start").addEventListener("click", function () {
+          this.disabled = true;
+          const pool = shuffle(DATA.quiz.filter((q) => q.year === 2));
+          runQuiz(pool, document.getElementById("boss-host"), {
+            onDone(r) {
+              if (r.pct >= 70) {
+                Gami.addXp(100, "Boss-Challenge Jahr 2 bestanden!");
+              }
+              document.getElementById("boss-start").disabled = false;
+            },
+          });
+        });
+      };
+    </script>
+  </body>
+</html>

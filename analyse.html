@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Fehler-Analyse – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Errorlogs, SQL-Fehler und Code-Fehler lesen und analysieren – realistische Terminal-Ausgaben mit Übungsfragen, plus Befehlsreferenz für Linux, Windows und macOS."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+    <style>
+      .case-card {
+        margin-bottom: 18px;
+      }
+      .case-head {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+      .an-opt {
+        display: block;
+        width: 100%;
+        text-align: left;
+        margin: 6px 0;
+        padding: 9px 12px;
+        border: 1px solid var(--line-strong);
+        border-radius: 3px;
+        background: var(--bg2);
+        color: var(--tx);
+        font-family: var(--font);
+        font-size: 0.92rem;
+        cursor: pointer;
+      }
+      .an-opt:hover {
+        border-color: var(--ac);
+        background: var(--bg3);
+      }
+      .an-opt.ok {
+        border-color: var(--ok);
+        background: rgba(26, 154, 82, 0.13);
+      }
+      .an-opt.bad {
+        border-color: var(--err);
+        background: rgba(210, 59, 59, 0.13);
+      }
+      .an-opt:disabled {
+        cursor: default;
+        opacity: 0.85;
+      }
+      .an-explain {
+        border-left: 3px solid var(--ac);
+        background: var(--bg3);
+        padding: 8px 12px;
+        border-radius: 0 3px 3px 0;
+        font-size: 0.9rem;
+        margin-top: 8px;
+      }
+      .cmd-tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.86rem;
+      }
+      .cmd-tbl th,
+      .cmd-tbl td {
+        border: 1px solid var(--line);
+        padding: 6px 9px;
+        text-align: left;
+        vertical-align: top;
+      }
+      .cmd-tbl code {
+        white-space: nowrap;
+      }
+      .os-tabs button {
+        margin-right: 6px;
+      }
+      @media (max-width: 700px) {
+        .cmd-tbl code {
+          white-space: normal;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="shorts.html">Lern-Snacks</a><a href="lernkarten.html">Lernkarten</a
+          ><a href="formeln.html">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="lernstand.html">Erfolge</a><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Fehler-Analyse: Logs, SQL &amp; Code lesen wie im Betrieb</h1>
+        <p class="sub">
+          15 realistische Fälle aus Terminal und Log-Viewer: Ausgabe lesen, Ursache finden – mit
+          Erklärung zu jeder Antwort.
+        </p>
+      </div>
+
+      <div class="chip-row" id="cat-filter" role="group" aria-label="Fälle filtern">
+        <button class="chip" data-cat="all" aria-pressed="true">Alle Fälle</button>
+        <button class="chip" data-cat="log" aria-pressed="false">Errorlogs</button>
+        <button class="chip" data-cat="sql" aria-pressed="false">SQL-Fehler</button>
+        <button class="chip" data-cat="code" aria-pressed="false">Code-Fehler</button>
+      </div>
+      <p class="hint"><span id="an-score">0</span>/15 Fällen gelöst</p>
+
+      <div id="cases"></div>
+
+      <section class="section card" aria-labelledby="h-ref">
+        <h2 id="h-ref">Terminal-Referenz: Linux · Windows · macOS</h2>
+        <p class="text-dim">
+          Die Befehle, mit denen du in jedem der drei Systeme diagnostizierst. Umschalten per Tab:
+        </p>
+        <div class="os-tabs" role="group" aria-label="Betriebssystem wählen">
+          <button class="btn small" data-os="linux" aria-pressed="true">Linux</button>
+          <button class="btn small ghost" data-os="win" aria-pressed="false">
+            Windows (CMD/PowerShell)
+          </button>
+          <button class="btn small ghost" data-os="mac" aria-pressed="false">macOS</button>
+        </div>
+        <div id="cmd-host" class="mt-12"></div>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Fehler-Analyse" }]);
+        const esc = window.escHtml;
+
+        /* Jede Ausgabe ist ein selbst formuliertes, realistisches Beispiel (keine Fremdinhalte). */
+        const CASES = [
+          {
+            id: "log1",
+            cat: "log",
+            os: "Linux · journalctl",
+            title: "Dienst schreibt nicht mehr",
+            out: '<span class="t-prompt">root@web01:~#</span> journalctl -u mysql --since "10 min ago" | tail -n 4\n<span class="t-dim">Jul 14 09:41:02 web01 mysqld[812]:</span> [Warning] Disk is full writing \'./binlog.000042\' (OS errno 28 - <span class="t-err">No space left on device</span>)\n<span class="t-dim">Jul 14 09:41:02 web01 mysqld[812]:</span> [Warning] Retry in 60 secs. Message reprinted in 600 secs.\n<span class="t-prompt">root@web01:~#</span> df -h /var\n/dev/sda3        20G   20G     0 100% /var',
+            q: "Was ist die Ursache, und was ist der sinnvollste erste Schritt?",
+            opts: [
+              "MySQL ist falsch konfiguriert – my.cnf zurücksetzen",
+              "Die Partition /var ist voll (errno 28) – Platz schaffen, z. B. alte Binlogs/Logs aufräumen oder Partition vergrößern",
+              "Die Festplatte ist defekt – sofort tauschen",
+              "Der MySQL-Dienst muss nur neu gestartet werden",
+            ],
+            correct: 1,
+            explain:
+              "OS errno 28 = No space left on device, und df -h zeigt /var zu 100 % voll. Neustart oder Plattentausch ändern daran nichts. Aufräumen (PURGE BINARY LOGS, Logrotation prüfen) oder Speicher erweitern – danach läuft der Dienst von selbst weiter.",
+          },
+          {
+            id: "log2",
+            cat: "log",
+            os: "Linux · auth.log",
+            title: "Verdächtige SSH-Meldungen",
+            out: '<span class="t-prompt">root@vps:~#</span> tail -n 5 /var/log/auth.log\n<span class="t-dim">Jul 14 03:12:44 vps sshd[9911]:</span> <span class="t-err">Failed password</span> for root from 203.0.113.45 port 51022 ssh2\n<span class="t-dim">Jul 14 03:12:46 vps sshd[9913]:</span> <span class="t-err">Failed password</span> for root from 203.0.113.45 port 51040 ssh2\n<span class="t-dim">Jul 14 03:12:48 vps sshd[9915]:</span> <span class="t-err">Failed password</span> for admin from 203.0.113.45 port 51057 ssh2\n<span class="t-dim">Jul 14 03:12:50 vps sshd[9917]:</span> <span class="t-err">Failed password</span> for admin from 203.0.113.45 port 51063 ssh2',
+            q: "Was passiert hier, und welche Maßnahme ist am wirksamsten?",
+            opts: [
+              "Ein Nutzer hat sein Passwort vergessen – Passwort zurücksetzen",
+              "Brute-Force-Angriff auf SSH – Passwort-Login deaktivieren (nur Keys), Root-Login verbieten, fail2ban einrichten",
+              "Der SSH-Dienst ist fehlerhaft – sshd neu installieren",
+              "Nichts – solche Meldungen sind normal und können ignoriert werden",
+            ],
+            correct: 1,
+            explain:
+              "Mehrere fehlgeschlagene Logins in Sekundenabstand von derselben IP auf typische Konten (root, admin) = automatisierter Brute-Force. Standard-Härtung: PasswordAuthentication no, PermitRootLogin no, fail2ban/Rate-Limit, ggf. Port-Knocking oder VPN-Pflicht.",
+          },
+          {
+            id: "log3",
+            cat: "log",
+            os: "Linux · dmesg",
+            title: "Datenbank plötzlich weg",
+            out: '<span class="t-prompt">root@db01:~#</span> dmesg -T | tail -n 3\n<span class="t-dim">[Tue Jul 14 11:02:17 2026]</span> <span class="t-warn">Out of memory:</span> Killed process 1204 (mysqld) total-vm:9840121kB, anon-rss:7912004kB\n<span class="t-dim">[Tue Jul 14 11:02:17 2026]</span> oom_reaper: reaped process 1204 (mysqld)\n<span class="t-dim">[Tue Jul 14 11:02:19 2026]</span> systemd[1]: mysql.service: Main process exited, code=killed, status=9/KILL',
+            q: "Warum ist die Datenbank ausgefallen?",
+            opts: [
+              "Ein Admin hat kill -9 auf mysqld ausgeführt",
+              "Der Kernel-OOM-Killer hat mysqld beendet, weil der Arbeitsspeicher ausgeschöpft war – RAM/Konfiguration (innodb_buffer_pool_size) prüfen",
+              "mysqld ist wegen eines SQL-Syntaxfehlers abgestürzt",
+              "Die Swap-Partition ist defekt",
+            ],
+            correct: 1,
+            explain:
+              "„Out of memory: Killed process (mysqld)“ ist der OOM-Killer des Kernels: Das System hatte keinen freien Speicher mehr und opfert den größten Verbraucher. Lösung: RAM erweitern, Buffer-Pool kleiner konfigurieren, andere Speicherfresser identifizieren – nicht einfach nur neu starten.",
+          },
+          {
+            id: "log4",
+            cat: "log",
+            os: "Windows · Ereignisanzeige",
+            title: "Drucken fällt immer wieder aus",
+            out: '<span class="t-prompt">PS C:\\&gt;</span> Get-WinEvent -LogName System -MaxEvents 3 | Format-Table -Wrap\n<span class="t-dim">TimeCreated          Id  LevelDisplayName Message</span>\n11:44:03  <span class="t-err">7034</span>  Fehler   Dienst "Druckwarteschlange" wurde unerwartet beendet. Dies ist bereits 4 Mal passiert.\n11:44:05  <span class="t-dim">7036</span>  Information  Dienst "Druckwarteschlange" befindet sich jetzt im Status "Beendet".\n11:45:10  <span class="t-dim">7036</span>  Information  Dienst "Druckwarteschlange" befindet sich jetzt im Status "Ausgeführt".',
+            q: "Wie gehst du systematisch vor?",
+            opts: [
+              "Windows neu installieren – der Fehler ist nicht eingrenzbar",
+              "Ereignis-ID 7034 zeigt wiederholte Spooler-Abstürze: Warteschlange leeren, fehlerhafte Druckaufträge/Treiber als Auslöser prüfen (oft ein defekter Druckertreiber)",
+              "Den Drucker austauschen – Hardwaredefekt",
+              "Die Ereignisanzeige deaktivieren, damit der Fehler nicht mehr gemeldet wird",
+            ],
+            correct: 1,
+            explain:
+              "7034 = Dienst unerwartet beendet, hier wiederholt. Klassische Ursache: ein korrupter Druckauftrag oder fehlerhafter Treiber lässt den Spooler crashen. Vorgehen: spool\\PRINTERS leeren, Treiber aktualisieren/isolieren, ggf. Druckerisolation aktivieren. Neuinstallation wäre Schrotflinte statt Analyse.",
+          },
+          {
+            id: "log5",
+            cat: "log",
+            os: "macOS · log show",
+            title: "Programm startet nicht",
+            out: '<span class="t-prompt">mac:~ admin$</span> log show --last 10m --predicate \'process == "launchd"\' | tail -n 3\n<span class="t-dim">2026-07-14 08:15:02</span> launchd  <span class="t-err">Service could not initialize:</span> com.firma.backupagent\n<span class="t-dim">2026-07-14 08:15:02</span> launchd  com.firma.backupagent: <span class="t-warn">Path not allowed in target domain:</span> /Users/admin/scripts/backup.sh\n<span class="t-dim">2026-07-14 08:15:02</span> launchd  Service exited with abnormal code: 78',
+            q: "Warum startet der Backup-Agent nicht?",
+            opts: [
+              "macOS unterstützt keine eigenen Hintergrunddienste",
+              "Der LaunchAgent verweist auf einen Pfad, der im gewählten Kontext nicht zulässig/vorhanden ist – die .plist (Pfad, Berechtigungen, LaunchAgent vs. LaunchDaemon) korrigieren",
+              "Das Terminal hat zu wenig Rechte – sudo verwenden",
+              "Der Mac muss neu gestartet werden",
+            ],
+            correct: 1,
+            explain:
+              "launchd meldet klar: Der hinterlegte Pfad passt nicht zum Kontext (Exit-Code 78 = Konfigurationsfehler). Typisch: Ein systemweiter LaunchDaemon zeigt auf ein Benutzerverzeichnis oder das Skript fehlt/ist nicht ausführbar. Die .plist unter ~/Library/LaunchAgents bzw. /Library/LaunchDaemons prüfen.",
+          },
+          {
+            id: "sql1",
+            cat: "sql",
+            os: "MySQL",
+            title: "Anwendung kommt nicht an die Datenbank",
+            out: "<span class=\"t-prompt\">app@web01:~$</span> mysql -u shopuser -p -h db01 shopdb\nEnter password: ********\n<span class=\"t-err\">ERROR 1045 (28000): Access denied for user 'shopuser'@'web01.firma.local' (using password: YES)</span>",
+            q: "Was ist die wahrscheinlichste Ursache?",
+            opts: [
+              "Der MySQL-Server läuft nicht",
+              "Falsches Passwort ODER der Benutzer hat keine Berechtigung für Verbindungen von diesem Host – Zugangsdaten und GRANT/Host-Einträge ('shopuser'@'%' vs. @'localhost') prüfen",
+              "Die Datenbank shopdb existiert nicht",
+              "Port 3306 ist von der Firewall blockiert",
+            ],
+            correct: 1,
+            explain:
+              "ERROR 1045 heißt: Der Server ist erreichbar (sonst käme 2002/2003 „Can't connect“), lehnt aber die Anmeldung ab. Entweder Passwort falsch oder der Benutzer ist nur für andere Hosts angelegt. Bei Firewall-Block oder gestopptem Server sähe die Meldung anders aus – das ist der Kern der Log-Analyse.",
+          },
+          {
+            id: "sql2",
+            cat: "sql",
+            os: "MySQL",
+            title: "Abfrage bricht ab",
+            out: 'mysql&gt; SELECT id, name FROM kunden WHER id = 3;\n<span class="t-err">ERROR 1064 (42000): You have an error in your SQL syntax;</span> check the manual that corresponds to your MySQL server version for the right syntax to use near <span class="t-warn">\'WHER id = 3\'</span> at line 1',
+            q: "Wo liegt der Fehler?",
+            opts: [
+              "Die Tabelle kunden existiert nicht",
+              "Tippfehler im Schlüsselwort: WHER statt WHERE – die Fehlermeldung zeigt die Stelle mit 'near ...' direkt an",
+              "id darf nicht in der WHERE-Klausel stehen",
+              "Es fehlt ein Semikolon am Ende",
+            ],
+            correct: 1,
+            explain:
+              "ERROR 1064 = Syntaxfehler, und MySQL zitiert die Stelle: „near 'WHER id = 3'“. Genau dort beginnt der unverständliche Teil. Merksatz für die Analyse: Der zitierte Abschnitt beginnt beim (oder direkt nach dem) Fehler. Fehlende Tabellen wären ERROR 1146.",
+          },
+          {
+            id: "sql3",
+            cat: "sql",
+            os: "MySQL / InnoDB",
+            title: "INSERT schlägt fehl",
+            out: 'mysql&gt; INSERT INTO bestellungen (id, kunden_id, summe) VALUES (901, 4711, 59.90);\n<span class="t-err">ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails</span>\n(<span class="t-dim">`shopdb`.`bestellungen`, CONSTRAINT `fk_kunde` FOREIGN KEY (`kunden_id`) REFERENCES `kunden` (`id`)</span>)',
+            q: "Warum verweigert die Datenbank den INSERT?",
+            opts: [
+              "Die Summe hat das falsche Format",
+              "In der Tabelle kunden gibt es keinen Datensatz mit id = 4711 – der Fremdschlüssel verlangt einen existierenden Elternsatz (referenzielle Integrität)",
+              "Die Tabelle bestellungen ist schreibgeschützt",
+              "id 901 ist bereits vergeben (Duplicate Key)",
+            ],
+            correct: 1,
+            explain:
+              "ERROR 1452 = Fremdschlüsselverletzung: bestellungen.kunden_id referenziert kunden.id, und der Wert 4711 existiert dort nicht. Genau dafür ist referenzielle Integrität da – erst den Kunden anlegen, dann die Bestellung. Duplicate Key wäre ERROR 1062.",
+          },
+          {
+            id: "sql4",
+            cat: "sql",
+            os: "MySQL / InnoDB",
+            title: "Zwei Prozesse blockieren sich",
+            out: 'mysql&gt; UPDATE lager SET bestand = bestand - 1 WHERE artikel_id = 55;\n<span class="t-err">ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction</span>',
+            q: "Was ist passiert, und wie geht die Anwendung korrekt damit um?",
+            opts: [
+              "Die Tabelle ist dauerhaft gesperrt – Server neu starten",
+              "Zwei Transaktionen haben sich gegenseitig Sperren weggenommen (Deadlock); InnoDB hat eine abgebrochen – die Anwendung soll die Transaktion einfach erneut ausführen (Retry-Logik)",
+              "Die Festplatte ist zu langsam für UPDATEs",
+              "Deadlocks lassen sich nur durch Löschen der Tabelle beheben",
+            ],
+            correct: 1,
+            explain:
+              "Ein Deadlock ist kein Defekt, sondern ein erkannter Konflikt: A wartet auf B, B auf A – InnoDB opfert eine Transaktion. Die Meldung sagt selbst, was zu tun ist: „try restarting transaction“. Dauerhafte Abhilfe: Sperren in gleicher Reihenfolge anfordern, Transaktionen kurz halten.",
+          },
+          {
+            id: "sql5",
+            cat: "sql",
+            os: "SQL Server (T-SQL)",
+            title: "Import bricht ab",
+            out: '<span class="t-prompt">1&gt;</span> INSERT INTO kunden (kuerzel) VALUES (\'MUELLER-LOGISTIK-GMBH\');\n<span class="t-err">Meldung 8152, Ebene 16, Status 30:</span>\nZeichenfolgen- oder Binärdaten würden abgeschnitten (String or binary data would be truncated).\nDie Anweisung wurde beendet.',
+            q: "Was ist die Ursache?",
+            opts: [
+              "Die Datenbank ist voll",
+              "Der Wert ist länger als die Spaltendefinition erlaubt (z. B. VARCHAR(10)) – Spalte vergrößern oder Eingabe validieren/kürzen",
+              "Sonderzeichen sind in SQL Server verboten",
+              "Es fehlt ein COMMIT",
+            ],
+            correct: 1,
+            explain:
+              "Meldung 8152 heißt wörtlich: Der Wert passt nicht in die Spalte. SQL Server schneidet bei INSERT nicht stillschweigend ab, sondern bricht ab (gut so – Datenqualität!). Analyse: Spaltendefinition mit sp_help prüfen, dann bewusst entscheiden: Spalte erweitern oder Eingabe begrenzen.",
+          },
+          {
+            id: "code1",
+            cat: "code",
+            os: "Python 3",
+            title: "Skript stürzt beim Kundenimport ab",
+            out: '<span class="t-prompt">user@web01:~$</span> python3 import_kunden.py\nTraceback (most recent call last):\n  File "/home/user/import_kunden.py", line 12, in &lt;module&gt;\n    ort = datensatz[<span class="t-warn">"ort"</span>]\n<span class="t-err">KeyError: \'ort\'</span>',
+            q: "Was sagt der Traceback, und wie behebst du das sauber?",
+            opts: [
+              "Python ist falsch installiert",
+              "Im Dictionary datensatz fehlt der Schlüssel 'ort' (Zeile 12) – Eingabedaten prüfen und robust zugreifen, z. B. datensatz.get('ort', '')",
+              "Die Variable ort wurde doppelt definiert",
+              "Zeile 12 enthält einen Syntaxfehler",
+            ],
+            correct: 1,
+            explain:
+              "Der Traceback liest sich von unten nach oben: KeyError 'ort' in Zeile 12 – der Datensatz (vermutlich aus einer CSV/API) hat das Feld nicht. Syntaxfehler wären SyntaxError und kämen vor der Ausführung. Robust: .get() mit Default oder Validierung vor dem Zugriff.",
+          },
+          {
+            id: "code2",
+            cat: "code",
+            os: "JavaScript / Browser-Konsole",
+            title: "Webseite zeigt keine Artikel",
+            out: '<span class="t-err">Uncaught TypeError: Cannot read properties of undefined (reading \'length\')</span>\n    at renderArtikel (<span class="t-dim">shop.js:48:31</span>)\n    at <span class="t-dim">shop.js:12:3</span>',
+            q: "Was ist die Ursache des Fehlers in shop.js Zeile 48?",
+            opts: [
+              "Der Browser unterstützt kein JavaScript",
+              "Eine Variable ist undefined, auf der .length gelesen wird – z. B. weil die Datenantwort fehlt/anders heißt; vor dem Zugriff prüfen (if (!artikel) …) und die Datenquelle kontrollieren",
+              "length ist ein reserviertes Wort und darf nicht verwendet werden",
+              "Zeile 48 hat eine fehlende Klammer",
+            ],
+            correct: 1,
+            explain:
+              "„Cannot read properties of undefined“ heißt: Nicht .length ist kaputt, sondern das Objekt davor ist undefined. Ursache meist: API lieferte nichts, Feldname anders geschrieben, Timing (Daten noch nicht geladen). Stacktrace zeigt Datei:Zeile:Spalte – dort den Wert per Debugger/console.log prüfen.",
+          },
+          {
+            id: "code3",
+            cat: "code",
+            os: "Bash",
+            title: "Backup-Skript startet nicht",
+            out: '<span class="t-prompt">user@srv:~$</span> ./backup.sh\n<span class="t-err">-bash: ./backup.sh: Permission denied</span>\n<span class="t-prompt">user@srv:~$</span> ls -l backup.sh\n-rw-r--r-- 1 user user 512 Jul 14 09:00 backup.sh',
+            q: "Warum lässt sich das Skript nicht ausführen?",
+            opts: [
+              "Das Skript enthält einen Syntaxfehler",
+              "Das Ausführungsrecht (x) fehlt – ls -l zeigt nur rw-r--r--; Lösung: chmod +x backup.sh (oder bash backup.sh)",
+              "Nur root darf Skripte ausführen",
+              "Die Datei ist beschädigt",
+            ],
+            correct: 1,
+            explain:
+              "ls -l ist hier der Beweis: -rw-r--r-- hat kein x-Bit. „Permission denied“ beim direkten Aufruf = fehlendes Ausführungsrecht (oder noexec-Mount). chmod +x setzt das Recht; alternativ das Skript dem Interpreter übergeben. Syntaxfehler würden erst NACH dem Start gemeldet.",
+          },
+          {
+            id: "code4",
+            cat: "code",
+            os: "C / gcc",
+            title: "Kompilieren schlägt fehl",
+            out: '<span class="t-prompt">user@dev:~$</span> gcc -o rechner rechner.c\nrechner.c: In function <span class="t-dim">\'main\'</span>:\nrechner.c:9:5: <span class="t-err">error:</span> expected \';\' before \'return\'\n    8 |     int summe = a + b\n<span class="t-dim">      |                      ^</span>\n    9 |     return summe;',
+            q: "Wie liest du diese Compiler-Meldung richtig?",
+            opts: [
+              "In Zeile 9 ist return falsch geschrieben",
+              "Der Fehler wird in Zeile 9 GEMELDET, liegt aber in Zeile 8: Dort fehlt das Semikolon nach 'int summe = a + b'",
+              "gcc braucht die Option -std=c99",
+              "Die Variablen a und b existieren nicht",
+            ],
+            correct: 1,
+            explain:
+              "Compiler melden den Fehler oft erst dort, wo er auffällt – nicht, wo er entsteht. „expected ';' before 'return'“ + der Verweis auf Zeile 8 im Quelltext-Auszug zeigen: Das Semikolon fehlt am Ende von Zeile 8. Faustregel: Bei „expected ...“ immer eine Zeile über der Meldung suchen.",
+          },
+          {
+            id: "code5",
+            cat: "code",
+            os: "Windows PowerShell",
+            title: "Skript wird blockiert",
+            out: '<span class="t-prompt">PS C:\\Scripts&gt;</span> .\\inventur.ps1\n<span class="t-err">.\\inventur.ps1 : Die Datei "C:\\Scripts\\inventur.ps1" kann nicht geladen werden, da die Ausführung von Skripts auf diesem System deaktiviert ist.</span>\n<span class="t-dim">+ CategoryInfo: Sicherheitsfehler: (:) [], PSSecurityException</span>\n<span class="t-dim">+ FullyQualifiedErrorId : UnauthorizedAccess</span>',
+            q: "Was ist die Ursache, und was ist die saubere Lösung?",
+            opts: [
+              "Die Datei ist virenverseucht und wurde von Defender gelöscht",
+              "Die PowerShell-ExecutionPolicy verbietet Skriptausführung – z. B. per Set-ExecutionPolicy RemoteSigned -Scope CurrentUser lokal signierte/eigene Skripte erlauben",
+              "PowerShell muss neu installiert werden",
+              ".ps1-Dateien können grundsätzlich nur als Administrator laufen",
+            ],
+            correct: 1,
+            explain:
+              "PSSecurityException + „Ausführung von Skripts deaktiviert“ = ExecutionPolicy (Standard: Restricted). RemoteSigned ist der übliche Kompromiss: lokale Skripte laufen, aus dem Internet geladene brauchen eine Signatur. Wichtig fürs Verständnis: Das ist Policy, kein Rechte- oder Virenproblem.",
+          },
+        ];
+
+        const CMDS = {
+          linux: [
+            ["ip a", "IP-Adressen & Interfaces anzeigen"],
+            ["ss -tulpn", "Offene Ports + zugehörige Prozesse"],
+            ["systemctl status DIENST", "Dienststatus inkl. letzter Logzeilen"],
+            ["journalctl -u DIENST -f", "Log eines Dienstes live verfolgen"],
+            ["df -h / du -sh *", "Plattenplatz gesamt / pro Verzeichnis"],
+            ["top / htop", "CPU- & RAM-Verbrauch live"],
+            ["ping / traceroute ZIEL", "Erreichbarkeit / Pfad ins Netz"],
+            ["dig www.firma.de", "DNS-Auflösung im Detail"],
+            ["tail -f /var/log/syslog", "Systemlog live mitlesen"],
+            ['grep -ri "fehler" /var/log/', "Logs nach Stichwort durchsuchen"],
+            ["chmod / chown", "Rechte / Besitzer ändern"],
+            ["rsync -av QUELLE ZIEL", "Dateien effizient kopieren/sichern"],
+          ],
+          win: [
+            ["ipconfig /all", "IP-Konfiguration aller Adapter"],
+            ["ping / tracert ZIEL", "Erreichbarkeit / Routenverlauf"],
+            ["nslookup www.firma.de", "DNS-Auflösung testen"],
+            ["netstat -ano", "Offene Ports + Prozess-IDs"],
+            ["tasklist / taskkill /PID n /F", "Prozesse anzeigen / beenden"],
+            ["sfc /scannow", "Systemdateien prüfen & reparieren"],
+            ["chkdsk C: /f", "Dateisystem prüfen"],
+            ["gpupdate /force", "Gruppenrichtlinien neu ziehen"],
+            ['Get-Service | Where Status -eq "Stopped"', "PowerShell: gestoppte Dienste"],
+            ["Get-WinEvent -LogName System -MaxEvents 20", "PowerShell: letzte Systemereignisse"],
+            ["Test-NetConnection db01 -Port 3306", "PowerShell: Port-Erreichbarkeit testen"],
+            ["robocopy QUELLE ZIEL /MIR", "Robustes Kopieren/Spiegeln"],
+          ],
+          mac: [
+            ["ifconfig / ipconfig getifaddr en0", "Netzwerk-Interfaces / eigene IP"],
+            ["networksetup -listallnetworkservices", "Netzwerkdienste verwalten"],
+            ["scutil --dns", "Aktive DNS-Konfiguration"],
+            ["log show --last 10m", "Systemlog der letzten Minuten"],
+            ["diskutil list", "Laufwerke & Partitionen"],
+            ["launchctl list | grep firma", "Geladene Dienste/Agents"],
+            ["dscacheutil -flushcache", "DNS-Cache leeren"],
+            ["top -o cpu", "Prozesse nach CPU sortiert"],
+            ["softwareupdate -l", "Verfügbare Updates listen"],
+            ["pmset -g", "Energieeinstellungen anzeigen"],
+            ["spctl --status", "Gatekeeper-Status (App-Sicherheit)"],
+            ["system_profiler SPHardwareDataType", "Hardware-Übersicht"],
+          ],
+        };
+
+        const solved = new Set(Store.get("analyseSolved", []));
+        const scoreEl = document.getElementById("an-score");
+        const updScore = () => (scoreEl.textContent = solved.size);
+        updScore();
+
+        document.getElementById("cases").innerHTML = CASES.map(
+          (c) => `
+    <div class="card case-card" data-cat="${c.cat}" id="${c.id}">
+      <div class="case-head">
+        <span class="badge ap">${{ log: "Errorlog", sql: "SQL", code: "Code" }[c.cat]}</span>
+        <span class="badge">${esc(c.os)}</span>
+        <h3 class="m-0">${esc(c.title)}</h3>
+        ${solved.has(c.id) ? '<span class="badge" style="color:var(--ok)">✓ gelöst</span>' : ""}
+      </div>
+      <div class="term"><div class="term-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>${esc(c.os)}</span></div><pre>${c.out}</pre></div>
+      <p style="font-weight:600;margin:10px 0 4px">${esc(c.q)}</p>
+      <div class="an-opts">${c.opts.map((o, i) => `<button type="button" class="an-opt" data-i="${i}">${esc(o)}</button>`).join("")}</div>
+      <div class="an-x"></div>
+    </div>`
+        ).join("");
+
+        CASES.forEach((c) => {
+          const card = document.getElementById(c.id);
+          let tried = false;
+          card.querySelectorAll(".an-opt").forEach((b) =>
+            b.addEventListener("click", () => {
+              const i = +b.dataset.i,
+                good = i === c.correct;
+              if (good) {
+                card.querySelectorAll(".an-opt").forEach((x) => {
+                  x.disabled = true;
+                  if (+x.dataset.i === c.correct) x.classList.add("ok");
+                });
+                card.querySelector(".an-x").innerHTML =
+                  '<div class="an-explain"><strong>Richtig.</strong> ' + esc(c.explain) + "</div>";
+                Progress.quizStat("Fehler-Analyse", true);
+                if (!solved.has(c.id)) {
+                  solved.add(c.id);
+                  Store.set("analyseSolved", [...solved]);
+                  updScore();
+                  if (!tried) Gami.addXp(8, "Fehler analysiert");
+                  if (solved.size === CASES.length) Gami.addXp(40, "Alle 15 Analyse-Fälle gelöst!");
+                }
+              } else {
+                tried = true;
+                b.classList.add("bad");
+                b.disabled = true;
+                Progress.quizStat("Fehler-Analyse", false);
+                card.querySelector(".an-x").innerHTML =
+                  '<div class="an-explain"><strong>Noch nicht.</strong> Lies die markierten Stellen der Ausgabe noch einmal – Fehlermeldungen benennen die Ursache meist wörtlich.</div>';
+              }
+            })
+          );
+        });
+
+        // Filter
+        document.querySelectorAll("#cat-filter .chip").forEach((ch) =>
+          ch.addEventListener("click", () => {
+            document
+              .querySelectorAll("#cat-filter .chip")
+              .forEach((x) => x.setAttribute("aria-pressed", x === ch));
+            const cat = ch.dataset.cat;
+            document.querySelectorAll(".case-card").forEach((cc) => {
+              cc.style.display = cat === "all" || cc.dataset.cat === cat ? "" : "none";
+            });
+          })
+        );
+
+        // Befehlsreferenz
+        const cmdHost = document.getElementById("cmd-host");
+        function drawCmds(os) {
+          cmdHost.innerHTML =
+            '<table class="cmd-tbl"><thead><tr><th scope="col">Befehl</th><th scope="col">Wofür</th></tr></thead><tbody>' +
+            CMDS[os]
+              .map(
+                (r) => "<tr><td><code>" + esc(r[0]) + "</code></td><td>" + esc(r[1]) + "</td></tr>"
+              )
+              .join("") +
+            "</tbody></table>";
+        }
+        document.querySelectorAll(".os-tabs button").forEach((b) =>
+          b.addEventListener("click", () => {
+            document.querySelectorAll(".os-tabs button").forEach((x) => {
+              const on = x === b;
+              x.setAttribute("aria-pressed", on);
+              x.classList.toggle("ghost", !on);
+            });
+            drawCmds(b.dataset.os);
+          })
+        );
+        drawCmds("linux");
+      };
+    </script>
+  </body>
+</html>

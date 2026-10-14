@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Linksammlung – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Handverlesene externe Websites zum Lernen, Nachschlagen und Zeichnen von Struktogrammen und UML-Diagrammen."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="formeln.html">Formeln</a
+          ><a href="glossar.html">Glossar</a
+          ><a href="links.html" aria-current="page">Linksammlung</a
+          ><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Linksammlung</h1>
+        <p class="sub">
+          Handverlesene externe Seiten zum Nachschlagen, Üben und Zeichnen – z.&nbsp;B. für
+          Struktogramme und UML-Diagramme. Alle Links öffnen die Anbieterseite; dort gelten deren
+          Datenschutzbestimmungen.
+        </p>
+      </div>
+
+      <section class="card">
+        <h2>Zeichnen: Struktogramme, UML &amp; Netzpläne</h2>
+        <p class="small-dim" style="font-size: 0.82rem; color: var(--tx3); margin: 0 0 8px">
+          „Eingebunden“ = Aufnahme in diese Liste; zu diesem Datum wurde die Erreichbarkeit zuletzt
+          geprüft. Externe Seiten können sich seitdem ändern.
+        </p>
+        <table class="tbl">
+          <tr>
+            <th>Website</th>
+            <th>Wofür</th>
+            <th>Eingebunden</th>
+          </tr>
+          <tr>
+            <td><a href="https://app.diagrams.net" rel="noopener">draw.io (diagrams.net)</a></td>
+            <td>
+              Diagramme aller Art direkt im Browser: UML (Use Case, Klassen), Netzwerkpläne,
+              Netzpläne, Flussdiagramme – kostenlos, ohne Konto, speichert lokal
+            </td>
+            <td>15.09.2026</td>
+          </tr>
+          <tr>
+            <td><a href="https://structorizer.fisch.lu" rel="noopener">Structorizer</a></td>
+            <td>
+              Das Werkzeug für Struktogramme (Nassi-Shneiderman-Diagramme) – zeichnen, ausführen und
+              in Code exportieren
+            </td>
+            <td>15.09.2026</td>
+          </tr>
+          <tr>
+            <td><a href="https://plantuml.com/de/" rel="noopener">PlantUML</a></td>
+            <td>
+              UML-Diagramme aus Textbeschreibung generieren – schnell für Use-Case-, Klassen- und
+              Sequenzdiagramme
+            </td>
+            <td>15.09.2026</td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="section card">
+        <h2>Nachschlagen</h2>
+        <table class="tbl">
+          <tr>
+            <th>Website</th>
+            <th>Wofür</th>
+            <th>Eingebunden</th>
+          </tr>
+          <tr>
+            <td>
+              <a href="https://www.elektronik-kompendium.de" rel="noopener"
+                >Elektronik-Kompendium</a
+              >
+            </td>
+            <td>
+              Umfangreiches Nachschlagewerk zu Netzwerktechnik, Elektronik und Kommunikationstechnik
+            </td>
+            <td>15.09.2026</td>
+          </tr>
+          <tr>
+            <td><a href="https://netzikon.net" rel="noopener">Netzikon</a></td>
+            <td>Kompaktes Netzwerk-Lexikon zum schnellen Nachschlagen von Begriffen</td>
+            <td>15.09.2026</td>
+          </tr>
+          <tr>
+            <td><a href="https://wiki.selfhtml.org" rel="noopener">SELFHTML</a></td>
+            <td>Deutschsprachige Referenz für HTML, CSS und JavaScript (LF8-Webthemen)</td>
+            <td>15.09.2026</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.rfc-editor.org" rel="noopener">RFC-Editor</a></td>
+            <td>Die Original-Standards der IETF im Volltext (DHCP, DNS, private IP-Bereiche …)</td>
+            <td>15.09.2026</td>
+          </tr>
+          <tr>
+            <td><a href="https://dsgvo-gesetz.de" rel="noopener">dsgvo-gesetz.de</a></td>
+            <td>DSGVO komfortabel lesbar mit Erwägungsgründen und Querverweisen (LF4)</td>
+            <td>15.09.2026</td>
+          </tr>
+          <tr>
+            <td>
+              <a href="https://www.bpb.de" rel="noopener">Bundeszentrale für politische Bildung</a>
+            </td>
+            <td>
+              Politik, Staat, EU und Gesellschaft verständlich erklärt – ideal zu den
+              WiSo-Politik-Lektionen
+            </td>
+            <td>15.09.2026</td>
+          </tr>
+          <tr>
+            <td>
+              <a href="https://www.gesetze-im-internet.de" rel="noopener"
+                >Gesetze im Internet (BMJ)</a
+              >
+            </td>
+            <td>Alle Bundesgesetze im amtlichen Volltext: BBiG, JuArbSchG, BGB, HGB, ArbSchG …</td>
+            <td>15.09.2026</td>
+          </tr>
+          <tr>
+            <td><a href="https://dict.leo.org" rel="noopener">LEO Wörterbuch</a></td>
+            <td>
+              Englisch↔Deutsch nachschlagen mit Forum für Fachbegriffe – Ergänzung zu den
+              Englisch-Lektionen
+            </td>
+            <td>15.09.2026</td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="section card">
+        <h2>Üben</h2>
+        <table class="tbl">
+          <tr>
+            <th>Website</th>
+            <th>Wofür</th>
+            <th>Eingebunden</th>
+          </tr>
+          <tr>
+            <td><a href="https://subnettingpractice.com" rel="noopener">Subnetting Practice</a></td>
+            <td>
+              Endlose Subnetting-Übungsaufgaben mit Lösungen (englisch) – Ergänzung zum
+              <a href="netztrainer.html">Netztrainer hier</a>
+            </td>
+            <td>15.09.2026</td>
+          </tr>
+          <tr>
+            <td>
+              <a href="https://fachinformatikerpruefungsvorbereitung.de" rel="noopener"
+                >FI-Prüfungsvorbereitung</a
+              >
+            </td>
+            <td>Open-Source-Lernplattform mit Themenkatalog zur AP1/AP2</td>
+            <td>15.09.2026</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.netacad.com" rel="noopener">Cisco Networking Academy</a></td>
+            <td>
+              Kostenlose Selbstlernkurse (u. a. „Networking Basics“, Packet-Tracer-Kurse) – ideale
+              Vertiefung zu LF3/LF9 und den Zertifikats-Lektionen
+            </td>
+            <td>21.09.2026</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.w3schools.com" rel="noopener">W3Schools</a></td>
+            <td>
+              Referenz und interaktive Übungen zu HTML, CSS, JavaScript, SQL und Python – zum
+              Ausprobieren direkt im Browser (Ergänzung zu LF5/LF8)
+            </td>
+            <td>21.09.2026</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.codewars.com" rel="noopener">Codewars</a></td>
+            <td>
+              Programmier-Katas mit Community-Lösungen (Python, JavaScript, SQL u. v. m.) –
+              Algorithmen-Training für LF5 und den AE-Bonus
+            </td>
+            <td>21.09.2026</td>
+          </tr>
+        </table>
+        <p class="small-dim" style="font-size: 0.82rem; color: var(--tx3); margin: 10px 0 0">
+          Lizenz- und Quellenangaben zu allen Inhalten dieser Plattform:
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>.
+        </p>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Linksammlung" }]);
+      };
+    </script>
+  </body>
+</html>

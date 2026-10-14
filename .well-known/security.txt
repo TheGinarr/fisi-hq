@@ -1,0 +1,5 @@
+# security.txt nach RFC 9116 – vor der Veröffentlichung anpassen
+Contact: https://example.org/impressum.html
+Expires: 2027-12-31T00:00:00.000Z
+Preferred-Languages: de, en
+Canonical: https://example.org/.well-known/security.txt

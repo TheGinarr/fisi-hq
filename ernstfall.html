@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Ernstfall-Simulator – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Betriebliche Ernstfälle unter Zeitdruck simulieren: Serverausfall mit Restore, Ransomware-Angriff – mit Sim-Uhr, Störanrufen, Entscheidungs-Timer und Debriefing."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/ernstfall.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+    <style>
+      .f-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+        gap: 14px;
+      }
+      .f-card h3 {
+        font-size: 1rem;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 6px;
+      }
+      .f-row {
+        margin: 8px 0;
+      }
+      .f-row .fname {
+        font-size: 0.85rem;
+        color: var(--tx2);
+      }
+      .f-row code {
+        display: block;
+        margin-top: 2px;
+        padding: 6px 9px;
+        font-size: 0.86rem;
+      }
+      .f-note {
+        font-size: 0.8rem;
+        color: var(--tx3);
+        margin: 2px 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="formeln.html" aria-current="page">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Ernstfall-Simulator</h1>
+        <p class="sub">
+          Ein System fällt aus, die Uhr läuft, das Telefon klingelt. Entscheide unter Druck – am
+          Ende gibt es Protokoll, Wertung und Debriefing.
+        </p>
+      </div>
+      <div id="ef-menu" class="grid c2"></div>
+      <div id="ef-host" hidden>
+        <div
+          class="card"
+          style="
+            border-left: 4px solid var(--ac);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            align-items: center;
+            margin-bottom: 14px;
+          "
+        >
+          <div>
+            <span style="font-size: 0.78rem; color: var(--tx3)">SIMULIERTE UHR</span>
+            <div id="ef-uhr" style="font-family: var(--mono); font-size: 1.5rem; font-weight: 700">
+              --:--
+            </div>
+          </div>
+          <div>
+            <span style="font-size: 0.78rem; color: var(--tx3)">ENTSCHEIDUNG IN</span>
+            <div
+              id="ef-timer"
+              style="font-family: var(--mono); font-size: 1.5rem; font-weight: 700"
+            >
+              75 s
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 180px">
+            <span style="font-size: 0.78rem; color: var(--tx3)">SZENARIO</span>
+            <div id="ef-titel" class="fw-600"></div>
+          </div>
+          <button class="btn ghost small" id="ef-abbruch">Abbrechen</button>
+        </div>
+        <div class="card" id="ef-schritt"></div>
+      </div>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([
+          { label: "Training", href: "training.html" },
+          { label: "Ernstfall-Simulator" },
+        ]);
+        const menu = document.getElementById("ef-menu"),
+          host = document.getElementById("ef-host");
+        const best = Store.get("efBest", {});
+        menu.innerHTML = ERNSTFALL.map(
+          (s, i) => `<div class="card link-card"><h3><a href="#" data-sz="${i}">${s.titel}</a></h3>
+    <p class="fs-90">${s.intro.slice(0, 140)}…</p>
+    <p class="small-dim">${s.schritte.length} Entscheidungen · Ziel-RTO ${Math.round(s.rto / 60)} h${best[s.id] ? ` · Bestleistung: ${best[s.id]} Punkte` : ""}</p></div>`
+        ).join("");
+        let sz = null,
+          step = 0,
+          simMin = 0,
+          score = 0,
+          maxScore = 0,
+          iv = null,
+          left = 75,
+          protokoll = [];
+        const uhr = () => {
+          const [h, m] = sz.start.split(":").map(Number);
+          const t = h * 60 + m + simMin;
+          return (
+            String(Math.floor(t / 60) % 24).padStart(2, "0") + ":" + String(t % 60).padStart(2, "0")
+          );
+        };
+        function tick() {
+          left--;
+          document.getElementById("ef-timer").textContent = left + " s";
+          if (left <= 0) {
+            simMin += 10;
+            protokoll.push({ t: uhr(), txt: "Zögern (+10 Sim-Minuten)" });
+            left = 75;
+            document.getElementById("ef-uhr").textContent = uhr();
+            toast("Zögern kostet: +10 Minuten");
+          }
+        }
+        function start(i) {
+          sz = ERNSTFALL[i];
+          step = 0;
+          simMin = 0;
+          score = 0;
+          protokoll = [];
+          maxScore = sz.schritte.reduce((a, s) => a + Math.max(...s.opts.map((o) => o.score)), 0);
+          menu.hidden = true;
+          host.hidden = false;
+          document.getElementById("ef-titel").textContent = sz.titel;
+          document.getElementById("ef-schritt").innerHTML =
+            `<h2 class="fs-105">Lagebericht</h2><p>${sz.intro}</p><div class="q-actions"><button class="btn" id="ef-los">Einsatz beginnen (${sz.start} Uhr)</button></div>`;
+          document.getElementById("ef-uhr").textContent = sz.start;
+          document.getElementById("ef-los").addEventListener("click", () => {
+            iv = setInterval(tick, 1000);
+            zeige();
+          });
+        }
+        function zeige() {
+          left = 75;
+          document.getElementById("ef-timer").textContent = "75 s";
+          const s = sz.schritte[step],
+            el = document.getElementById("ef-schritt");
+          el.innerHTML =
+            (s.anruf ? '<p class="badge hot" style="margin-bottom:8px">UNTERBRECHUNG</p>' : "") +
+            `<h2 class="fs-105">${uhr()} Uhr</h2><p>${s.txt}</p>` +
+            (s.log ? `<pre class="st-term">${s.log}</pre>` : "") +
+            s.opts
+              .map((o, k) => `<button type="button" class="m-opt" data-k="${k}">${o.t}</button>`)
+              .join("") +
+            '<div id="ef-fb" class="mt-10" aria-live="polite"></div>';
+          el.querySelectorAll(".m-opt").forEach((b) =>
+            b.addEventListener("click", () => waehle(+b.dataset.k))
+          );
+        }
+        function waehle(k) {
+          const s = sz.schritte[step],
+            o = s.opts[k];
+          simMin += o.min + (o.strafe || 0);
+          score += o.score;
+          protokoll.push({ t: uhr(), txt: o.t, fb: o.fb, gut: o.score >= 2 });
+          document.getElementById("ef-uhr").textContent = uhr();
+          const el = document.getElementById("ef-schritt");
+          el.querySelectorAll(".m-opt").forEach((b, i) => {
+            b.disabled = true;
+            if (i === k) b.classList.add(o.score >= 2 ? "ok" : "bad");
+          });
+          document.getElementById("ef-fb").innerHTML =
+            `<div class="m-score">${o.fb}</div><div class="q-actions" style="margin-top:8px"><button class="btn small" id="ef-weiter">${o.next < 0 ? "Zum Debriefing" : "Weiter"}</button></div>`;
+          document.getElementById("ef-weiter").addEventListener("click", () => {
+            if (o.next < 0) ende();
+            else {
+              step = o.next;
+              zeige();
+            }
+          });
+        }
+        function ende() {
+          clearInterval(iv);
+          const b = Store.get("efBest", {});
+          if (!b[sz.id] || score > b[sz.id]) {
+            b[sz.id] = score;
+            Store.set("efBest", b);
+          }
+          const rtoOk = simMin <= sz.rto,
+            pct = Math.round((score / maxScore) * 100);
+          if (pct >= 70 && window.Gami) Gami.addXp(40, "Ernstfall gemeistert: " + sz.titel);
+          document.getElementById("ef-schritt").innerHTML = `<h2>Debriefing</h2>
+      <div class="grid c3" style="gap:10px;margin:10px 0">
+        <div class="stat"><span class="v">${Math.floor(simMin / 60)}:${String(simMin % 60).padStart(2, "0")} h</span><span class="l">Ausfallzeit (RTO ${Math.round(sz.rto / 60)} h: ${rtoOk ? "eingehalten" : "GERISSEN"})</span></div>
+        <div class="stat"><span class="v">${score}/${maxScore}</span><span class="l">Entscheidungspunkte (${pct} %)</span></div>
+        <div class="stat"><span class="v">${protokoll.filter((p) => p.gut).length}/${sz.schritte.length}</span><span class="l">Optimale Entscheidungen</span></div>
+      </div>
+      <h3 class="fs-100">Dein Einsatzprotokoll</h3>
+      <ul style="padding-left:18px">${protokoll.map((p) => `<li style="margin:6px 0"><span class="mono">${p.t}</span> – ${p.txt}${p.fb ? `<br><span style="font-size:.85rem;color:${p.gut ? "var(--ok)" : "var(--err)"}">${p.fb}</span>` : ""}</li>`).join("")}</ul>
+      <div class="q-actions"><button class="btn" onclick="location.reload()">Nochmal / anderes Szenario</button><a class="btn ghost" href="praxis.html">Zu den Missionen</a></div>`;
+        }
+        document.getElementById("ef-abbruch").addEventListener("click", () => {
+          clearInterval(iv);
+          location.reload();
+        });
+        menu.addEventListener("click", (e) => {
+          const a = e.target.closest("[data-sz]");
+          if (a) {
+            e.preventDefault();
+            start(+a.dataset.sz);
+          }
+        });
+      };
+    </script>
+  </body>
+</html>

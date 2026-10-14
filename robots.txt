@@ -1,0 +1,4 @@
+# Seite soll nicht in Suchmaschinen gelistet werden (privates Lernangebot).
+# Crawlen bleibt erlaubt, damit das noindex-Meta auf jeder Seite gelesen wird.
+User-agent: *
+Disallow: /diagnose.html

@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Musterprüfung – FISI-HQ</title>
+    <meta
+      name="description"
+      content="15 komplette Musterprüfungsbögen im Aufbau realer Abschlussprüfungen: AP1, FISI-AP2 (auch sortenrein GA1/GA2) und WiSo – mit Timer, Musterlösungen, Selbstbewertung und druckbarem Lösungsbogen."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/musterpruefung-ap1-a.js"></script>
+    <script defer src="assets/js/musterpruefung-ap2-fisi-a.js"></script>
+    <script defer src="assets/js/musterpruefung-ap2-fiae.js"></script>
+    <script defer src="assets/js/musterpruefung-wiso-a.js"></script>
+    <script defer src="assets/js/musterpruefung-ap1-b.js"></script>
+    <script defer src="assets/js/musterpruefung-ap2-fisi-b.js"></script>
+    <script defer src="assets/js/musterpruefung-wiso-b.js"></script>
+    <script defer src="assets/js/musterpruefung-ap1-c.js"></script>
+    <script defer src="assets/js/musterpruefung-ap2-konzeption.js"></script>
+    <script defer src="assets/js/musterpruefung-ap2-netzwerkanalyse.js"></script>
+    <script defer src="assets/js/musterpruefung-wiso-c.js"></script>
+    <script defer src="assets/js/musterpruefung-wiso-d.js"></script>
+    <script defer src="assets/js/musterpruefung-wiso-e.js"></script>
+    <script defer src="assets/js/musterpruefung-wiso-f.js"></script>
+    <script defer src="assets/js/musterpruefung-wiso-g.js"></script>
+    <script defer src="assets/js/app.js"></script>
+    <style>
+      .f-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+        gap: 14px;
+      }
+      .f-card h3 {
+        font-size: 1rem;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 6px;
+      }
+      .f-row {
+        margin: 8px 0;
+      }
+      .f-row .fname {
+        font-size: 0.85rem;
+        color: var(--tx2);
+      }
+      .f-row code {
+        display: block;
+        margin-top: 2px;
+        padding: 6px 9px;
+        font-size: 0.86rem;
+      }
+      .f-note {
+        font-size: 0.8rem;
+        color: var(--tx3);
+        margin: 2px 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a><a href="firma.html">Deine Firma</a
+          ><a href="formeln.html" aria-current="page">Formeln</a><a href="glossar.html">Glossar</a
+          ><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div id="mp-host"><p class="empty">Musterprüfung wird geladen…</p></div>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      function qsId() {
+        const m = location.search.match(/[?&]id=(\w+)/);
+        return m ? m[1] : "";
+      }
+      window.pageInit = function () {
+        const MP = {
+          ap1: window.MP_AP1,
+          ap2si: window.MP_AP2SI,
+          ap2ae: window.MP_AP2AE,
+          wiso: window.MP_WISO,
+          ap1b: window.MP_AP1B,
+          ap2sib: window.MP_AP2SIB,
+          wisob: window.MP_WISOB,
+          ap1c: window.MP_AP1C,
+          ap2ga1: window.MP_AP2GA1,
+          ap2ga2: window.MP_AP2GA2,
+          wisoc: window.MP_WISOC,
+          wisod: window.MP_WISOD,
+          wisoe: window.MP_WISOE,
+          wisof: window.MP_WISOF,
+          wisog: window.MP_WISOG,
+        }[qsId()];
+        const host = document.getElementById("mp-host");
+        if (!MP) {
+          breadcrumbs([{ label: "Musterprüfungen" }]);
+          host.innerHTML = `<div class="page-head"><h1>Musterprüfungen im Prüfungsformat</h1>
+      <p class="sub">15 komplette Prüfungsbögen im Aufbau realer Abschlussprüfungen: Ausgangssituation, Aufgaben mit Teilaufgaben und Punkten, Timer, Musterlösungen und Selbstbewertung. Auch druckbar – Lösungsbögen nach Freischaltung mit Lösungswort.</p>
+      <p class="hint">Alle Bögen sind eigenständig erstellte Übungsprüfungen im Stil der IHK-Abschlussprüfung – keine Original-Prüfungsaufgaben und keine offiziellen IHK-Unterlagen.</p></div>
+      <section class="section" aria-labelledby="mph-ap1"><h2 id="mph-ap1">AP Teil 1 – für alle IT-Berufe identisch (90 min · 100 P)</h2>
+      <div class="grid c3">
+        <div class="card link-card"><h3><a href="mp.html?id=ap1">Bogen A</a></h3><p>Szenario Physiotherapie-Praxis: Arbeitsplätze, Netz, Wirtschaftlichkeit, Sicherheit.</p></div>
+        <div class="card link-card"><h3><a href="mp.html?id=ap1b">Bogen B</a></h3><p>Szenario Steuerkanzlei: Netzplan, Bezugskalkulation, Subnetting, Datenschutz, USV.</p></div>
+        <div class="card link-card"><h3><a href="mp.html?id=ap1c">Bogen C</a></h3><p>Szenario Eventtechnik-Verleih: PSP &amp; Tuckman, AfA, UEFI/Dateisysteme, Lager-WLAN, Phishing.</p></div>
+      </div></section>
+      <section class="section fisi-only" aria-labelledby="mph-ap2si"><h2 id="mph-ap2si">FISI AP Teil 2 – berufsspezifisch (je 90 min · 100 P)</h2>
+      <div class="grid c3">
+        <div class="card link-card"><h3><a href="mp.html?id=ap2si">Bogen A (gemischt)</a></h3><p>Szenario Möbelmanufaktur: Konzeption, Administration und Sicherheit quer durch beide Bereiche.</p></div>
+        <div class="card link-card"><h3><a href="mp.html?id=ap2sib">Bogen B (gemischt)</a></h3><p>Szenario Spedition: Virtualisierung, VLSM, RPO/RTO, Firewall-Regeln, Ransomware.</p></div>
+        <div class="card link-card"><h3><a href="mp.html?id=ap2ga1">Bogen GA1 (sortenrein)</a></h3><p>„Konzeption und Administration von IT-Systemen“: Serverraum, Cluster, AD/AGDLP, Backup, Betrieb.</p></div>
+        <div class="card link-card"><h3><a href="mp.html?id=ap2ga2">Bogen GA2 (sortenrein)</a></h3><p>„Analyse und Entwicklung von Netzwerken“: VLSM, STP/VLAN, CSMA &amp; PoE, Firewall/VPN, Wireshark.</p></div>
+      </div></section>
+      <section class="section ae-only" aria-labelledby="mph-ap2ae"><h2 id="mph-ap2ae">FIAE AP Teil 2 (90 min · 100 P)</h2>
+      <div class="grid c3">
+        <div class="card link-card"><h3><a href="mp.html?id=ap2ae">Bogen A</a></h3><p>Szenario Fahrradverleih: Planen und Entwickeln einer Anwendung.</p></div>
+      </div></section>
+      <section class="section" aria-labelledby="mph-wiso" id="wiso-boegen"><h2 id="mph-wiso">Wirtschafts- und Sozialkunde – alle Berufe (je 60 min · 100 P · Multiple Choice, Auto-Auswertung)</h2>
+      <div class="grid c3">
+        <div class="card link-card"><h3><a href="mp.html?id=wiso">WiSo A</a></h3><p>Querbeet-Klassiker: Ausbildung, Mitbestimmung, Sozialversicherung, Verträge, VWL.</p></div>
+        <div class="card link-card"><h3><a href="mp.html?id=wisob">WiSo B</a></h3><p>Schwerpunkt Beendigung der Ausbildung, KSchG, bAV, GmbH &amp; Co. KG, Break-Even.</p></div>
+        <div class="card link-card"><h3><a href="mp.html?id=wisoc">WiSo C</a></h3><p>Schwerpunkt Ausbildungs- und Kündigungsrecht, Verbraucherrechte, Rechenaufgabe.</p></div>
+        <div class="card link-card"><h3><a href="mp.html?id=wisod">WiSo D</a></h3><p>Schwerpunkt Sozialversicherung, Vorsorge, Wirtschaftspolitik, Marktformen.</p></div>
+        <div class="card link-card"><h3><a href="mp.html?id=wisoe">WiSo E</a></h3><p>Schwerpunkt Betriebsverfassung, Tarifrecht, Arbeitsschutz, Gewährleistung.</p></div>
+        <div class="card link-card"><h3><a href="mp.html?id=wisof">WiSo F</a></h3><p>Gemischter Klassiker-Bogen inkl. Vertragsarten, EU/Europass, Bezugskalkulation.</p></div>
+        <div class="card link-card"><h3><a href="mp.html?id=wisog">WiSo G</a></h3><p>Schwerpunktbogen: Zuschlagskalkulation, Entgelt &amp; Steuern, Recht, Beschaffung, QM.</p></div>
+      </div></section>`;
+          return;
+        }
+        breadcrumbs([{ label: "Musterprüfungen", href: "mp.html" }, { label: MP.kurz }]);
+        document.title = MP.titel + " – FISI-HQ";
+        window.__MP_AKTIV = MP; // fuer den Pruefungsmodus (Countdown-Script unten)
+        const teil = (a, t, ti) => {
+          const id = "t" + ti;
+          let feld = "";
+          if (t.tabelle)
+            feld =
+              '<table class="tbl mp-tbl"><tr>' +
+              t.tabelle.kopf.map((k) => "<th>" + k + "</th>").join("") +
+              "</tr>" +
+              t.tabelle.zeilen
+                .map(
+                  (z) =>
+                    "<tr>" +
+                    z
+                      .map((c) =>
+                        c === null
+                          ? '<td><input class="gap-input" style="width:95%"></td>'
+                          : "<td>" + c + "</td>"
+                      )
+                      .join("") +
+                    "</tr>"
+                )
+                .join("") +
+              "</table>" +
+              (t.tabelle.check
+                ? '<div class="q-actions"><button type="button" class="btn small ghost mp-check">Tabelle automatisch prüfen</button><span class="q-progress mp-check-out"></span></div>'
+                : "");
+          else if (t.optionen)
+            feld =
+              '<div class="mp-mc" role="radiogroup" aria-label="Antwortmöglichkeiten zu ' +
+              t.k +
+              '">' +
+              shuffle(t.optionen.map((o, k) => k))
+                .map((k) => [t.optionen[k], k])
+                .map(
+                  ([o, k]) =>
+                    '<label class="mp-opt" style="display:block;margin:4px 0;cursor:pointer"><input type="radio" name="mc' +
+                    ti +
+                    '" value="' +
+                    k +
+                    '"> ' +
+                    o +
+                    "</label>"
+                )
+                .join("") +
+              '</div><div class="q-actions"><button type="button" class="btn small ghost mp-check">Antwort prüfen</button><span class="q-progress mp-check-out"></span></div>';
+          else
+            feld =
+              '<textarea class="mp-antwort" rows="' +
+              (t.zeilen || 3) +
+              '" placeholder="Deine Antwort …"></textarea>';
+          return `<div class="mp-teil">
+      <p class="mp-frage"><strong>${t.k}</strong> ${t.frage} <span class="mp-punkte">${t.punkte} Punkt${t.punkte === 1 ? "" : "e"}</span></p>
+      ${t.material ? '<div class="mp-material">' + t.material + "</div>" : ""}
+      ${feld}
+      <details class="mp-lsg"><summary>Musterlösung + Bewertung</summary><div>${t.loesung}</div>
+        <p style="margin-top:8px">Deine Punkte: <input class="gap-input mp-selbst" type="number" min="0" max="${t.punkte}" step="0.5" class="w-70px" data-max="${t.punkte}"> / ${t.punkte}</p></details>
+    </div>`;
+        };
+        let ti = 0;
+        host.innerHTML = `
+    <div class="page-head">
+      <h1>${MP.titel}</h1>
+      <p class="sub">${MP.untertitel}</p>
+      <div class="q-actions">
+        <button class="btn" id="mp-timer-btn">Timer starten (${MP.zeit} Minuten)</button>
+        <span class="q-progress" id="mp-timer" class="mono"></span>
+        <button class="btn ghost" onclick="window.print()">Drucken / Papierform</button>
+        <button class="btn ghost" id="mp-lsg-print">Lösungsbogen drucken 🔒</button>
+      </div>
+      <p class="small-dim">Eigenständig erstellte Übungsprüfung im Stil der IHK-Abschlussprüfung – keine Original-Prüfungsaufgaben, keine offiziellen IHK- oder ZPA-Unterlagen.</p>
+      <p class="small-dim">Zulässige Hilfsmittel wie in der echten Prüfung: nicht programmierbarer Taschenrechner, Schreibzeug. Bewertung wie beim echten Korrektor: Tabellen- und Zahlenaufgaben prüft die Seite automatisch („Tabelle automatisch prüfen“) und schlägt Punkte vor; freie Text- und Konzeptantworten vergleichst du selbst mit dem Bewertungsraster in der Musterlösung und trägst deine Teilpunkte ein – genau so arbeitet auch der Prüfungsausschuss mit dem Erwartungshorizont.</p>
+    </div>
+    <div class="card mp-situation"><h2 class="fs-105">Ausgangssituation (gilt für alle Aufgaben)</h2><p>${MP.situation}</p></div>
+    ${MP.aufgaben.map((a) => `<section class="card mp-aufgabe"><h2>${a.t}</h2>${a.intro ? "<p>" + a.intro + "</p>" : ""}${a.teile.map((t) => teil(a, t, ti++)).join("")}</section>`).join("")}
+    <div class="card" id="mp-auswertung">
+      <h2>Selbstbewertung</h2>
+      <p class="text-dim">Trage in jeder Musterlösung deine Teilpunkte ein – hier entsteht das Ergebnis nach dem üblichen Bewertungsschlüssel (bestanden ab 50 %).</p>
+      <div class="q-actions"><button class="btn" id="mp-auswerten">Auswerten</button><span id="mp-ergebnis" style="font-weight:700"></span></div>
+    </div>`;
+        let iv = null,
+          left = MP.zeit * 60;
+        // Tabellen mit eindeutigen Werten automatisch pruefen und Punktevorschlag eintragen
+        const norm = (v) =>
+          String(v || "")
+            .toLowerCase()
+            .replace(/\s+/g, "")
+            .replace(",", ".");
+        let mi = 0;
+        MP.aufgaben.forEach((a2) =>
+          a2.teile.forEach((t2) => {
+            t2._i = mi++;
+          })
+        );
+        document.querySelectorAll(".mp-teil").forEach((el, i) => {
+          const btn = el.querySelector(".mp-check");
+          if (!btn) return;
+          const t2 = MP.aufgaben.flatMap((a2) => a2.teile)[i];
+          btn.addEventListener("click", () => {
+            if (t2.optionen) {
+              const sel = el.querySelector('input[type="radio"]:checked');
+              const labels = [...el.querySelectorAll(".mp-opt")];
+              labels.forEach((L) => {
+                const k = +L.querySelector("input").value;
+                L.style.color = k === t2.richtig ? "var(--ok)" : "";
+                L.style.fontWeight = k === t2.richtig ? "700" : "";
+              });
+              if (!sel) {
+                el.querySelector(".mp-check-out").textContent =
+                  "Bitte erst eine Antwort auswählen.";
+                return;
+              }
+              const gut = +sel.value === t2.richtig;
+              if (!gut) sel.closest(".mp-opt").style.color = "var(--err)";
+              const pts = gut ? t2.punkte : 0;
+              el.querySelector(".mp-check-out").textContent =
+                (gut ? "Richtig" : "Falsch") + " → Punktevorschlag: " + pts + " von " + t2.punkte;
+              const selbst = el.querySelector(".mp-selbst");
+              if (selbst) selbst.value = pts;
+              return;
+            }
+            const ins = [...el.querySelectorAll(".mp-tbl input")];
+            let ok = 0;
+            ins.forEach((inp, k) => {
+              const exp = (t2.tabelle.check[k] || "").split("|").map(norm);
+              const gut = exp.includes(norm(inp.value));
+              inp.style.borderColor = gut ? "var(--ok)" : "var(--err)";
+              if (gut) ok++;
+            });
+            const pts = Math.round(((t2.punkte * ok) / ins.length) * 2) / 2;
+            el.querySelector(".mp-check-out").textContent =
+              ok +
+              "/" +
+              ins.length +
+              " Felder korrekt → Punktevorschlag: " +
+              pts +
+              " von " +
+              t2.punkte;
+            const selbst = el.querySelector(".mp-selbst");
+            if (selbst) selbst.value = pts;
+          });
+        });
+        // Loesungsbogen-Druck: erst nach Eingabe des Loesungsworts (Hash-Vergleich, Wort steht nicht im Klartext im Code)
+        (function () {
+          const btn = document.getElementById("mp-lsg-print");
+          if (!btn) return;
+          const fnv = (s) => {
+            let h = 0x811c9dc5;
+            for (const b of new TextEncoder().encode(s)) {
+              h ^= b;
+              h = Math.imul(h, 0x01000193) >>> 0;
+            }
+            return h >>> 0;
+          };
+          const unlocked = () => Store.get("mpUnlock", false);
+          const setLabel = () => {
+            btn.textContent = unlocked() ? "Lösungsbogen drucken" : "Lösungsbogen drucken 🔒";
+          };
+          setLabel();
+          btn.addEventListener("click", () => {
+            if (!unlocked()) {
+              const w = prompt(
+                "Der Lösungsbogen ist geschützt (z. B. für Ausbilder oder zur ehrlichen Selbstkontrolle NACH der Bearbeitung).\nLösungswort:"
+              );
+              if (w === null) return;
+              if (fnv(String(w).trim().toLowerCase()) !== 0x16975afd) {
+                alert("Falsches Lösungswort.");
+                return;
+              }
+              Store.set("mpUnlock", true);
+              setLabel();
+              toast("Lösungsbögen freigeschaltet");
+            }
+            const dets = [...document.querySelectorAll(".mp-lsg")];
+            const prev = dets.map((d) => d.open);
+            dets.forEach((d) => (d.open = true));
+            document.body.classList.add("print-solutions");
+            const cleanup = () => {
+              document.body.classList.remove("print-solutions");
+              dets.forEach((d, i) => (d.open = prev[i]));
+              window.removeEventListener("afterprint", cleanup);
+            };
+            window.addEventListener("afterprint", cleanup);
+            window.print();
+            setTimeout(cleanup, 1500); // Fallback, falls afterprint nicht feuert
+          });
+        })();
+        document.getElementById("mp-timer-btn").addEventListener("click", function () {
+          this.disabled = true;
+          const out = document.getElementById("mp-timer");
+          iv = setInterval(() => {
+            left--;
+            out.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0");
+            if (left <= 0) {
+              clearInterval(iv);
+              out.textContent = "Zeit abgelaufen – Stifte fallen lassen!";
+            }
+          }, 1000);
+        });
+        document.getElementById("mp-auswerten").addEventListener("click", () => {
+          let p = 0,
+            max = 0;
+          document.querySelectorAll(".mp-selbst").forEach((i) => {
+            max += parseFloat(i.dataset.max);
+            p += Math.min(parseFloat(i.value) || 0, parseFloat(i.dataset.max));
+          });
+          const pct = max ? Math.round((p / max) * 100) : 0;
+          const note =
+            pct >= 92 ? 1 : pct >= 81 ? 2 : pct >= 67 ? 3 : pct >= 50 ? 4 : pct >= 30 ? 5 : 6;
+          document.getElementById("mp-ergebnis").textContent =
+            p +
+            " / " +
+            max +
+            " Punkte (" +
+            pct +
+            " %) – Note " +
+            note +
+            (pct >= 50 ? " · bestanden" : " · nicht bestanden");
+          if (pct >= 50 && window.Gami)
+            Gami.addXp(40, "Musterprüfung " + MP.kurz + " bestanden: " + pct + " %");
+        });
+      };
+    </script>
+    <script>
+      /* Pruefungsmodus: echter Countdown ueber den ganzen Bogen, Auto-Auswertung bei Ablauf */
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          const MP = window.__MP_AKTIV;
+          const ausw = document.getElementById("mp-auswerten");
+          if (!MP || !ausw || !MP.zeit) return;
+          const kopf =
+            document.querySelector("#mp-host .page-head") || document.getElementById("mp-host");
+          const leiste = document.createElement("div");
+          leiste.className = "q-actions";
+          leiste.innerHTML =
+            '<button type="button" class="btn" id="pm-start">Prüfungsmodus starten (' +
+            MP.zeit +
+            " min)</button>" +
+            '<span class="q-progress">Echte Prüfungsbedingungen: laufende Uhr, bei Ablauf wird automatisch ausgewertet.</span>';
+          kopf.appendChild(leiste);
+          let rest = 0,
+            iv = null,
+            badge = null,
+            gewarnt = false;
+          const fmt = (s) => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+          document.getElementById("pm-start").addEventListener("click", function () {
+            if (iv) return;
+            rest = Math.round(MP.zeit * 60);
+            this.disabled = true;
+            this.textContent = "Prüfungsmodus läuft …";
+            badge = document.createElement("div");
+            badge.id = "pm-countdown";
+            badge.setAttribute("role", "timer");
+            badge.style.cssText =
+              "position:fixed;top:calc(var(--kopf-h,70px) + 8px);right:14px;z-index:920;background:var(--bg2);border:2px solid var(--ac);padding:8px 14px;font-family:var(--mono);font-size:1.05rem;font-weight:700;color:var(--tx)";
+            badge.textContent = fmt(rest);
+            document.body.appendChild(badge);
+            if (typeof toast === "function")
+              toast("Prüfungsmodus: " + MP.zeit + " Minuten – viel Erfolg!");
+            iv = setInterval(function () {
+              rest--;
+              badge.textContent = fmt(rest);
+              if (rest === 600 && !gewarnt) {
+                gewarnt = true;
+                badge.style.borderColor = "var(--err)";
+                if (typeof toast === "function") toast("Noch 10 Minuten!");
+              }
+              if (rest <= 0) {
+                clearInterval(iv);
+                badge.textContent = "0:00 – Abgabe";
+                document.querySelectorAll("#mp-host input, #mp-host textarea").forEach((el) => {
+                  el.disabled = true;
+                });
+                document.querySelectorAll("#mp-host .mp-check").forEach((b) => {
+                  b.disabled = true;
+                });
+                if (typeof toast === "function")
+                  toast("Zeit abgelaufen – der Bogen wird ausgewertet.");
+                ausw.click();
+                document
+                  .getElementById("mp-auswertung")
+                  .scrollIntoView({ block: "start", behavior: "smooth" });
+              }
+            }, 1000);
+          });
+        }, 400);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Deine Firma – FISI-HQ</title>
+    <meta
+      name="description"
+      content="Deine virtuelle Firma wächst mit deinem Lernfortschritt: vom 5-Personen-Betrieb zum Systemhaus mit zwei Standorten, Cloud und bestandenem Security-Audit."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+    <style>
+      .stage-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 10px 0;
+      }
+      .stage {
+        flex: 1;
+        min-width: 150px;
+        border: 1px solid var(--line-strong);
+        border-radius: 3px;
+        padding: 10px;
+        background: var(--bg2);
+      }
+      .stage.won {
+        border-color: var(--ok);
+      }
+      .stage.next {
+        border-color: var(--ac);
+        background: var(--ac-soft);
+      }
+      .stage h3 {
+        font-size: 0.9rem;
+        margin: 0 0 4px;
+      }
+      .stage .st {
+        font-family: var(--mono);
+        font-size: 0.75rem;
+        color: var(--tx3);
+      }
+      .stage.won .st {
+        color: var(--ok);
+      }
+      .req {
+        font-size: 0.88rem;
+        margin: 4px 0;
+        padding-left: 0;
+        list-style: none;
+      }
+      .req li {
+        margin: 5px 0;
+      }
+      .req .done {
+        color: var(--ok);
+      }
+      .req .open {
+        color: var(--tx2);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="dashboard.html">Dashboard</a
+          ><a href="lernfelder.html">Lernfelder</a><a href="jahr1.html">Jahr 1</a
+          ><a href="jahr2.html">Jahr 2</a><a href="jahr3.html">Jahr 3</a><a href="ap1.html">AP1</a
+          ><a href="ap2.html">AP2</a><a href="labor.html">IT-Labor</a
+          ><a href="training.html">Training</a
+          ><a href="firma.html" aria-current="page">Deine Firma</a><a href="formeln.html">Formeln</a
+          ><a href="glossar.html">Glossar</a><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head">
+        <h1>Deine Firma: dein virtuelles Systemhaus</h1>
+        <p class="sub">
+          Dein virtuelles Systemhaus wächst mit deinem echten Lernfortschritt – von 5 Mitarbeitenden
+          bis zum prüfungsreifen Betrieb.
+        </p>
+      </div>
+
+      <section class="section card">
+        <div
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            justify-content: space-between;
+          "
+        >
+          <div>
+            <h2 class="m-0" id="firm-stage-name">–</h2>
+            <p style="margin: 4px 0 0; color: var(--tx2)" id="firm-stage-sub"></p>
+          </div>
+          <div style="font-family: var(--mono); font-size: 0.9rem; color: var(--tx2)">
+            <span id="firm-ma">5</span> Mitarbeitende · Ausbaustufe <span id="firm-lv">1</span>/6
+          </div>
+        </div>
+        <div id="firm-scene" style="margin: 14px 0"></div>
+        <div class="stage-row" id="firm-stages"></div>
+      </section>
+
+      <section class="section card">
+        <h2>Offene Aufträge: So wächst deine Firma</h2>
+        <p class="text-dim">
+          Jede Ausbaustufe besteht aus Aufträgen quer durch alle Bereiche der Plattform – Lektionen,
+          Labor, Training, Analyse. Jeder Auftrag sagt dir, warum die Firma ihn braucht, und
+          verlinkt direkt in die passende Übung:
+        </p>
+        <ul class="req" id="firm-req"></ul>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong> · Lernplattform Fachinformatik Systemintegration</div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Deine Firma" }]);
+
+        // Kennzahlen aus echtem Fortschritt
+        const stats = Progress.stats();
+        let answered = 0,
+          correct = 0;
+        Object.values(stats).forEach((s) => {
+          answered += s.total;
+          correct += s.ok;
+        });
+        const lessonsDone = DATA.lessons.filter((l) => Progress.isDone(l.id)).length;
+        const fieldsReady = window.LF_INDEX
+          ? LF_INDEX.fields.filter((f) =>
+              ["prüfungsbereit", "abgeschlossen"].includes(LF.status(f.id))
+            ).length
+          : 0;
+        const analyse = (Store.get("analyseSolved", []) || []).length;
+        const labor =
+          (Store.get("rackDone", false) ? 1 : 0) +
+          (Store.get("patchDone", false) ? 1 : 0) +
+          ((Store.get("laborQuizBest", 0) || 0) >= 70 ? 1 : 0);
+        const term = (Store.get("termDone", []) || []).length;
+        const miss = (Store.get("missDone", []) || []).length;
+        const subnet =
+          Store.get("subnetSolved", 0) + (Store.get("netzChallengeBest", 0) >= 8 ? 3 : 0);
+        const apDone = !!(Store.get("ap1Result", null) || Store.get("ap2Result", null));
+        const done = Progress.doneLessons();
+        const chalBest = Store.get("netzChallengeBest", 0);
+        const lf4answ = window.LF_INDEX ? LF.stats("lf4").answered : 0;
+        const rackDone = !!Store.get("rackDone", false),
+          patchDone = !!Store.get("patchDone", false);
+        const labBest = Store.get("laborQuizBest", 0) || 0;
+
+        const STAGES = [
+          { n: "Gründung", ma: 5, sub: "Ein Büro, fünf Mitarbeitende, du bist die IT.", reqs: [] },
+          {
+            n: "Eigener Serverraum",
+            ma: 9,
+            sub: "Erste eigene Server statt Bastellösungen – du betreust echte Infrastruktur.",
+            reqs: [
+              {
+                t:
+                  "Grundlagen aufbauen: 3 Kern-Lektionen abschließen (" +
+                  Math.min(lessonsDone, 3) +
+                  "/3)",
+                why: "Ohne EVA, Zahlensysteme und Netzwerk-Basics kauft dir niemand einen Serverraum ab.",
+                ok: lessonsDone >= 3,
+                href: "jahr1.html",
+              },
+              {
+                t: "Wissens-Check: 30 Quizfragen beantworten (" + Math.min(answered, 30) + "/30)",
+                why: "Die Geschäftsführung will sehen, dass das Wissen sitzt, bevor investiert wird.",
+                ok: answered >= 30,
+                href: "quiz.html",
+              },
+              {
+                t: "Hardware kennenlernen: alle 9 Komponenten im Server-Rack erkunden",
+                why: "Du bestellst gleich ein 19-Zoll-Rack – dann solltest du wissen, was hineingehört und warum die USV nach unten kommt.",
+                ok: rackDone,
+                href: "labor.html",
+              },
+            ],
+          },
+          {
+            n: "Zweiter Standort",
+            ma: 14,
+            sub: "Eine Filiale kommt dazu – Standortvernetzung wird dein Thema.",
+            reqs: [
+              {
+                t: "Adressplan erstellen: 3 Subnetting-Aufgaben lösen (oder Challenge ≥ 8/10)",
+                why: "Zwei Standorte heißt zwei Netze – ohne sauberen Adressplan gibt es Chaos ab Tag 1.",
+                ok: subnet >= 3,
+                href: "netztrainer.html",
+              },
+              {
+                t: "Filiale verkabeln: Patchkabel-Trainer bestehen (T568A/B)",
+                why: "Der Elektriker legt die Strecken, aber die Dosen und Panels legst du selbst auf.",
+                ok: patchDone,
+                href: "labor.html",
+              },
+              {
+                t: "Normgerecht planen: Lektion „Strukturierte Verkabelung“ abschließen",
+                why: "Primär-, Sekundär-, Tertiärbereich und die 90+10-m-Regel gehören in jedes Standort-Konzept.",
+                ok: done.includes("l205"),
+                href: "lektion.html?id=l205",
+              },
+            ],
+          },
+          {
+            n: "Cloud & Automatisierung",
+            ma: 20,
+            sub: "Hybride Infrastruktur: ein Teil on-prem, ein Teil in der Cloud – und Routineaufgaben laufen als Skript.",
+            reqs: [
+              {
+                t:
+                  "Fachwissen verbreitern: 8 Kern-Lektionen abschließen (" +
+                  Math.min(lessonsDone, 8) +
+                  "/8)",
+                why: "Wer hybride Infrastruktur betreibt, braucht das ganze Fundament von RAID bis DHCP.",
+                ok: lessonsDone >= 8,
+                href: "lernfelder.html",
+              },
+              {
+                t: "Cloud-Konzept verstehen: Lektion „Cloud-Computing & hybride Infrastrukturen“ abschließen",
+                why: "IaaS/PaaS/SaaS und Shared Responsibility entscheiden, was ausgelagert wird – und was nicht.",
+                ok: done.includes("l302"),
+                href: "lektion.html?id=l302",
+              },
+              {
+                t:
+                  "Admin-Alltag automatisieren: 2 Terminal-Aufgaben lösen (" +
+                  Math.min(term, 2) +
+                  "/2)",
+                why: "20 Mitarbeitende und 2 Standorte verwaltet niemand mehr von Hand.",
+                ok: term >= 2,
+                href: "praxis.html",
+              },
+            ],
+          },
+          {
+            n: "Security-Audit bestanden",
+            ma: 28,
+            sub: "Ein Großkunde verlangt Nachweise – Logs, Härtung und Notfallpläne müssen sitzen.",
+            reqs: [
+              {
+                t:
+                  "Logs lesen können: 8 Fälle in der Fehler-Analyse lösen (" +
+                  Math.min(analyse, 8) +
+                  "/8)",
+                why: "Der Auditor fragt zuerst: Würdet ihr einen Angriff in euren Logs überhaupt bemerken?",
+                ok: analyse >= 8,
+                href: "analyse.html",
+              },
+              {
+                t:
+                  "Support-Missionen meistern: beide Missionen im IT-Alltag abschließen (" +
+                  Math.min(miss, 2) +
+                  "/2)",
+                why: "Strukturierte Störungsanalyse mit Doku ist genau das, was ein Audit sehen will.",
+                ok: miss >= 2,
+                href: "praxis.html",
+              },
+              {
+                t:
+                  "Sicherheits-Grundlagen: 10 Fragen im Bereich LF4 beantworten (" +
+                  Math.min(lf4answ, 10) +
+                  "/10)",
+                why: "Schutzziele, TOM und DSGVO sind die Sprache, in der das Audit geführt wird.",
+                ok: lf4answ >= 10,
+                href: "lernfeld.html?id=lf4",
+              },
+            ],
+          },
+          {
+            n: "Prüfungsreifes Systemhaus",
+            ma: 35,
+            sub: "Zwei Standorte, Cloud, bestandenes Audit – und du bist bereit für die IHK.",
+            reqs: [
+              {
+                t:
+                  "Fast alles gesehen: 12 Kern-Lektionen abschließen (" +
+                  Math.min(lessonsDone, 12) +
+                  "/12)",
+                why: "Ein Systemhaus-Admin kann jedes Thema mindestens einordnen.",
+                ok: lessonsDone >= 12,
+                href: "lernfelder.html",
+              },
+              {
+                t: "Die Reise ins Silizium: Labor-Abschlussquiz mit ≥ 70 % bestehen",
+                why: "Hardware-Verständnis bis auf Gatter-Ebene – das unterscheidet dich vom Klickadmin.",
+                ok: labBest >= 70,
+                href: "labor.html",
+              },
+              {
+                t: "Subnetting im Schlaf: Challenge-Bestwert ≥ 8/10",
+                why: "In der AP rechnest du unter Zeitdruck – hier trainierst du genau das.",
+                ok: chalBest >= 8,
+                href: "netztrainer.html",
+              },
+              {
+                t: "Generalprobe: eine Musterprüfung (AP1 oder AP2) absolvieren",
+                why: "Der letzte Beweis vor der echten IHK-Prüfung.",
+                ok: apDone,
+                href: "ap1.html",
+              },
+            ],
+          },
+        ];
+        let level = 1;
+        for (let i = 1; i < STAGES.length; i++) {
+          if (STAGES[i].reqs.every((r) => r.ok)) level = i + 1;
+          else break;
+        }
+        const cur = STAGES[level - 1],
+          next = STAGES[level] || null;
+
+        document.getElementById("firm-stage-name").textContent = "Stufe " + level + ": " + cur.n;
+        document.getElementById("firm-stage-sub").textContent = cur.sub;
+        document.getElementById("firm-ma").textContent = cur.ma;
+        document.getElementById("firm-lv").textContent = level;
+
+        // Iso-Szene: waechst mit der Stufe (eigene Grafik)
+        function box(x, y, w, h, d, fill, st) {
+          const dx = d * 0.55,
+            dy = d * 0.32;
+          return (
+            '<path d="M' +
+            x +
+            " " +
+            (y - h) +
+            " L" +
+            (x + dx) +
+            " " +
+            (y - h - dy) +
+            " L" +
+            (x + w + dx) +
+            " " +
+            (y - h - dy) +
+            " L" +
+            (x + w) +
+            " " +
+            (y - h) +
+            ' Z" fill="' +
+            fill +
+            '" stroke="' +
+            st +
+            '" opacity=".85"/>' +
+            '<path d="M' +
+            (x + w) +
+            " " +
+            (y - h) +
+            " L" +
+            (x + w + dx) +
+            " " +
+            (y - h - dy) +
+            " L" +
+            (x + w + dx) +
+            " " +
+            (y - dy) +
+            " L" +
+            (x + w) +
+            " " +
+            y +
+            ' Z" fill="' +
+            fill +
+            '" stroke="' +
+            st +
+            '" opacity=".62"/>' +
+            '<rect x="' +
+            x +
+            '" y="' +
+            (y - h) +
+            '" width="' +
+            w +
+            '" height="' +
+            h +
+            '" fill="' +
+            fill +
+            '" stroke="' +
+            st +
+            '"/>'
+          );
+        }
+        function label(x, y, t) {
+          return (
+            '<text x="' +
+            x +
+            '" y="' +
+            y +
+            '" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="var(--tx2)">' +
+            t +
+            "</text>"
+          );
+        }
+        let sc =
+          '<line x1="20" y1="240" x2="740" y2="240" stroke="var(--line)" stroke-width="1.5"/>';
+        sc +=
+          box(60, 238, 120, 84, 26, "var(--bg3)", "var(--line-strong)") +
+          label(130, 258, "Hauptsitz (5+)");
+        if (level >= 2)
+          sc +=
+            box(215, 238, 54, 58, 18, "var(--ac-soft)", "var(--ac)") +
+            label(250, 258, "Serverraum");
+        if (level >= 3) {
+          sc +=
+            box(330, 238, 100, 66, 22, "var(--bg3)", "var(--line-strong)") +
+            label(385, 258, "Standort 2") +
+            '<path d="M182 190 C 240 150, 280 150, 336 186" fill="none" stroke="var(--ac)" stroke-width="1.6" stroke-dasharray="6 4"/>' +
+            label(262, 146, "Site-to-Site-VPN");
+        }
+        if (level >= 4) {
+          sc +=
+            '<ellipse cx="560" cy="90" rx="64" ry="26" fill="var(--ac-soft)" stroke="var(--ac)"/>' +
+            label(560, 95, "Cloud") +
+            '<line x1="250" y1="176" x2="520" y2="104" stroke="var(--ac)" stroke-width="1.4" stroke-dasharray="4 4"/>';
+        }
+        if (level >= 5)
+          sc +=
+            '<rect x="612" y="176" width="96" height="62" rx="3" fill="var(--bg3)" stroke="var(--ok)" stroke-width="1.6"/>' +
+            '<text x="660" y="203" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--ok)">AUDIT</text><text x="660" y="219" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--ok)">BESTANDEN</text>';
+        if (level >= 6)
+          sc +=
+            '<line x1="130" y1="154" x2="130" y2="110" stroke="var(--line-strong)" stroke-width="2"/><path d="M130 110 h44 l-10 9 10 9 h-44 Z" fill="var(--ac)"/>' +
+            label(130, 100, "Systemhaus – IHK-ready");
+        document.getElementById("firm-scene").innerHTML =
+          '<svg viewBox="0 0 760 260" role="img" aria-label="Isometrische Ansicht deiner Firma in Ausbaustufe ' +
+          level +
+          '" style="width:100%;height:auto">' +
+          sc +
+          "</svg>";
+
+        // Stufenleiste
+        document.getElementById("firm-stages").innerHTML = STAGES.map((s, i) => {
+          const cls = i + 1 < level || i + 1 === level ? "won" : i === level ? "next" : "";
+          return (
+            '<div class="stage ' +
+            (i + 1 <= level ? "won" : i === level ? "next" : "") +
+            '"><h3>' +
+            (i + 1) +
+            " · " +
+            s.n +
+            '</h3><span class="st">' +
+            (i + 1 <= level ? "erreicht" : i === level ? "nächstes Ziel" : "gesperrt") +
+            " · " +
+            s.ma +
+            " MA</span></div>"
+          );
+        }).join("");
+
+        // Naechste Auftraege
+        const req = document.getElementById("firm-req");
+        const reqLine = (r) =>
+          '<li class="' +
+          (r.ok ? "done" : "open") +
+          '">' +
+          (r.ok ? "✓ " : "○ ") +
+          '<a href="' +
+          r.href +
+          '">' +
+          r.t +
+          "</a>" +
+          (r.why ? '<br><span class="small-dim">' + r.why + "</span>" : "") +
+          "</li>";
+        if (!next)
+          req.innerHTML =
+            '<li class="done">✓ Vollausbau erreicht – deine Firma ist prüfungsreif. Jetzt heißt es: Wiederholung und Musterprüfungen bis zur IHK.</li>';
+        else
+          req.innerHTML =
+            '<li style="color:var(--tx2);font-size:.88rem;list-style:none;margin-bottom:2px"><strong>Ziel: Stufe ' +
+            (level + 1) +
+            " – " +
+            next.n +
+            "</strong> (" +
+            next.ma +
+            " Mitarbeitende)</li>" +
+            next.reqs.map(reqLine).join("");
+        // Gesamtueberblick: alle Stufen mit ihren Auftraegen
+        const ovHost = document.createElement("section");
+        ovHost.className = "section card";
+        ovHost.innerHTML =
+          '<h2>Alle Ausbaustufen im Überblick</h2><p class="note-dim">Auch spätere Aufträge kannst du jederzeit vorarbeiten – die Firma wächst, sobald eine Stufe komplett ist.</p>' +
+          STAGES.slice(1)
+            .map((st, ix) => {
+              const nr = ix + 2,
+                open = nr === level + 1;
+              const doneCnt = st.reqs.filter((r) => r.ok).length;
+              return (
+                '<details class="lf-lesson"' +
+                (open ? " open" : "") +
+                "><summary>" +
+                (doneCnt === st.reqs.length ? "✓ " : "") +
+                "Stufe " +
+                nr +
+                ": " +
+                st.n +
+                ' <span class="badge" style="margin-left:auto">' +
+                doneCnt +
+                "/" +
+                st.reqs.length +
+                ' Aufträge</span></summary><div class="lf-lesson-body"><ul class="req">' +
+                st.reqs.map(reqLine).join("") +
+                "</ul></div></details>"
+              );
+            })
+            .join("");
+        document.querySelector("main").appendChild(ovHost);
+      };
+    </script>
+  </body>
+</html>

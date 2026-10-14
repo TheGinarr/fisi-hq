@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="description"
+      content="Datenschutzerklärung: keine Cookies, kein Tracking, alle Lerndaten bleiben lokal im Browser."
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Datenschutzerklärung – FISI-HQ</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='IBM Plex Mono, monospace' font-size='14' font-weight='700' fill='%23d29922' text-anchor='middle'%3E%26gt%3B_%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      (function () {
+        var t =
+            window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+          a = "blue";
+        try {
+          t = JSON.parse(localStorage.getItem("fisi.theme")) || t;
+          a = JSON.parse(localStorage.getItem("fisi.accent")) || a;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m = JSON.parse(window.name.slice(10));
+            if (m && m.theme) t = m.theme;
+            if (m && m.accent) a = m.accent;
+          }
+        } catch (e) {}
+        var f = "0",
+          tr = "fisi";
+        try {
+          f = String(JSON.parse(localStorage.getItem("fisi.fontsize")) || "0");
+          tr = JSON.parse(localStorage.getItem("fisi.track")) || tr;
+        } catch (e) {}
+        try {
+          if (window.name && window.name.indexOf("fisiStore:") === 0) {
+            var m2 = JSON.parse(window.name.slice(10));
+            if (m2 && m2.fontsize != null) f = String(m2.fontsize);
+            if (m2 && m2.track) tr = m2.track;
+          }
+        } catch (e) {}
+        var d = document.documentElement;
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.dataset.accent = a === "gold" || a === "blau" ? a : "blue";
+        d.dataset.fs = f === "1" || f === "2" ? f : "0";
+        var lb = null,
+          kt = null;
+        try {
+          lb = JSON.parse(localStorage.getItem("fisi.lesbar"));
+          kt = JSON.parse(localStorage.getItem("fisi.kontrast"));
+        } catch (e) {}
+        if (kt == null)
+          kt = window.matchMedia && matchMedia("(prefers-contrast: more)").matches ? "1" : "0";
+        d.dataset.lesbar = lb === "1" ? "1" : "0";
+        d.dataset.kontrast = kt === "1" ? "1" : "0";
+        d.className += " js";
+        window.AKTIVE_TRACKS = ["fisi", "ae"];
+        d.dataset.track = { ae: 1 }[tr] ? tr : "fisi";
+      })();
+    </script>
+    <script defer src="assets/js/grunddaten.js"></script>
+    <script defer src="assets/js/uebungspools.js"></script>
+    <script defer src="assets/data/lf-index.js"></script>
+    <script defer src="assets/data/lf-extra.js"></script>
+    <script defer src="assets/js/lernfeld-infos.js"></script>
+    <script defer src="assets/js/hintergrund-animation.js"></script>
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <div id="fx-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header id="site-header" class="site-header">
+      <div class="header-in">
+        <a class="brand" href="index.html"
+          ><span class="logo" aria-hidden="true">&gt;_</span> FISI-HQ</a
+        >
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <a href="index.html">Start</a><a href="lernfelder.html">Lernfelder</a
+          ><a href="quellen.html">Quellen</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <nav class="breadcrumbs" aria-label="Brotkrumen"></nav>
+      <div class="page-head"><h1>Datenschutzerklärung</h1></div>
+      <section class="card">
+        <h2>1. Verantwortlicher</h2>
+        <!-- VOR DER VERÖFFENTLICHUNG AUSFÜLLEN: alle [PLATZHALTER] durch eigene Angaben ersetzen. -->
+        <p>[VORNAME NACHNAME], [STRASSE HAUSNUMMER], [PLZ ORT], E-Mail: [E-MAIL-ADRESSE]</p>
+        <h2>2. Grundsatz</h2>
+        <p>
+          Diese Website kommt ohne Konten, Formulare, eigene Cookies, Tracking- und Analysedienste
+          aus. Technisch notwendige Cookies können durch den vorgeschalteten Sicherheitsdienst
+          Cloudflare gesetzt werden (Ziffer 4) – dafür ist nach § 25 Abs. 2 TDDDG keine Einwilligung
+          erforderlich. Es werden keine personenbezogenen Daten aktiv erhoben oder ausgewertet; die
+          einzige technisch bedingte Verarbeitung beschreiben die Ziffern 3 und 4.
+        </p>
+        <!-- Ziffern 3 und 4 an das eigene Hosting anpassen (Webserver, Logdauer, ggf. Cloudflare streichen). -->
+        <h2>3. Server-Logfiles (Self-Hosting)</h2>
+        <p>
+          Diese Website wird auf eigener Infrastruktur betrieben (Self-Hosting, nginx); ein externer
+          Hosting-Anbieter ist nicht eingebunden. Zur Auslieferung wird der Dienst Cloudflare
+          vorgeschaltet (Ziffer 4). Beim Aufruf verarbeitet der Webserver technisch notwendige Daten
+          (IP-Adresse, Zeitpunkt, aufgerufene Datei, User-Agent) in Server-Logfiles. Rechtsgrundlage
+          ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren, stabilen Betrieb, z.
+          B. Abwehr von Angriffen und Fehleranalyse). Die Logfiles werden nach spätestens 14 Tagen
+          automatisch gelöscht (logrotate) und nicht mit anderen Datenquellen zusammengeführt.
+        </p>
+        <h2>4. Cloudflare (Reverse Proxy / CDN)</h2>
+        <p>
+          Die Website wird über das Netzwerk der Cloudflare, Inc. (101 Townsend St, San Francisco,
+          CA 94107, USA) ausgeliefert (Reverse Proxy/CDN). Cloudflare verarbeitet dabei technisch
+          bedingt IP-Adresse und Verbindungsdaten der Besucher, um die Seite bereitzustellen und vor
+          Angriffen zu schützen (u. a. DDoS-Abwehr, Bot-Filterung). Rechtsgrundlage ist Art. 6 Abs.
+          1 lit. f DSGVO (berechtigtes Interesse an sicherer und performanter Bereitstellung). Mit
+          Cloudflare besteht ein Auftragsverarbeitungsvertrag (Cloudflare Data Processing Addendum);
+          eine etwaige Übermittlung in die USA ist über die Zertifizierung von Cloudflare unter dem
+          EU-US Data Privacy Framework sowie EU-Standardvertragsklauseln abgesichert.
+          Datenschutzerklärung von Cloudflare:
+          <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener"
+            >cloudflare.com/privacypolicy</a
+          >.
+        </p>
+        <p>
+          Cloudflare kann zur Absicherung technisch notwendige Cookies setzen (z.&nbsp;B.
+          <code>__cf_bm</code> zur Bot-Abwehr). Diese dienen ausschließlich der Sicherheit und
+          Funktionsfähigkeit, nicht dem Tracking. Zur Bot-Erkennung lädt Cloudflare zudem ein
+          kleines Prüfskript von dieser Domain (<code>/cdn-cgi/challenge-platform/…</code>), das
+          technische Browsermerkmale auswertet und an Cloudflare übermittelt; außerdem kann der
+          Browser über die von Cloudflare gesetzten Header <code>Report-To</code>/<code>NEL</code>
+          (Network Error Logging) Verbindungsfehler an Cloudflare melden. Beides dient
+          ausschließlich der Absicherung und Fehleranalyse der Auslieferung; Rechtsgrundlage ist
+          Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO bzw. für den Zugriff auf das Endgerät § 25
+          Abs.&nbsp;2 Nr.&nbsp;2 TDDDG. Weitere Content Delivery Networks oder externe Skript-,
+          Schrift- oder Analysedienste werden nicht eingebunden. Auf Cloudflare weist ein einmaliger
+          Hinweis beim ersten Besuch der Seite hin.
+        </p>
+        <h2>5. Lokale Speicherung im Browser (localStorage)</h2>
+        <p>
+          Einstellungen (Hell-/Dunkelmodus, Akzentfarbe, Textgröße, FISI/AE-Modus) und der
+          Lernfortschritt (Aktivitätspunkte, beantwortete Fragen, abgeschlossene Lektionen, Noten
+          des Notentrackers, eigene Lektions-Notizen, optionale Prüfungstermine) werden
+          ausschließlich lokal im Browser des Nutzers gespeichert (localStorage bzw. sitzungsbezogen
+          im Tab). Diese Daten verlassen das Endgerät nicht und sind für uns nicht einsehbar. Das
+          Speichern ist für die gewünschte Funktion erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG); es
+          findet keine Einwilligungsabfrage statt, weil keine Daten übertragen werden. Eingebettete
+          Videos werden ausschließlich nach ausdrücklichem Klick über die Domain
+          youtube-nocookie.com geladen; vorher wird keine Verbindung zu YouTube/Google aufgebaut
+          (Details in Ziffer 6a). Zusätzlich legt der Browser über einen Service Worker eine lokale
+          Offline-Kopie der Seiten an (Progressive Web App); auch dieser Cache verbleibt vollständig
+          auf dem Endgerät. Löschen jederzeit über die Browserfunktion „Websitedaten löschen“. Wird
+          unter „Lernstand“ zusätzlich die automatische Sicherung eingerichtet, schreibt der Browser
+          den Lernstand auf ausdrücklichen Wunsch des Nutzers zusätzlich in eine selbst gewählte
+          Datei auf dem eigenen Gerät (File System Access API); das dafür nötige Zugriffsrecht auf
+          diese Datei wird ebenfalls nur lokal im Browser gespeichert (IndexedDB, Datenbank
+          „fisi-backup“). Auch hierbei werden keine Daten an Server übertragen.
+        </p>
+        <h2>6. Nachladen von Bildern (Wikimedia Commons)</h2>
+        <p>
+          Fotos von Wikimedia Commons werden ausschließlich nach einem bewussten Klick auf „Bild
+          laden“ abgerufen. Erst dann stellt der Browser eine Verbindung zu Servern der Wikimedia
+          Foundation Inc. (USA) her und übermittelt dabei technisch bedingt die IP-Adresse.
+          Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung durch aktiven Klick, jederzeit
+          ohne Klick vermeidbar). Datenschutzhinweise der Wikimedia Foundation:
+          <a href="https://foundation.wikimedia.org/wiki/Policy:Privacy_policy" rel="noopener"
+            >foundation.wikimedia.org</a
+          >.
+        </p>
+        <h2>6a. Eingebettete Videos (YouTube)</h2>
+        <p>
+          Lernvideos werden erst nach einem bewussten Klick auf „Video laden“ über den erweiterten
+          Datenschutzmodus (youtube-nocookie.com) der Google Ireland Limited, Gordon House, Barrow
+          Street, Dublin 4, Irland, eingebunden. Ab diesem Klick überträgt der Browser u.&nbsp;a.
+          IP-Adresse, aufgerufene Seite und Browserdaten an Google; YouTube kann dabei Informationen
+          auf dem Endgerät speichern oder auslesen. Eine Übermittlung an die Google LLC in den USA
+          ist möglich und über deren Zertifizierung unter dem EU-US Data Privacy Framework
+          abgesichert. Rechtsgrundlage ist Ihre Einwilligung durch den Klick (Art.&nbsp;6
+          Abs.&nbsp;1 lit.&nbsp;a DSGVO, § 25 Abs.&nbsp;1 TDDDG); ohne Klick findet keine Verbindung
+          statt, ein geladenes Video endet mit dem Verlassen der Seite. Datenschutzerklärung von
+          Google:
+          <a href="https://policies.google.com/privacy" rel="noopener"
+            >policies.google.com/privacy</a
+          >.
+        </p>
+        <h2>7. Externe Links</h2>
+        <p>
+          Links zu Dritten (Wikipedia, RFC-Editor, BSI, NIST u. a.) laden keine Inhalte auf dieser
+          Website nach; beim Anklicken gelten die Datenschutzbestimmungen der Zielseite.
+        </p>
+        <h2>8. Betroffenenrechte</h2>
+        <p>
+          Betroffene haben gegenüber dem Verantwortlichen (Ziffer 1) die Rechte auf Auskunft,
+          Berichtigung, Löschung, Einschränkung der Verarbeitung und Widerspruch (Art. 15–21 DSGVO),
+          soweit personenbezogene Daten (Ziffern 3, 4, 6 und 6a) verarbeitet werden. Eine erteilte
+          Einwilligung (Ziffern 6 und 6a) können Sie jederzeit mit Wirkung für die Zukunft
+          widerrufen, indem Sie keine weiteren Bilder oder Videos laden und die Websitedaten
+          löschen. Es besteht ein Beschwerderecht bei einer Datenschutzaufsichtsbehörde,
+          insbesondere bei der für den Verantwortlichen zuständigen Aufsichtsbehörde: [ZUSTÄNDIGE DATENSCHUTZ-AUFSICHTSBEHÖRDE DES BUNDESLANDES, ANSCHRIFT, WEBSITE].
+        </p>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+      <div class="footer-in">
+        <div><strong>FISI-HQ</strong></div>
+        <div>
+          <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+          <a href="quellen.html">Quellen &amp; Lizenzen</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.pageInit = function () {
+        breadcrumbs([{ label: "Datenschutzerklärung" }]);
+      };
+    </script>
+  </body>
+</html>
